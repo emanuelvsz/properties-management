@@ -4,11 +4,12 @@
 1. [Project Description](#project-description)
 2. [Features](#features)
 3. [Entity-Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
-4. [Technology Stack](#technology-stack)
-5. [Installation](#installation)
-6. [Usage](#usage)
-7. [Contributing](#contributing)
-8. [License](#license)
+4. [Design](#design)
+5. [Technology Stack](#technology-stack)
+6. [Installation](#installation)
+7. [Usage](#usage)
+8. [Contributing](#contributing)
+9. [License](#license)
 
 ---
 
@@ -40,7 +41,14 @@ The system follows a structured database model with entities such as:
 - **Expense**: Logs property-related expenses.
 - **Payment Method**: Defines supported payment options.
 
-![Entity-Relationship Diagram](docs/diagrams.md)
+
+* [Entity-Relationship Diagram](docs/diagrams.md)
+
+---
+
+## Design
+
+* [Figma Design](https://www.figma.com/design/xG59t3RrM8J7Af62L0SHG4/Property-Management?node-id=0-1&t=VApwlQ2eW8a9mVvH-1)
 
 ---
 
