@@ -32,15 +32,6 @@ The **Rental Property Management System** is designed to help landlords efficien
 ---
 
 ## Entity-Relationship Diagram (ERD)
-The system follows a structured database model with entities such as:
-- **User**: Manages multiple properties.
-- **Property**: Represents a rental unit.
-- **Tenant**: Stores tenant information.
-- **Rent Contract**: Handles lease agreements.
-- **Rent Payment**: Tracks payments and due dates.
-- **Expense**: Logs property-related expenses.
-- **Payment Method**: Defines supported payment options.
-
 
 * [Entity-Relationship Diagram](docs/diagrams.md)
 
@@ -53,11 +44,6 @@ The system follows a structured database model with entities such as:
 ---
 
 ## Technology Stack
-- **Backend**: Django (Python)
-- **Frontend**: React (TypeScript)
-- **Database**: PostgreSQL
-- **Authentication**: JWT / OAuth
-- **Cloud Services**: AWS (for hosting and storage)
 
 ---
 
