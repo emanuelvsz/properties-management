@@ -1,0 +1,5 @@
+PROPERTY_TAG_IDENTIFIER = "Property Endpoints"
+EXPENSE_TAG_IDENTIFIER = "Expense Endpoints"
+RENT_CONTRACT_TAG_IDENTIFIER = "Rent Contract Endpoints"
+RENT_PAYMENT_TAG_IDENTIFIER = "Rent Payment Endpoints"
+TENANT_TAG_IDENTIFIER = "Tenant Endpoints"

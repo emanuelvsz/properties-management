@@ -1,0 +1,22 @@
+name: "property_manager"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: .docker/dev/backend/Dockerfile
+    env_file: .env.docker
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./property_manager:/app
+    ports:
+      - 8000:8000
+  database:
+    build:
+      context: .
+      dockerfile: .docker/dev/database/Dockerfile
+    environment:
+      POSTGRES_USER: property_manager
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - 5432:5432

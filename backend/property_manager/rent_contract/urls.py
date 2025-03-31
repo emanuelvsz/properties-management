@@ -1,10 +1,14 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import RentContractViewSet
+from django.urls import path
+from rent_contract.views import RentContractDetailView, RentContractListCreateView
 
-router = DefaultRouter()
-router.register(r"", RentContractViewSet)
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path(
+        "rent_contract", RentContractListCreateView.as_view(), name="rent-contract-list"
+    ),
+    path(
+        "rent_contract/<int:id>",
+        RentContractDetailView.as_view(),
+        name="rent-contracts-detail",
+    ),
 ]

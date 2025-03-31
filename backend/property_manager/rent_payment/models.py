@@ -17,3 +17,8 @@ class RentPayment(models.Model):
             ("credit", "Credit Card"),
         ],
     )
+
+    class Meta:
+        db_table = "rent_payment"
+        verbose_name = "Rent Payment"
+        verbose_name_plural = "Rent Payments"

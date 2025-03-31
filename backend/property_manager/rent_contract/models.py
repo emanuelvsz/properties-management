@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from property.models import Property
 from tenant.models import Tenant
-# Create your models here.
+
 
 class RentContract(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
@@ -12,3 +12,8 @@ class RentContract(models.Model):
     started_at = models.DateTimeField()
     finish_at = models.DateTimeField()
     deposit = models.FloatField()
+
+    class Meta:
+        db_table = "rent_contract"
+        verbose_name = "Rent Contract"
+        verbose_name_plural = "Rent Contracts"

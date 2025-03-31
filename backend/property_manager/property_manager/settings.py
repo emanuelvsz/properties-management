@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from .setup import load_env
+
+load_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,9 +34,6 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-}
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "drf_spectacular",
+    "drf_yasg",
     # Created Apps
     "property",
     "tenant",
@@ -82,16 +83,25 @@ TEMPLATES = [
 WSGI_APPLICATION = "property_manager.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME", "property_manager"),
+        "USER": os.getenv("DATABASE_USER", "property_manager"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD", "12345678"),
+        "HOST": os.getenv("DATABASE_HOST", "0.0.0.0"),
+        "PORT": os.getenv("DATABASE_PORT", 5432),
+        "CONN_MAX_AGE": 0,  # Disable persistent connections - might need to revisit this point in the future
     }
 }
 
+DATABASE_DEFAULT_URI = "db+postgresql://%s:%s@%s:%s/%s" % (
+    DATABASES["default"]["USER"],
+    DATABASES["default"]["PASSWORD"],
+    DATABASES["default"]["HOST"],
+    DATABASES["default"]["PORT"],
+    DATABASES["default"]["NAME"],
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Property(models.Model):
-    id = models.UUIDField(primary_key=True, default=models.UUIDField, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True, blank=True)
     bedrooms = models.IntegerField()
@@ -12,3 +13,8 @@ class Property(models.Model):
     rent_value = models.FloatField()
     furnished = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = "property"
+        verbose_name = "Property"
+        verbose_name_plural = "Properties"
