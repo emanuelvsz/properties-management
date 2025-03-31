@@ -1,10 +1,9 @@
 from django.db import models
+from property_manager.models import BaseModel
 import uuid
 
-# Create your models here.
 
-
-class Tenant(models.Model):
+class Tenant(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     birth_date = models.DateField()

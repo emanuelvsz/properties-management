@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "rent_contract",
     "rent_payment",
     "expense",
+    "resources",
 ]
 
 MIDDLEWARE = [
