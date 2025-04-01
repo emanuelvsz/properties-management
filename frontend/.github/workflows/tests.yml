@@ -1,0 +1,60 @@
+name: Tests CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    name: "Analyse Code"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: yarn
+      - name: Run TSC
+        run: yarn tsc
+  test-unit:
+    runs-on: ubuntu-latest
+    name: "Run unit Tests"
+    needs: analyse
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: yarn
+      - name: Run unit tests
+        run: yarn test:unit
+  test-e2e:
+    runs-on: ubuntu-latest
+    name: "Run E2E Tests"
+    needs: analyse
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+      - name: Build application
+        run: yarn build:test
+      - name: Start application
+        env:
+          WEB_API_URL: http://localhost:8080
+        run: yarn preview &
+      - name: Run Playwright tests
+        run: yarn test:web:e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

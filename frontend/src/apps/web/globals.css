@@ -1,0 +1,16 @@
+@font-face {
+	src: url("./config/theme/fonts/UniSans-Regular.ttf");
+	font-family: "UniSans";
+}
+
+@font-face {
+	src: url("./config/theme/fonts/UniSans-Bold.ttf");
+	font-family: "UniSans-Bold";
+}
+
+body,
+html,
+#root {
+	margin: 0px;
+	height: 100vh;
+}

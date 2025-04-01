@@ -1,0 +1,46 @@
+{
+	"compilerOptions": {
+		"types": ["node", "jest", "@testing-library/jest-dom"],
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"allowJs": false,
+		"skipLibCheck": true,
+		"esModuleInterop": false,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "ESNext",
+		"jsx": "react-jsx",
+		"baseUrl": "src",
+		"paths": {
+			"@infra/*": ["infra/*"],
+			"@core/*": ["core/*"],
+			"@web/*": ["apps/web/*"]
+		},
+
+		/* Bundler mode */
+		"moduleResolution": "Node",
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"strictBindCallApply": true
+	},
+	"include": [
+		"build/**/*",
+		"src/**/*",
+		"jest.config.ts",
+		"playwright.config.ts",
+		"eslint.config.mjs"
+	]
+}

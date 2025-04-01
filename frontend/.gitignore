@@ -1,0 +1,12 @@
+node_modules/
+build/
+
+yarn-error.log
+
+.env
+.env.development
+.env.production
+bun.*
+/test-results/
+/playwright-report/
+/playwright/.cache/

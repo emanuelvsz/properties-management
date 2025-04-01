@@ -4,10 +4,10 @@ from rent_contract.views import RentContractDetailView, RentContractListCreateVi
 
 urlpatterns = [
     path(
-        "rent_contract", RentContractListCreateView.as_view(), name="rent-contract-list"
+        "rent-contract", RentContractListCreateView.as_view(), name="rent-contract-list"
     ),
     path(
-        "rent_contract/<int:id>",
+        "rent-contract/<int:id>",
         RentContractDetailView.as_view(),
         name="rent-contracts-detail",
     ),

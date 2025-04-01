@@ -1,0 +1,102 @@
+import { css } from "@emotion/react";
+
+import { Button, Card, Divider, Form, Input, Typography } from "antd";
+import { useForm } from "antd/es/form/Form";
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { useLogin } from "apps/web/lib/contexts/auth/hooks";
+import { emailRule, requiredRule } from "apps/web/lib/utils/validator-rules";
+
+const styles = {
+	container: css`
+		max-width: 500px;
+		width: 100%;
+		box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+
+		@media (max-height: 800px) {
+			box-shadow: unset;
+			border: unset;
+			.ant-card-body {
+				padding-inline: 0px !important;
+			}
+		}
+	`,
+	form: css`
+		display: flex;
+		flex-direction: column;
+	`,
+	title: css`
+		margin-top: 0px;
+	`,
+	submitButton: css`
+		width: 100%;
+		margin-top: 8px;
+		border-radius: 4px;
+		box-shadow: none;
+	`,
+	forgotPasswordText: css`
+		text-align: right;
+	`
+};
+
+const LoginForm = () => {
+	const [loading, setLoading] = useState<boolean>(false);
+	const [form] = useForm();
+	const login = useLogin();
+
+	const submit = async () => {
+		const values = await form.validateFields();
+		if (!values) {
+			return false;
+		}
+		const { username, password } = values;
+		setLoading(true);
+		const response = await login(username, password);
+		setLoading(false);
+		return response;
+	};
+
+	return (
+		<Card css={styles.container}>
+			<Typography.Title css={styles.title} level={4}>
+				Entrar
+			</Typography.Title>
+			<Form css={styles.form} form={form} layout="vertical" onFinish={submit}>
+				<Form.Item
+					name="username"
+					label="Email"
+					rules={[requiredRule(), emailRule()]}
+				>
+					<Input disabled={loading} autoComplete="on" />
+				</Form.Item>
+				<div>
+					<Form.Item name="password" label="Senha" rules={[requiredRule()]}>
+						<Input.Password
+							disabled={loading}
+							placeholder="Insira sua senha"
+							visibilityToggle
+						/>
+					</Form.Item>
+				</div>
+				<Button
+					css={styles.submitButton}
+					type="primary"
+					loading={loading}
+					htmlType="submit"
+				>
+					Entrar
+				</Button>
+			</Form>
+			<Divider />
+			<Typography.Text css={styles.forgotPasswordText}>
+				Esqueceu a senha?&nbsp;
+				<Link to="/recuperar-senha">Clique aqui</Link>
+			</Typography.Text>
+		</Card>
+	);
+};
+
+export default LoginForm;
