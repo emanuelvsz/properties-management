@@ -11,8 +11,8 @@ test.afterAll(async () => {
 });
 
 test("test base structure", async ({ page }) => {
-	await page.goto("/entrar");
-	await expect(page).toHaveTitle("Project Template - Entrar");
+	await page.goto("/login");
+	await expect(page).toHaveTitle("Property Manager - Login");
 	const titleCount = await page
 		.getByRole("heading", { name: "Entrar" })
 		.count();

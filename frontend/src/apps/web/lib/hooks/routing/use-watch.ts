@@ -34,7 +34,7 @@ export const useRedirectionWatcher = () => {
 			redirectToFirstModuleRoute();
 			return;
 		}
-		document.title = `Project Template${
+		document.title = `Property Manager${
 			activeRoute ? ` - ${activeRoute.title}` : ""
 		}`;
 		const pageTitle = document.querySelector<HTMLHeadingElement>("#page-title");

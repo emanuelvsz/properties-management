@@ -62,7 +62,7 @@ const LoginForm = () => {
 	return (
 		<Card css={styles.container}>
 			<Typography.Title css={styles.title} level={4}>
-				Entrar
+				Login
 			</Typography.Title>
 			<Form css={styles.form} form={form} layout="vertical" onFinish={submit}>
 				<Form.Item

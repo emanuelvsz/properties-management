@@ -113,10 +113,10 @@ const Header = () => {
 	const contextMenu = { items: userContextMenuItems };
 
 	return (
-		<Layout.Header css={styles.container} title="Project Template">
+		<Layout.Header css={styles.container} title="Property Manager">
 			<Flex css={styles.wrapper} align="center" justify="space-between">
 				<Typography.Title level={1} css={styles.title}>
-					Project Template
+					Property Manager
 				</Typography.Title>
 				<Dropdown menu={contextMenu} trigger={["click"]}>
 					<div css={styles.contextMenu}>

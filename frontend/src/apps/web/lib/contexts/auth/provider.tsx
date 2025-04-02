@@ -70,7 +70,7 @@ const AuthProvider = <Account extends BaseAccount = BaseAccount>({
 					newPassword
 				);
 				if (passwordHasBeenReset) {
-					navigate("/entrar");
+					navigate("/login");
 					return true;
 				}
 			} catch (error) {
@@ -90,7 +90,7 @@ const AuthProvider = <Account extends BaseAccount = BaseAccount>({
 	const logout = useCallback(() => {
 		usecase.logout();
 		setData(undefined);
-		navigate("/entrar");
+		navigate("/login");
 	}, [navigate, usecase]);
 
 	const values = useMemo(

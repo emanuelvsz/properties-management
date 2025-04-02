@@ -2,10 +2,14 @@ import { ThemeConfig } from "antd";
 import "@fontsource/karla"; 
 
 export const THEME_COLORS = {
-	PRIMARY_COLOR: "#40534C",
+	PRIMARY_COLOR: "#5d776e",
 	PRIMARY_DARK_COLOR: "#1A3636",
 	PRIMARY_LIGHT_COLOR: "#677D6A",
 	SECONDARY_COLOR: "#D6BD98",
+	GRAY_COLOR: "#E9EAEE",
+	WHITE_COLOR: "#FFF",
+	LIGHT_GREEN_COLOR: "#00BA7F",
+	LIGHT_RED_COLOR: "#FF4D4F"
 };
 
 export const theme = {
@@ -36,6 +40,12 @@ export const theme = {
 		},
 		Button: {
 			controlHeight: 36
+		},
+		DatePicker: {
+			borderRadius: 6
+		},
+		Card: {
+			borderRadius: 6
 		}
 	}
 } as ThemeConfig;

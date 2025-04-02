@@ -28,6 +28,6 @@ const LoginPage = () => (
 	</Page>
 );
 
-LoginPage.route = "/entrar";
+LoginPage.route = "/login";
 
 export default LoginPage;
