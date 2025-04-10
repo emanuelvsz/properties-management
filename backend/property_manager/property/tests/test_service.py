@@ -14,7 +14,7 @@ class PropertyServiceTests(TestCase):
             bedrooms=3,
             bathrooms=2,
             surface=120,
-            rent_value=1500,
+            rent=1500,
             furnished=True,
             description="Test description",
             user=self.user,
@@ -30,7 +30,7 @@ class PropertyServiceTests(TestCase):
             "bedrooms": 4,
             "bathrooms": 3,
             "surface": 130.0,
-            "rent_value": 1600.0,
+            "rent": 1600.0,
             "furnished": False,
             "description": "Updated description",
         }
@@ -40,7 +40,7 @@ class PropertyServiceTests(TestCase):
         )
         self.assertEqual(updated_property.title, "Updated Property Title")
         self.assertEqual(updated_property.bedrooms, 4)
-        self.assertEqual(updated_property.rent_value, 1600.0)
+        self.assertEqual(updated_property.rent, 1600.0)
 
     def test_delete_property(self):
         is_deleted = PropertyService.delete_property(self.property.id)

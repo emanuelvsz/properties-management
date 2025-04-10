@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "rents",
+            "database": "property_manager",
+            "username": "property_manager",
+            "password": "12345678"
+        }
+    ]
+}

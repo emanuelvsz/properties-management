@@ -6,7 +6,7 @@ import AuthRepository from "@core/interfaces/repository/auth.repository";
 import { BackendClient } from "../clients";
 
 interface AuthResponse {
-	access_token: string;
+	access: string;
 }
 
 class AuthAPI implements AuthRepository {
@@ -17,7 +17,7 @@ class AuthAPI implements AuthRepository {
 			username,
 			password
 		});
-		const token = response.data.access_token;
+		const token = response.data.access;
 		StorageController.set("token", token);
 		this.saveAuthorization(token);
 		return true;
@@ -29,7 +29,7 @@ class AuthAPI implements AuthRepository {
 	}
 
 	async findProfile(): Promise<Account> {
-		const response = await BackendClient.get<DTO>("/accounts/profile");
+		const response = await BackendClient.get<DTO>("/profile");
 		const profileDTO = response.data;
 		StorageController.setJSON("account", profileDTO);
 		return this.mapper.deserialize(profileDTO);

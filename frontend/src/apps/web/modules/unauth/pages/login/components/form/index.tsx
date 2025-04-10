@@ -50,10 +50,12 @@ const LoginForm = () => {
 	const submit = async () => {
 		const values = await form.validateFields();
 		if (!values) {
+			console.log("There's no form values ");
 			return false;
 		}
 		const { username, password } = values;
 		setLoading(true);
+		console.log("There's form values ");
 		const response = await login(username, password);
 		setLoading(false);
 		return response;
@@ -65,11 +67,7 @@ const LoginForm = () => {
 				Login
 			</Typography.Title>
 			<Form css={styles.form} form={form} layout="vertical" onFinish={submit}>
-				<Form.Item
-					name="username"
-					label="Email"
-					rules={[requiredRule(), emailRule()]}
-				>
+				<Form.Item name="username" label="Username" rules={[requiredRule()]}>
 					<Input disabled={loading} autoComplete="on" />
 				</Form.Item>
 				<div>

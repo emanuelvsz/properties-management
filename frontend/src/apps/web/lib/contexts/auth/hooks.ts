@@ -5,6 +5,7 @@ import { useContextSelector } from "use-context-selector";
 import AppError from "core/helper/error";
 
 import { AuthCTX } from ".";
+import { useNavigate } from "react-router-dom";
 
 export function useAccount() {
 	return useContextSelector(AuthCTX, (ctx) => ctx.account);
@@ -80,6 +81,7 @@ export function usePanic() {
 		}
 		message.error(feedback);
 		if (shouldLogout) {
+			console.log("Hey")
 			logout();
 		}
 		return shouldLogout;

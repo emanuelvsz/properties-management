@@ -26,7 +26,7 @@ const styles = {
 
 const UnauthHeader = () => (
 	<Flex css={styles.titleContainer} vertical>
-		<Typography.Title css={styles.title}>Property Managezzr</Typography.Title>
+		<Typography.Title css={styles.title}>Property Manager</Typography.Title>
 	</Flex>
 );
 

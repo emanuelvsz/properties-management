@@ -5,9 +5,12 @@ from drf_yasg.utils import swagger_auto_schema
 from tenant.service import TenantService
 from tenant.serializers import TenantSerializer
 from property_manager.utils import TENANT_TAG_IDENTIFIER
+from rest_framework.permissions import IsAuthenticated
 
 
 class TenantListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_summary="List all tenants",
         responses={200: TenantSerializer(many=True)},
@@ -31,6 +34,8 @@ class TenantListCreateView(APIView):
 
 
 class TenantDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_summary="Retrieve a tenant by ID",
         responses={200: TenantSerializer()},

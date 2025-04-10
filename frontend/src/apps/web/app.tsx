@@ -7,6 +7,7 @@ import Scaffold from "./components/scaffold";
 import { theme } from "./config/theme";
 import DIContainer from "./dicontainer";
 import AuthProvider from "./lib/contexts/auth/provider";
+import PropertyProvider from "./lib/contexts/property/provider";
 
 const styles = {
 	antAppRoot: css`
@@ -19,7 +20,9 @@ const App = () => (
 		<AntdApp css={styles.antAppRoot} message={{ maxCount: 1 }}>
 			<BrowserRouter>
 				<AuthProvider usecase={DIContainer.getAuthUseCase()}>
-					<Scaffold />
+					<PropertyProvider usecase={DIContainer.getPropertyUseCase()}>
+						<Scaffold />
+					</PropertyProvider>
 				</AuthProvider>
 			</BrowserRouter>
 		</AntdApp>

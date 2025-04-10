@@ -4,13 +4,11 @@ import {
 	UNAUTH_ROLE_TYPE
 } from "../account-role/account-role";
 import { Model } from "../model";
-import { Person } from "../person/person";
 
 class Account extends Model {
 	#id: string;
 	#name: string;
 	#email: string;
-	#profile: Person;
 	#roles: AccountRole[];
 	#createdAt: string;
 
@@ -18,7 +16,6 @@ class Account extends Model {
 		id: string,
 		name: string,
 		email: string,
-		profile: Person,
 		roles: AccountRole[],
 		createdAt: string
 	) {
@@ -26,7 +23,6 @@ class Account extends Model {
 		this.#id = id;
 		this.#name = name;
 		this.#email = email;
-		this.#profile = profile;
 		this.#roles = roles;
 		this.#createdAt = createdAt;
 	}
@@ -41,10 +37,6 @@ class Account extends Model {
 
 	get email() {
 		return this.#email;
-	}
-
-	get profile() {
-		return this.#profile;
 	}
 
 	get roles() {

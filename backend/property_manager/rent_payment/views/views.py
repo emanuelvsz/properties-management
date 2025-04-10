@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from rent_payment.service import RentPaymentService
 from rent_payment.serializers import RentPaymentSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class RentPaymentListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary="List all rent payments",
@@ -34,7 +36,7 @@ class RentPaymentListCreateView(APIView):
 
 
 class RentPaymentDetailView(APIView):
-
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
         operation_summary="Get rent payment by ID",
         responses={200: RentPaymentSerializer()},

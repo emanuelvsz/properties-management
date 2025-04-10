@@ -9,7 +9,8 @@ export const THEME_COLORS = {
 	GRAY_COLOR: "#E9EAEE",
 	WHITE_COLOR: "#FFF",
 	LIGHT_GREEN_COLOR: "#00BA7F",
-	LIGHT_RED_COLOR: "#FF4D4F"
+	LIGHT_RED_COLOR: "#FF4D4F",
+	TRANSPARENT_COLOR: "transparent"
 };
 
 export const theme = {
@@ -39,13 +40,18 @@ export const theme = {
 			headerPadding: 0
 		},
 		Button: {
-			controlHeight: 36
+			controlHeight: 36,
+			boxShadow: "none"
 		},
 		DatePicker: {
 			borderRadius: 6
 		},
 		Card: {
 			borderRadius: 6
+		},
+		Table: {
+			borderRadius: 6,
 		}
+
 	}
 } as ThemeConfig;

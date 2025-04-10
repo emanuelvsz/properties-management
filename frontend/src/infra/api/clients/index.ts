@@ -7,10 +7,9 @@ import AppError from "@core/helper/error";
 
 export const BackendClient = applyCaseMiddleware(
 	axios.create({
-		baseURL: `${process.env.WEB_API_URL ?? "/"}/api`,
+		baseURL: `${process.env.WEB_API_URL ?? "/"}`,
 		headers: {
 			"Content-Type": "application/json",
-			namingSkakeCase: true
 		},
 
 		timeout: 1000

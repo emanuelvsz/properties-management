@@ -8,6 +8,7 @@ class AuthInMemory implements AuthRepository {
 	mapper = new AccountMapper();
 
 	login(_username: string, _password: string): Promise<boolean> {
+		console.log("Reidocurme")
 		return Promise.resolve(true);
 	}
 	findProfile(): Promise<Account> {

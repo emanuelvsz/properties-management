@@ -15,7 +15,9 @@ class AuthService implements AuthUseCase {
 	}
 
 	async login(username: string, password: string): Promise<Account> {
+		console.log("here 3")
 		await this.adapter.login(username, password);
+		console.log("demolidor")
 		const account = await this.adapter.findProfile().catch((error) => {
 			this.adapter.clearAuthorization();
 			throw error;

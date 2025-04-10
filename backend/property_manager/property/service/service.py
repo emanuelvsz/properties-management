@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 
 class PropertyService:
     @staticmethod
-    def list_properties():
+    def list_properties(user):
         """
         Retrieve all property records.
         """
-        return Property.objects.all()
+        return Property.objects.filter(user=user).all()
 
     @staticmethod
     def get_property_by_id(property_id):
@@ -23,23 +23,22 @@ class PropertyService:
         property = Property.objects.get(id=property_id)
         return property
 
-    def create_property(data):
+    def create_property(data, user):
         """
         Create a new property record.
 
         :param data: Dictionary containing property data.
         :return: The created Property instance.
         """
-        user_id = data.get("user_id")
         property_instance = Property.objects.create(
             title=data.get("title"),
             bedrooms=data.get("bedrooms"),
             bathrooms=data.get("bathrooms"),
             surface=data.get("surface"),
-            rent_value=data.get("rent_value"),
+            rent=data.get("rent"),
             furnished=data.get("furnished", False),
             description=data.get("description", ""),
-            user_id=user_id,
+            user=user,
         )
         return property_instance
 

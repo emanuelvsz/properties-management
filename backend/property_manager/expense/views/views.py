@@ -5,9 +5,11 @@ from expense.service import ExpenseService
 from expense.serializers import ExpenseSerializer
 from property_manager.utils import EXPENSE_TAG_IDENTIFIER
 from rest_framework.views import APIView
-
+from rest_framework.permissions import IsAuthenticated
 
 class ExpenseListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     @swagger_auto_schema(
         operation_summary="List all property expenses",
         responses={200: ExpenseSerializer(many=True)},

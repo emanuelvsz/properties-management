@@ -46,7 +46,7 @@ const useDynamicStyles = () => {
 
       svg:first-of-type {
         position: absolute;
-        left: -15px;
+        left: -10px;
         height: 40px;
         width: 40px;
 

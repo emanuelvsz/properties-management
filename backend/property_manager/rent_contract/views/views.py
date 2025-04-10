@@ -5,12 +5,14 @@ from rent_contract.service import RentContractService
 from rent_contract.serializers import RentContractSerializer
 from property_manager.utils import RENT_CONTRACT_TAG_IDENTIFIER
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class RentContractListCreateView(APIView):
     """
     API endpoint for listing and creating rent contracts.
     """
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary="List all rent contracts",
@@ -39,6 +41,7 @@ class RentContractDetailView(APIView):
     """
     API endpoint for retrieving, updating, and deleting rent contracts by ID.
     """
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary="Retrieve a rent contract by ID",

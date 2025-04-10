@@ -10,14 +10,18 @@ from property.serializers import (
 from property.service import PropertyService
 from property_manager.utils import PROPERTY_TAG_IDENTIFIER
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class PropertyListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_summary="List all properties", tags=[PROPERTY_TAG_IDENTIFIER]
     )
-    def get(self, _):
-        properties = PropertyService.list_properties()
+    def get(self, request):
+        user = request.user
+        properties = PropertyService.list_properties(user)
         serializer = ListPropertySerializer(properties, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -32,13 +36,20 @@ class PropertyListCreateView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY
             )
-        response = PropertyService.create_property(serializer.validated_data)
+        user = request.user
+        response = PropertyService.create_property(
+            data=serializer.validated_data,
+            user=user
+        )
         return Response(
-            ListPropertySerializer(response).data, status=status.HTTP_201_CREATED
+            ListPropertySerializer(response).data,
+            status=status.HTTP_201_CREATED
         )
 
 
 class PropertyDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     @swagger_auto_schema(
         operation_summary="Retrieve a property by ID", tags=[PROPERTY_TAG_IDENTIFIER]
     )
