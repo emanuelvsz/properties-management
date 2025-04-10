@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useLogin } from "apps/web/lib/contexts/auth/hooks";
-import { emailRule, requiredRule } from "apps/web/lib/utils/validator-rules";
+import { requiredRule } from "apps/web/lib/utils/validator-rules";
 
 const styles = {
 	container: css`
@@ -71,10 +71,10 @@ const LoginForm = () => {
 					<Input disabled={loading} autoComplete="on" />
 				</Form.Item>
 				<div>
-					<Form.Item name="password" label="Senha" rules={[requiredRule()]}>
+					<Form.Item name="password" label="Password" rules={[requiredRule()]}>
 						<Input.Password
 							disabled={loading}
-							placeholder="Insira sua senha"
+							placeholder="Enter your password"
 							visibilityToggle
 						/>
 					</Form.Item>
@@ -85,13 +85,13 @@ const LoginForm = () => {
 					loading={loading}
 					htmlType="submit"
 				>
-					Entrar
+					Submit
 				</Button>
 			</Form>
 			<Divider />
 			<Typography.Text css={styles.forgotPasswordText}>
-				Esqueceu a senha?&nbsp;
-				<Link to="/recuperar-senha">Clique aqui</Link>
+				Forgot your password?&nbsp;
+				<Link to="/recovery-password">Click here</Link>
 			</Typography.Text>
 		</Card>
 	);

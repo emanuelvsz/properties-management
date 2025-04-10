@@ -22,10 +22,14 @@ export const tableFields: ColumnsType = [
 		key: "surface"
 	},
 	{
-		title: "Rent Price ($)",
+		title: "Rent Price",
 		dataIndex: "rent",
 		key: "rent",
-		render: (value: number) => `$${value}`
+		render: (value: number) =>
+			new Intl.NumberFormat("en-US", {
+				style: "currency",
+				currency: "USD"
+			}).format(value)
 	},
 	{
 		title: "Furnished",

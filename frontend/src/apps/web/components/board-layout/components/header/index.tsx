@@ -14,9 +14,12 @@ const HEADER_HEIGHT = 100;
 const styles = {
 	header: css`
 		width: 100%;
-		height: ${HEADER_HEIGHT}px;
+		min-height: ${HEADER_HEIGHT}px !important;
+		height: ${HEADER_HEIGHT}px !important;
 		padding-inline: 2.5rem;
 		background-color: ${THEME_COLORS.WHITE_COLOR};
+		position: sticky;
+		top: 0;
 	`,
 	headerUsername: css`
 		color: ${THEME_COLORS.PRIMARY_COLOR};

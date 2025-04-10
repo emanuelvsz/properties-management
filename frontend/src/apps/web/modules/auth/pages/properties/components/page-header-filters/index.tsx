@@ -1,6 +1,10 @@
 import { css } from "@emotion/react";
-import { Input, Button, Flex } from "antd";
-import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+import { Input, Button, Flex, Tooltip } from "antd";
+import {
+	SearchOutlined,
+	FilterOutlined,
+	ReloadOutlined
+} from "@ant-design/icons";
 import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
@@ -50,11 +54,20 @@ const PageHeaderFilters = ({
 				placeholder={placeholder}
 				css={styles.input}
 			/>
-			<Button
-				icon={<FilterOutlined />}
-				onClick={onFilterClick}
-				css={styles.button}
-			/>
+			<Tooltip title="Filters">
+				<Button
+					icon={<FilterOutlined />}
+					onClick={onFilterClick}
+					css={styles.button}
+				/>
+			</Tooltip>
+			<Tooltip title="Reload List">
+				<Button
+					icon={<ReloadOutlined />}
+					onClick={onFilterClick}
+					css={styles.button}
+				/>
+			</Tooltip>
 		</Flex>
 	);
 };

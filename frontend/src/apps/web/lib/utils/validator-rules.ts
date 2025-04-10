@@ -145,7 +145,7 @@ export function confirmPasswordRule(passwordFieldName: string): Rule {
 			if (!value || getFieldValue(passwordFieldName) === value) {
 				return Promise.resolve();
 			}
-			return Promise.reject(new Error("As senhas informadas não são iguais!"));
+			return Promise.reject(new Error("The passwords provided are not the same!"));
 		}
 	});
 }
@@ -155,11 +155,11 @@ export function pastDateRule(): Rule {
 		validator(_, value) {
 			const date = formatDateToObject(formatDate(value, "YYYY-MM-DD"));
 			if (isNil(date)) {
-				return Promise.reject(new Error("Data inválida!"));
+				return Promise.reject(new Error("Invalid date!"));
 			}
 			if (date >= new Date()) {
 				return Promise.reject(
-					new Error("Você precisa fornecer uma data passada!")
+					new Error("You need to provide a past date!")
 				);
 			}
 			return Promise.resolve();

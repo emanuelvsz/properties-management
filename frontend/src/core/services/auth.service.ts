@@ -34,7 +34,7 @@ class AuthService implements AuthUseCase {
 	}
 
 	logout(): Promise<void> {
-		StorageController.clear();
+		this.clearCachedAccount()
 		return this.adapter.logout();
 	}
 

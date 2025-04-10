@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Empty, Table } from "antd";
 
 import BoardLayout from "@web/components/board-layout";
 import BoardPageHeader from "../home/components/finance-bar-panel";
@@ -14,12 +14,16 @@ const PAGE_SIZE = 8;
 const PropertiesPage = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 	const [properties, setProperties] = useState<Property[]>([]);
+	const [loadingProperties, setLoadingProperties] = useState<boolean>(false);
 
 	const listProperties = useListProperties();
 
 	useEffect(() => {
 		const fetchProperties = async () => {
+			setLoadingProperties(true);
 			const response = await listProperties();
+			setLoadingProperties(false);
+
 			if (response) {
 				setProperties(response);
 			}
@@ -48,6 +52,8 @@ const PropertiesPage = () => {
 				rowKey="id"
 				pagination={{ pageSize: PAGE_SIZE }}
 				rowSelection={rowSelection}
+				loading={loadingProperties}
+				locale={{ emptyText: <Empty description="No properties found" /> }}
 			/>
 		</BoardLayout>
 	);

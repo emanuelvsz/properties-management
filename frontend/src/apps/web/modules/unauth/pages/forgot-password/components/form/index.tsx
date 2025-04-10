@@ -57,7 +57,7 @@ const ResetPasswordForm = () => {
 		setLoading(false);
 		if (result) {
 			message.success(
-				"Um e-mail foi enviado para redefinir sua senha. Verifique sua caixa de entrada!"
+				"An email has been sent to reset your password. Check your inbox!"
 			);
 		}
 		return result;
@@ -66,7 +66,7 @@ const ResetPasswordForm = () => {
 	return (
 		<Card css={styles.container}>
 			<Typography.Title css={styles.title} level={4}>
-				Recuperar Senha
+				Recovery Password
 			</Typography.Title>
 			<Form css={styles.form} form={form} layout="vertical" onFinish={submit}>
 				<Form.Item
@@ -87,8 +87,8 @@ const ResetPasswordForm = () => {
 			</Form>
 			<Divider />
 			<Typography.Text css={styles.forgotPasswordText}>
-				Já tem uma conta e sabe a senha?&nbsp;
-				<Link to={LoginPage.route}>Clique aqui</Link>
+				Already have an account and know the password?&nbsp;
+				<Link to={LoginPage.route}>Click here</Link>
 			</Typography.Text>
 		</Card>
 	);

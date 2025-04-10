@@ -60,6 +60,6 @@ const ForgotPasswordPage = () => {
 	);
 };
 
-ForgotPasswordPage.route = "/recuperar-senha";
+ForgotPasswordPage.route = "/recover-password";
 
 export default ForgotPasswordPage;

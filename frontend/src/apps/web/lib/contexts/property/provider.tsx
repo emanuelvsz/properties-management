@@ -6,14 +6,14 @@ import { PropertyCTX } from ".";
 import { usePanic } from "./hooks";
 import PropertyUseCase from "@core/interfaces/usecase/property.repository";
 
-interface AuthProviderProps {
+interface PropertyProviderProps {
 	usecase: PropertyUseCase;
 }
 
 const PropertyProvider = ({
 	children,
 	usecase
-}: PropsWithChildren<AuthProviderProps>): JSX.Element => {
+}: PropsWithChildren<PropertyProviderProps>): JSX.Element => {
 	const panic = usePanic();
 	const { message } = App.useApp();
 

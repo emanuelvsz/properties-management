@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Flex } from "antd";
+import { Breadcrumb, Flex } from "antd";
 
 import { ReactNode } from "react";
 
@@ -30,17 +30,42 @@ interface Props {
 	title: string;
 	prefix?: ReactNode;
 	extra?: ReactNode;
+	id?: string;
 }
 
-const BoardPageHeader = ({ title, prefix, extra }: Props) => {
+const BoardPageHeader = ({ title, prefix, extra, id }: Props) => {
 	return (
-		<Flex css={styles.container} gap={15}>
-			<h2 css={styles.filterText}>{title}</h2>
-			<Flex css={styles.filterPanel} justify="space-between">
-				{prefix}
-				{extra}
+		<>
+			<Breadcrumb
+				separator={
+					<span
+						style={{
+							display: "inline-flex",
+							alignItems: "center",
+							height: "100%",
+							fontSize: "20px"
+						}}
+					>
+						/
+					</span>
+				}
+				items={
+					id
+						? [
+								{ title: <h2 css={styles.filterText}>{title}</h2> },
+								{ title: id }
+							]
+						: [{ title: <h2 css={styles.filterText}>{title}</h2> }]
+				}
+			/>
+
+			<Flex css={styles.container} gap={15}>
+				<Flex css={styles.filterPanel} justify="space-between">
+					{prefix}
+					{extra}
+				</Flex>
 			</Flex>
-		</Flex>
+		</>
 	);
 };
 

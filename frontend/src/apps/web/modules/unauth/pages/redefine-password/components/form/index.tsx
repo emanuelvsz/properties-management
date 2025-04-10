@@ -62,7 +62,7 @@ const RedefinePasswordForm = () => {
 		);
 		setLoading(false);
 		if (result) {
-			message.success("Sua senha foi redefinida com sucesso!");
+			message.success("Your password has been reset successfully!");
 			navigate(LoginPage.route);
 		}
 		return result;
@@ -71,27 +71,27 @@ const RedefinePasswordForm = () => {
 	return (
 		<Card css={styles.container}>
 			<Typography.Title css={styles.title} level={4}>
-				Entrar
+				Join
 			</Typography.Title>
 			<Form css={styles.form} form={form} layout="vertical" onFinish={submit}>
 				<Typography.Text>
-					Digite e confirme sua nova senha abaixo.
+					Enter and confirm your new password below.
 				</Typography.Text>
 				<Form.Item
 					name="new_password"
-					label="Nova Senha"
+					label="New Password"
 					rules={[requiredRule()]}
 				>
-					<Input.Password placeholder="Insira sua senha" />
+					<Input.Password placeholder="Enter your password" />
 				</Form.Item>
 				<Form.Item
 					name="repeat_password"
-					label="Confirmar Senha"
+					label="Confirm Passowrd"
 					rules={[confirmPasswordRule("new_password"), requiredRule()]}
 					dependencies={["password"]}
 					hasFeedback
 				>
-					<Input placeholder="Confirme sua senha" type="password" />
+					<Input placeholder="Confirm your password" type="password" />
 				</Form.Item>
 				<Button
 					css={styles.submitButton}

@@ -184,7 +184,6 @@ const SideMenu = ({ account }: Props) => {
 					})}
 				</Flex>
 			</Flex>
-
 			<Flex css={styles.toggleButton(collapsed)}>
 				<Flex css={styles.toggleContent(collapsed)} onClick={toggleCollapsed}>
 					{collapsed ? (

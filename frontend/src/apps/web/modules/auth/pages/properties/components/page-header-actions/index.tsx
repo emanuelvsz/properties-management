@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Button, Dropdown, Flex, MenuProps } from "antd";
+import { Button, Dropdown, Flex, MenuProps, Tooltip } from "antd";
 import { PlusOutlined, DownOutlined } from "@ant-design/icons";
+import { useState } from "react";
 import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
@@ -36,32 +37,47 @@ const styles = {
 	`
 };
 
-const sortOptions: MenuProps["items"] = [
+const sortOptions = [
 	{ key: "newest", label: "Newest first" },
 	{ key: "oldest", label: "Oldest first" },
 	{ key: "price_high", label: "Price: High to Low" },
 	{ key: "price_low", label: "Price: Low to High" },
 	{ key: "bedrooms", label: "Most Bedrooms" }
-];
+] as const;
+
+const keyToLabelMap = Object.fromEntries(
+	sortOptions.map((item) => [item.key, item.label])
+);
 
 const PageHeaderActions = ({ onAddClick, onSortChange }: Props) => {
+	const [selectedKey, setSelectedKey] = useState("newest");
+
+	const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
+		setSelectedKey(key);
+		onSortChange?.(key);
+	};
+
 	return (
 		<Flex css={styles.container}>
 			<Dropdown
-				menu={{ items: sortOptions, onClick: ({ key }) => onSortChange?.(key) }}
+				menu={{
+					items: sortOptions as unknown as MenuProps["items"],
+					onClick: handleMenuClick
+				}}
 				trigger={["click"]}
 			>
 				<Button css={styles.dropdownButton}>
-					Sort <DownOutlined />
+					{keyToLabelMap[selectedKey]} <DownOutlined />
 				</Button>
 			</Dropdown>
-
-			<Button
-				type="primary"
-				icon={<PlusOutlined />}
-				onClick={onAddClick}
-				css={styles.addButton}
-			/>
+			<Tooltip title="Add Item">
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={onAddClick}
+					css={styles.addButton}
+				/>
+			</Tooltip>
 		</Flex>
 	);
 };

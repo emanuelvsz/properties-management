@@ -36,7 +36,7 @@ const AuthProvider = <Account extends BaseAccount = BaseAccount>({
 				return true;
 			} catch (error) {
 				if (error instanceof AppError && (error as AppError).isUnauthorized) {
-					message.error("Usuário ou senha inválidos!");
+					message.error("Invalid user or password!");
 					return false;
 				}
 				panic(error);

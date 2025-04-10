@@ -61,7 +61,7 @@ const RedefinePasswordPage = () => {
 	);
 };
 
-RedefinePasswordPage.route = "/recuperar-senha/:token";
+RedefinePasswordPage.route = "/recovery-password/:token";
 RedefinePasswordPage.routeWithParams = (token: string) =>
 	RedefinePasswordPage.route.replace(":token", token);
 

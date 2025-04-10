@@ -1,23 +1,31 @@
-type StorageKeys = "account" | "token";
+export type StorageKeys = "account" | "token" | "refresh" | "language";
+
+const ACCOUNT_RELATED_KEYS: StorageKeys[] = [
+	"account",
+	"token",
+	"refresh"
+];
 
 class StorageController {
 	private static readonly keys: Record<StorageKeys, string> = {
-		account: "<PROJECT_NAME>@USER_DATA",
-		token: "<PROJECT_NAME>@AUTH_TOKEN"
+		account: "P.MG@USER_DATA",
+		token: "P.MG@AUTH_TOKEN",
+		refresh: "P.MG@REFRESH_TOKEN",
+		language: "P.MG@LANGUAGE"
 	};
 
 	static set(
 		key: StorageKeys,
-		data: string,
+		data: unknown,
 		persistAfterSession: boolean = true
 	): void {
 		const storage = persistAfterSession ? localStorage : sessionStorage;
-		storage?.setItem(StorageController.keys[key], data);
+		storage?.setItem(StorageController.keys[key], String(data));
 	}
 
-	static setJSON<T = unknown>(
+	static setJSON(
 		key: StorageKeys,
-		data: T,
+		data: unknown,
 		persistAfterSession: boolean = true
 	): void {
 		const strData = JSON.stringify(data);
@@ -50,6 +58,13 @@ class StorageController {
 		}
 		data = JSON.parse(data) as T;
 		return data;
+	}
+
+	static removeAccount(): void {
+		ACCOUNT_RELATED_KEYS.forEach((key) => {
+			localStorage.removeItem(StorageController.keys[key]);
+			sessionStorage.removeItem(StorageController.keys[key]);
+		});
 	}
 
 	static clear(): void {
