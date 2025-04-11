@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 interface AddPropertyModalFormProps {
 	visible: boolean;
+	loadingButton: boolean;
 	onCancel: () => void;
 	onSubmit: (values: any) => void;
 }
@@ -23,6 +24,7 @@ const styles = {
 
 const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 	visible,
+	loadingButton,
 	onCancel,
 	onSubmit
 }) => {
@@ -51,7 +53,13 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 			title="Add New Property"
 			visible={visible}
 			onOk={handleOk}
+			okButtonProps={{
+				style: {
+					boxShadow: "none"
+				}
+			}}
 			onCancel={onCancel}
+			confirmLoading={loadingButton}
 		>
 			<Form form={form} layout="vertical" name="add_property_form">
 				<Form.Item

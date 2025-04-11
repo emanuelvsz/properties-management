@@ -21,7 +21,28 @@ class PropertyListCreateView(APIView):
     )
     def get(self, request):
         user = request.user
-        properties = PropertyService.list_properties(user)
+        q = request.query_params.get("q")
+        bedrooms = request.query_params.get("bedrooms")
+        bathrooms = request.query_params.get("bathrooms")
+        surface = request.query_params.get("surface")
+        order_by = request.query_params.get("order_by")
+        try:
+            bedrooms = int(bedrooms) if bedrooms is not None else None
+            bathrooms = int(bathrooms) if bathrooms is not None else None
+            surface = int(surface) if surface is not None else None
+        except ValueError:
+            return Response(
+                {"detail": "bedrooms, bathrooms e surface devem ser inteiros."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        properties = PropertyService.list_properties(
+            user=user,
+            q=q,
+            bedrooms=bedrooms,
+            bathrooms=bathrooms,
+            surface=surface,
+            order_by=order_by
+        )
         serializer = ListPropertySerializer(properties, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Input, Button, Flex, Tooltip } from "antd";
+import { Input, Button, Flex, Tooltip, Select } from "antd";
 import {
 	SearchOutlined,
 	FilterOutlined,
@@ -9,9 +9,11 @@ import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
 	onSearchChange?: (value: string) => void;
+	onFurnishedChange?: (value: string) => void;
 	onFilterClick?: () => void;
 	onReloadClick?: () => void;
 	searchValue?: string;
+	furnishedValue?: string;
 	placeholder?: string;
 }
 
@@ -21,6 +23,10 @@ const styles = {
 	input: css`
 		height: ${inputHeight}px;
 		width: 250px;
+	`,
+	select: css`
+		width: 160px;
+		height: ${inputHeight}px;
 	`,
 	button: css`
 		width: ${inputHeight}px;
@@ -41,9 +47,11 @@ const styles = {
 
 const PageHeaderFilters = ({
 	onSearchChange,
+	onFurnishedChange,
 	onFilterClick,
 	onReloadClick,
 	searchValue,
+	furnishedValue,
 	placeholder = "Search properties..."
 }: Props) => {
 	return (
@@ -55,6 +63,17 @@ const PageHeaderFilters = ({
 				onChange={(e) => onSearchChange?.(e.target.value)}
 				placeholder={placeholder}
 				css={styles.input}
+			/>
+			<Select
+				allowClear
+				placeholder="Furnished"
+				value={furnishedValue}
+				onChange={onFurnishedChange}
+				options={[
+					{ label: "Yes", value: "true" },
+					{ label: "No", value: "false" }
+				]}
+				css={styles.select}
 			/>
 			<Tooltip title="Filters">
 				<Button

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Empty, Flex, Popconfirm, Table, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { css, Global } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
 
 import BoardPageHeader from "../home/components/finance-bar-panel";
@@ -44,18 +44,25 @@ const PropertiesPage = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 	const [properties, setProperties] = useState<Property[]>([]);
 	const [loadingProperties, setLoadingProperties] = useState<boolean>(false);
+	const [creatingProperty, setCreatingProperty] = useState<boolean>(false);
 	const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
 
+	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
+
 	const listProperties = useListProperties();
 	const deleteProperty = useDeleteProperty();
 	const createProperty = useCreateProperty();
 
 	const handleFetchProperties = async () => {
 		setLoadingProperties(true);
-		const response = await listProperties();
-		setLoadingProperties(false);
 
+		const q = searchParams.get("q") ?? "";
+		const order_by = searchParams.get("order_by") ?? "newest";
+
+		const response = await listProperties({ q, order_by });
+
+		setLoadingProperties(false);
 		if (response) {
 			setProperties(response);
 		}
@@ -75,12 +82,32 @@ const PropertiesPage = () => {
 	};
 
 	const handleAddProperty = async (values: any) => {
-		const property = Property.fromForm(values)
-		console.log(property);
+		const property = Property.fromForm(values);
+		setCreatingProperty(true);
 		await createProperty(property);
-		console.log("Values: ", values)
+		setCreatingProperty(false);
 		handleCloseAddModal();
 		await handleFetchProperties();
+	};
+
+	const handleSearchChange = (value: string) => {
+		const newParams = new URLSearchParams(searchParams);
+		if (value) {
+			newParams.set("q", value);
+		} else {
+			newParams.delete("q");
+		}
+		setSearchParams(newParams);
+	};
+
+	const handleOrderChange = (value: string) => {
+		const newParams = new URLSearchParams(searchParams);
+		if (value) {
+			newParams.set("order_by", value);
+		} else {
+			newParams.delete("order_by");
+		}
+		setSearchParams(newParams);
 	};
 
 	const rowSelection = {
@@ -127,6 +154,11 @@ const PropertiesPage = () => {
 			key: "bathrooms"
 		},
 		{
+			title: "Status",
+			dataIndex: "status",
+			key: "status"
+		},
+		{
 			title: "Surface",
 			dataIndex: "surface",
 			key: "surface",
@@ -171,7 +203,16 @@ const PropertiesPage = () => {
 
 	useEffect(() => {
 		handleFetchProperties();
-	}, [listProperties]);
+	}, [searchParams]);
+
+	useEffect(() => {
+		const orderByParam = searchParams.get("order_by");
+		if (!orderByParam) {
+			const newParams = new URLSearchParams(searchParams);
+			newParams.set("order_by", "newest");
+			setSearchParams(newParams);
+		}
+	}, []);
 
 	return (
 		<>
@@ -185,8 +226,19 @@ const PropertiesPage = () => {
 			<Flex css={styles.container} vertical gap={10} flex={1}>
 				<BoardPageHeader
 					title="Properties"
-					prefix={<PageHeaderFilters onReloadClick={handleFetchProperties} />}
-					extra={<PageHeaderActions onAddClick={handleOpenAddModal} />}
+					prefix={
+						<PageHeaderFilters
+							onReloadClick={handleFetchProperties}
+							onSearchChange={handleSearchChange}
+							searchValue={searchParams.get("q") ?? ""}
+						/>
+					}
+					extra={
+						<PageHeaderActions
+							onAddClick={handleOpenAddModal}
+							onOrderByChange={handleOrderChange}
+						/>
+					}
 				/>
 				<Table
 					columns={tableFields}
@@ -202,6 +254,7 @@ const PropertiesPage = () => {
 				visible={isAddModalVisible}
 				onCancel={handleCloseAddModal}
 				onSubmit={handleAddProperty}
+				loadingButton={creatingProperty}
 			/>
 		</>
 	);

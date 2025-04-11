@@ -1,16 +1,62 @@
 from property.models import Property
+from rent_contract.models import RentContract
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-
+from django.db.models import Q
+from django.utils import timezone
 
 class PropertyService:
+
     @staticmethod
-    def list_properties(user):
-        """
-        Retrieve all property records.
-        """
-        return Property.objects.filter(user=user).all()
+    def list_properties(
+        user, q=None, bedrooms=None, bathrooms=None, surface=None, order_by=None
+    ):
+        queryset = Property.objects.filter(user=user)
+
+        if q:
+            queryset = queryset.filter(
+                Q(title__icontains=q) | Q(description__icontains=q)
+            )
+        if bedrooms is not None:
+            queryset = queryset.filter(bedrooms=bedrooms)
+        if bathrooms is not None:
+            queryset = queryset.filter(bathrooms=bathrooms)
+        if surface is not None:
+            queryset = queryset.filter(surface=surface)
+
+        if order_by:
+            if order_by == "newest":
+                queryset = queryset.order_by("-created_at")
+            elif order_by == "oldest":
+                queryset = queryset.order_by("created_at")
+            elif order_by == "price_high":
+                queryset = queryset.order_by("-rent")
+            elif order_by == "price_low":
+                queryset = queryset.order_by("rent")
+            elif order_by == "most_bedrooms":
+                queryset = queryset.order_by("-bedrooms")
+            elif order_by == "less_bedrooms":
+                queryset = queryset.order_by("bedrooms")
+            elif order_by == "most_bathrooms":
+                queryset = queryset.order_by("-bathrooms")
+            elif order_by == "less_bathrooms":
+                queryset = queryset.order_by("bathrooms")
+        else:
+            queryset = queryset.order_by("-id")
+
+        now = timezone.now()
+        for prop in queryset:
+            contract = (
+                RentContract.objects.filter(
+                    property=prop, started_at__lte=now, finish_at__gte=now
+                )
+                .select_related("tenant")
+                .first()
+            )
+            setattr(prop, "current_tenant", contract.tenant if contract else None)
+
+        return queryset
 
     @staticmethod
     def get_property_by_id(property_id):
@@ -48,15 +94,11 @@ class PropertyService:
         if not property:
             return None
         for key, value in data.items():
-            if hasattr(property, key):  
-                if (
-                    key == "user_id"
-                ): 
+            if hasattr(property, key):
+                if key == "user_id":
                     try:
                         user = User.objects.get(id=value)
-                        setattr(
-                            property, "user", user
-                        ) 
+                        setattr(property, "user", user)
                     except User.DoesNotExist:
                         raise ValueError(f"User with ID {value} does not exist.")
                 else:

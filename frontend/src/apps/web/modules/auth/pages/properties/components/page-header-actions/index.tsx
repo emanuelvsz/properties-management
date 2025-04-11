@@ -7,7 +7,7 @@ import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
 	onAddClick?: () => void;
-	onSortChange?: (key: string) => void;
+	onOrderByChange?: (orderBy: string) => void;
 }
 
 const dropdownHeight = 35;
@@ -42,19 +42,22 @@ const sortOptions = [
 	{ key: "oldest", label: "Oldest first" },
 	{ key: "price_high", label: "Price: High to Low" },
 	{ key: "price_low", label: "Price: Low to High" },
-	{ key: "bedrooms", label: "Most Bedrooms" }
+	{ key: "most_bedrooms", label: "Most Bedrooms" },
+	{ key: "most_bathrooms", label: "Most Bathrooms" },
+	{ key: "less_bedrooms", label: "Less Bedrooms" },
+	{ key: "less_bathrooms", label: "Less Bathrooms" }
 ] as const;
 
 const keyToLabelMap = Object.fromEntries(
 	sortOptions.map((item) => [item.key, item.label])
 );
 
-const PageHeaderActions = ({ onAddClick, onSortChange }: Props) => {
+const PageHeaderActions = ({ onAddClick, onOrderByChange }: Props) => {
 	const [selectedKey, setSelectedKey] = useState("newest");
 
 	const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
 		setSelectedKey(key);
-		onSortChange?.(key);
+		onOrderByChange?.(key);
 	};
 
 	return (

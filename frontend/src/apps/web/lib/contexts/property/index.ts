@@ -1,9 +1,10 @@
 import { Property } from "@core/domain/models/property";
+import { PropertyFilters } from "@core/domain/types/filters/property-filters";
 import { createContext } from "use-context-selector";
 
 
 interface Props {
-	list(): Promise<Property[]>;
+	list(filters?: PropertyFilters): Promise<Property[]>;
 	deleteProperty(id: string): Promise<void>;
 	create(data: Property): Promise<void>;
 }

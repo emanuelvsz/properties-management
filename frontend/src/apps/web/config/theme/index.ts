@@ -41,7 +41,7 @@ export const theme = {
 		},
 		Button: {
 			controlHeight: 36,
-			boxShadow: "none"
+			boxShadow: "none !important"
 		},
 		DatePicker: {
 			borderRadius: 6

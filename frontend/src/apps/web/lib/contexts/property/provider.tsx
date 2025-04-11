@@ -6,6 +6,7 @@ import { PropertyCTX } from ".";
 import { usePanic } from "./hooks";
 import PropertyUseCase from "@core/interfaces/usecase/property.repository";
 import { Property } from "@core/domain/models/property";
+import { PropertyFilters } from "@core/domain/types/filters/property-filters";
 
 interface PropertyProviderProps {
 	usecase: PropertyUseCase;
@@ -18,15 +19,18 @@ const PropertyProvider = ({
 	const panic = usePanic();
 	const { message } = App.useApp();
 
-	const list = useCallback(async () => {
-		try {
-			const properties = await usecase.list();
-			return properties;
-		} catch (error) {
-			panic(error);
-			return [];
-		}
-	}, [message, panic, usecase]);
+	const list = useCallback(
+		async (filters?: PropertyFilters) => {
+			try {
+				const properties = await usecase.list(filters);
+				return properties;
+			} catch (error) {
+				panic(error);
+				return [];
+			}
+		},
+		[message, panic, usecase]
+	);
 
 	const deleteProperty = useCallback(
 		async (id: string) => {

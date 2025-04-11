@@ -2,12 +2,15 @@ import { Property, PropertyMapper } from "@core/domain/models/property";
 import PropertyRepository from "@core/interfaces/repository/property.repository";
 import { BackendClient } from "../clients";
 import { DTO } from "@core/domain/types";
+import { PropertyFilters } from "@core/domain/types/filters/property-filters";
 
 class PropertyAPI implements PropertyRepository {
 	mapper = new PropertyMapper();
 
-	async list(): Promise<Property[]> {
-		const response = await BackendClient.get<DTO[]>("/properties");
+	async list(filters?: PropertyFilters): Promise<Property[]> {
+		const response = await BackendClient.get<DTO[]>("/properties", {
+			params: filters
+		});
 		const propertyDTOs = response.data;
 		return propertyDTOs.map((dto) => this.mapper.deserialize(dto));
 	}

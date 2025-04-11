@@ -1,12 +1,28 @@
 from rest_framework import serializers
 from .models import Property
+from django.utils import timezone
+from rent_contract.models import RentContract
 
+class TenantInlineSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    email = serializers.EmailField()
+    phone = serializers.CharField()
+    birth_date = serializers.DateField()
 
 class ListPropertySerializer(serializers.ModelSerializer):
+    tenant = serializers.SerializerMethodField()
+
     class Meta:
         model = Property
-        fields = "__all__"
+        fields = [
+            "id", "title", "bedrooms", "bathrooms", "surface", "rent",
+            "furnished", "description", "status", "tenant"
+        ]
 
+    def get_tenant(self, obj):
+        tenant = getattr(obj, "current_tenant", None)
+        return TenantInlineSerializer(tenant).data if tenant else None
 
 class CreatePropertySerializer(serializers.Serializer):
     title = serializers.CharField()
@@ -36,4 +52,3 @@ class CompleteUpdatePropertySerializer(serializers.Serializer):
     rent = serializers.FloatField(required=True)
     furnished = serializers.BooleanField(required=True)
     description = serializers.CharField(required=True)
-

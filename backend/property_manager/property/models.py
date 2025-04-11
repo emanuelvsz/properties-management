@@ -15,7 +15,16 @@ class Property(BaseModel):
     rent = models.FloatField()
     furnished = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
-
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("free", "Free"),
+            ("rented", "Rented"),
+            ("maintance", "Maintance"),
+            ("reforbish", "Reforbish"),
+        ],
+        default="free"
+    )
     class Meta:
         db_table = "property"
         verbose_name = "Property"
