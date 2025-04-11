@@ -2,11 +2,12 @@ import { Route } from "@web/lib/types/route";
 
 import HomePage from "../auth/pages/home";
 import PropertiesPage from "./pages/properties";
+import PropertyPage from "./pages/property";
 
-const getUnauthRoutes = (): Route[] => [
+const getAuthRoutes = (): Route[] => [
 	{
 		key: 1,
-		title: "Rents",
+		title: "Dashboard",
 		path: HomePage.route,
 		page: HomePage,
 		hidden: true
@@ -17,7 +18,14 @@ const getUnauthRoutes = (): Route[] => [
 		path: PropertiesPage.route,
 		page: PropertiesPage,
 		hidden: true
+	},
+	{
+		key: 3,
+		title: "Property",
+		path: "/properties/:id",
+		page: PropertyPage,
+		hidden: true
 	}
 ];
 
-export default getUnauthRoutes;
+export default getAuthRoutes;

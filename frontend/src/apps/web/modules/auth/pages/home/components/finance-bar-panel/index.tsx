@@ -18,13 +18,21 @@ const styles = {
 		margin: 0 !important;
 		padding: 0 !important;
 	`,
-	filterInput: css`
-		height: 35px;
-	`,
-	fitlerIcon: css`
-		height: 17px;
+	separator: css`
+		display: inline-flex;
+		align-items: center;
+		height: 100%;
+		font-size: 20px;
 	`
 };
+
+const breadcrumbLinkStyle = css`
+	.ant-breadcrumb-link {
+		&:hover {
+			background: none !important;
+		}
+	}
+`;
 
 interface Props {
 	title: string;
@@ -37,25 +45,24 @@ const BoardPageHeader = ({ title, prefix, extra, id }: Props) => {
 	return (
 		<>
 			<Breadcrumb
-				separator={
-					<span
-						style={{
-							display: "inline-flex",
-							alignItems: "center",
-							height: "100%",
-							fontSize: "20px"
-						}}
-					>
-						/
-					</span>
-				}
+				css={breadcrumbLinkStyle}
+				separator={<span css={styles.separator}>/</span>}
 				items={
 					id
 						? [
-								{ title: <h2 css={styles.filterText}>{title}</h2> },
-								{ title: id }
+								{
+									title: <h2 css={styles.filterText}>{title}</h2>,
+									href: "/properties"
+								},
+								{
+									title: <h2 css={styles.filterText}>{id}</h2>
+								}
 							]
-						: [{ title: <h2 css={styles.filterText}>{title}</h2> }]
+						: [
+								{
+									title: <h2 css={styles.filterText}>{title}</h2>
+								}
+							]
 				}
 			/>
 

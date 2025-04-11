@@ -8,6 +8,14 @@ class PropertyService implements PropertyUseCase {
 	async list(): Promise<Property[]> {
 		return await this.adapter.list();;
 	}
+
+	async delete(id: string): Promise<void> {
+		return await this.adapter.delete(id);
+	}
+
+	async create(data: Property): Promise<void> {
+		return await this.adapter.create(data)
+	}
 }
 
 export default PropertyService;

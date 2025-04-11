@@ -6,6 +6,8 @@ interface PropertyRepository {
 	mapper: Mapper<Property>;
 
 	list(): Promise<Property[]>;
+	delete(id: string): Promise<void>;
+	create(data: Property): Promise<void>;
 }
 
 export default PropertyRepository;

@@ -9,8 +9,6 @@ import homeIcon from "@web/assets/icons/fi-rs-home.svg";
 import chartHistogramIcon from "@web/assets/icons/fi-rs-chart-histogram.svg";
 import chartHistogramIconWhite from "@web/assets/icons/fi-rs-chart-histogram-white.svg";
 import homeIconWhite from "@web/assets/icons/fi-rs-home-white.svg";
-import userIcon from "@web/assets/icons/user.svg";
-import userIconWhite from "@web/assets/icons/user-white.svg";
 
 import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
@@ -30,11 +28,11 @@ interface NavigationItem {
 const styles = {
 	sider: css`
 		background-color: ${THEME_COLORS.PRIMARY_COLOR} !important;
-		height: 100vh;
 		display: flex;
 		flex-direction: column;
-		position: relative;
+		height: 100vh;
 	`,
+
 	siderHeader: css`
 		height: 100px;
 		display: flex;
@@ -42,17 +40,19 @@ const styles = {
 		align-items: center;
 		cursor: pointer;
 	`,
+
 	logo: css`
 		height: 55px;
 	`,
+
 	logoCollapsed: css`
 		height: 40px;
 	`,
+
 	body: (collapsed: boolean) => css`
-		flex: 1;
 		padding: ${collapsed ? "0.3rem 1rem 0 1rem" : "0.3rem 1.8rem"};
-		overflow: none;
 	`,
+
 	sectionTitle: (collapsed: boolean) => css`
 		color: ${THEME_COLORS.WHITE_COLOR};
 		font-weight: 600;
@@ -61,6 +61,7 @@ const styles = {
 		visibility: ${collapsed ? "hidden" : "visible"};
 		transition: opacity 0.3s ease;
 	`,
+
 	navigationItem: (active: boolean, collapsed: boolean) => css`
 		display: flex;
 		align-items: center;
@@ -77,23 +78,27 @@ const styles = {
 			background-color: ${active ? "#fff" : "#ffffff33"};
 		}
 	`,
+
 	icon: (active: boolean) => css`
 		height: 20px;
 		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 	`,
+
 	text: (active: boolean) => css`
 		font-weight: 500;
 		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 		white-space: nowrap;
 	`,
+
 	toggleButton: (collapsed: boolean) => css`
 		position: absolute;
 		bottom: 16px;
 		width: 100%;
 		padding: ${collapsed ? "0 1rem" : "0 1.8rem"};
 	`,
+
 	toggleContent: (collapsed: boolean) => css`
 		display: flex;
 		align-items: center;
@@ -111,6 +116,7 @@ const styles = {
 			background-color: #f0f0f0;
 		}
 	`,
+
 	toggleText: css`
 		font-weight: 500;
 		color: ${THEME_COLORS.PRIMARY_COLOR};
@@ -137,12 +143,6 @@ const SideMenu = ({ account }: Props) => {
 			icon: homeIconWhite,
 			activeIcon: homeIcon,
 			url: "/properties"
-		},
-		{
-			text: "Tenants",
-			icon: userIconWhite,
-			activeIcon: userIcon,
-			url: "/tenants"
 		}
 	];
 
@@ -167,7 +167,11 @@ const SideMenu = ({ account }: Props) => {
 				<Flex css={styles.body(collapsed)} vertical gap={10}>
 					<p css={styles.sectionTitle(collapsed)}>PAGES</p>
 					{data.map((item, idx) => {
-						const isActive = location.pathname === item.url;
+						const location = useLocation();
+						const isActive =
+							location.pathname === item.url ||
+							location.pathname.startsWith(`${item.url}/`);
+							
 						return (
 							<Flex
 								key={idx}

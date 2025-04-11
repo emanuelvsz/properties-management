@@ -4,7 +4,7 @@ import ForgotPasswordPage from "./pages/forgot-password";
 import LoginPage from "./pages/login";
 import RedefinePasswordPage from "./pages/redefine-password";
 
-const getAuthRoutes = (): Route[] => [
+const getUnauthRoutes = (): Route[] => [
 	{
 		key: 1,
 		title: "Login",
@@ -28,4 +28,4 @@ const getAuthRoutes = (): Route[] => [
 	}
 ];
 
-export default getAuthRoutes;
+export default getUnauthRoutes;

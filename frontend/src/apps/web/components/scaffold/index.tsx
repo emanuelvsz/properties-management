@@ -6,13 +6,28 @@ import { useAccount } from "apps/web/lib/contexts/auth/hooks";
 
 import SideMenu from "../menu";
 import Router from "../router";
+import Header from "../header";
 
 const styles = {
-	container: css`
+	layout: css`
 		height: 100vh;
 	`,
-	content: css`
-		height: calc(100vh - 64px);
+	sideLayout: css`
+		display: flex;
+		flex-direction: row;
+		flex: 1;
+		overflow: hidden;
+	`,
+
+	mainContent: css`
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		overflow: hidden;
+	`,
+	contentArea: css`
+		flex: 1;
+		overflow-y: auto;
 	`
 };
 
@@ -20,11 +35,14 @@ const Scaffold = () => {
 	const account = useAccount();
 	return (
 		<ProviderManager account={account}>
-			<Layout css={styles.container}>
-				<Layout css={styles.content}>
+			<Layout css={styles.layout}>
+				<Layout css={styles.sideLayout}>
 					<SideMenu account={account} />
-					<Layout>
-						<Router />
+					<Layout css={styles.mainContent}>
+						<Header account={account} />
+						<div css={styles.contentArea}>
+							<Router />
+						</div>
 					</Layout>
 				</Layout>
 			</Layout>

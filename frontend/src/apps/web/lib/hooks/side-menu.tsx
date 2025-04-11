@@ -22,7 +22,7 @@ export const useSideMenu = () => {
 		() =>
 			getModuleRoutesByAccount(account).map((route, idx) => {
 				const key = idx.toString();
-				if (route.children) {
+				if (route.children) { 
 					return {
 						...route,
 						key,

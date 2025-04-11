@@ -15,7 +15,6 @@ const dropdownHeight = 35;
 const styles = {
 	container: css`
 		align-items: center;
-		gap: 15px;
 	`,
 	dropdownButton: css`
 		height: ${dropdownHeight}px;
@@ -28,6 +27,7 @@ const styles = {
 		justify-content: center;
 		align-items: center;
 		border: none;
+		box-shadow: none !important;
 
 		&:hover,
 		&:focus {
@@ -58,7 +58,7 @@ const PageHeaderActions = ({ onAddClick, onSortChange }: Props) => {
 	};
 
 	return (
-		<Flex css={styles.container}>
+		<Flex css={styles.container} gap={10}>
 			<Dropdown
 				menu={{
 					items: sortOptions as unknown as MenuProps["items"],

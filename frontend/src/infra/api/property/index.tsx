@@ -11,6 +11,14 @@ class PropertyAPI implements PropertyRepository {
 		const propertyDTOs = response.data;
 		return propertyDTOs.map((dto) => this.mapper.deserialize(dto));
 	}
+
+	async delete(id: string): Promise<void> {
+		await BackendClient.delete<DTO[]>(`/properties/${id}`);
+	}
+
+	async create(data: Property): Promise<void> {
+		await BackendClient.post<DTO>("/properties", data.toJSON());
+	}
 }
 
 export default PropertyAPI;

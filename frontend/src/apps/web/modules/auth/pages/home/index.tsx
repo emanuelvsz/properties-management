@@ -3,15 +3,21 @@ import { Button, DatePicker, DatePickerProps, Flex } from "antd";
 
 import FinanceCard from "./components/finance-card";
 
-import BoardLayout from "@web/components/board-layout";
 import FinanceBarChartCard from "./components/finance-bar-chart-card";
 import FinancePieChartCard from "./components/finance-pie-chart-card";
 import BoardPageHeader from "./components/finance-bar-panel";
 import { financeCardItems } from "./data";
 import shareIcon from "@web/assets/icons/fi-rs-share.svg";
 import downloadIcon from "@web/assets/icons/fi-rs-download.svg";
+import { THEME_COLORS } from "@web/config/theme";
 
 const styles = {
+	container: css`
+		padding-inline: 2rem;
+		padding-block: 1rem;
+		background-color: ${THEME_COLORS.GRAY_COLOR};
+		min-height: calc(100vh - 4rem - 36px);
+	`,
 	cardList: css`
 		width: 100%;
 	`,
@@ -43,7 +49,7 @@ const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
 
 const HomePage = () => {
 	return (
-		<BoardLayout>
+		<Flex css={styles.container} vertical gap={10} flex={1}>
 			<BoardPageHeader
 				title="Control Panel"
 				prefix={
@@ -84,7 +90,7 @@ const HomePage = () => {
 				<FinanceBarChartCard />
 				<FinancePieChartCard />
 			</Flex>
-		</BoardLayout>
+		</Flex>
 	);
 };
 

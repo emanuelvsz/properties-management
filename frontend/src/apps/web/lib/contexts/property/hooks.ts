@@ -11,6 +11,14 @@ export function useListProperties() {
     return useContextSelector(PropertyCTX, (ctx) => ctx.list);
 }
 
+export function useDeleteProperty() {
+    return useContextSelector(PropertyCTX, (ctx) => ctx.deleteProperty);
+}
+
+export function useCreateProperty() {
+    return  useContextSelector(PropertyCTX, (ctx) => ctx.create);
+}
+
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;
     let shouldLogout: boolean = false;

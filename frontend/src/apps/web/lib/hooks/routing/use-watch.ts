@@ -2,7 +2,7 @@ import { isNil } from "lodash";
 
 import { useCallback, useEffect } from "react";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 import { useAccount } from "apps/web/lib/contexts/auth/hooks";
 import { useFormatRoute } from "apps/web/lib/hooks/routing/use-formatted-route";
@@ -25,11 +25,10 @@ export const useRedirectionWatcher = () => {
 	}, [navigate, routes]);
 
 	const watch = useCallback(() => {
-		const formattedPath = formatWithArgs(location.pathname, location.state);
 		const activeRoute = routes
-			.map((route) => route.children ?? route)
-			.flat()
-			.find((route) => areRoutesEqual(route.path, formattedPath));
+		.map((route) => route.children ?? route)
+		.flat()
+		.find((route) => matchPath(route.path, location.pathname));
 		if (isNil(activeRoute)) {
 			redirectToFirstModuleRoute();
 			return;

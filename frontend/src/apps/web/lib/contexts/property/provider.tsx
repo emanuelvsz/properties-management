@@ -5,6 +5,7 @@ import { PropsWithChildren, useCallback, useMemo } from "react";
 import { PropertyCTX } from ".";
 import { usePanic } from "./hooks";
 import PropertyUseCase from "@core/interfaces/usecase/property.repository";
+import { Property } from "@core/domain/models/property";
 
 interface PropertyProviderProps {
 	usecase: PropertyUseCase;
@@ -27,9 +28,37 @@ const PropertyProvider = ({
 		}
 	}, [message, panic, usecase]);
 
+	const deleteProperty = useCallback(
+		async (id: string) => {
+			try {
+				await usecase.delete(id);
+				return;
+			} catch (error) {
+				panic(error);
+				return;
+			}
+		},
+		[message, panic, usecase]
+	);
+
+	const create = useCallback(
+		async (data: Property) => {
+			try {
+				await usecase.create(data);
+				return;
+			} catch (error) {
+				panic(error);
+				return;
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const values = useMemo(
 		() => ({
-			list
+			list,
+			deleteProperty,
+			create
 		}),
 		[list]
 	);

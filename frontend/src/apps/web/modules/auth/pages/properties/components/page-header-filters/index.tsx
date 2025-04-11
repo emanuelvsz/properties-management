@@ -10,6 +10,7 @@ import { THEME_COLORS } from "@web/config/theme";
 interface Props {
 	onSearchChange?: (value: string) => void;
 	onFilterClick?: () => void;
+	onReloadClick?: () => void;
 	searchValue?: string;
 	placeholder?: string;
 }
@@ -41,6 +42,7 @@ const styles = {
 const PageHeaderFilters = ({
 	onSearchChange,
 	onFilterClick,
+	onReloadClick,
 	searchValue,
 	placeholder = "Search properties..."
 }: Props) => {
@@ -64,7 +66,7 @@ const PageHeaderFilters = ({
 			<Tooltip title="Reload List">
 				<Button
 					icon={<ReloadOutlined />}
-					onClick={onFilterClick}
+					onClick={onReloadClick}
 					css={styles.button}
 				/>
 			</Tooltip>

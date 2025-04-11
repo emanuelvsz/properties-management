@@ -31,6 +31,33 @@ class Property extends Model {
 		this.#description = description;
 	}
 
+	static fromForm(formData: any): Property {
+		const id = ""
+		return new Property(
+			id,
+			formData.title,
+			formData.bedrooms,
+			formData.bathrooms,
+			formData.surface,
+			formData.rent,
+			formData.furnished ?? false,
+			formData.description
+		);
+	}
+
+	public toJSON() {
+		return {
+			id: this.#id,
+			title: this.#title,
+			bedrooms: this.#bedrooms,
+			bathrooms: this.#bathrooms,
+			surface: this.#surface,
+			rent: this.#rent,
+			furnished: this.#furnished,
+			description: this.#description
+		};
+	}
+
 	get id() {
 		return this.#id;
 	}

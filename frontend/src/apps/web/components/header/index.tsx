@@ -1,131 +1,75 @@
-import { UserOutlined } from "@ant-design/icons";
+import { Divider, Flex } from "antd";
 import { css } from "@emotion/react";
-import { App, Dropdown, Flex, Layout, MenuProps, Typography } from "antd";
 
-import { IoExitOutline } from "react-icons/io5";
+import { THEME_COLORS } from "@web/config/theme";
 
-import { useStyleHelpers } from "@web/config/theme/hooks";
-import { useAccount, useLogout } from "@web/lib/contexts/auth/hooks";
+import userPrimaryIcon from "@web/assets/icons/user.svg";
+import bellIcon from "@web/assets/icons/fi-rs-bell.svg";
+import { useLogout } from "@web/lib/contexts/auth/hooks";
+import { useEffect } from "react";
+import { Account } from "@core/domain/models/account";
 
-import { captalize } from "../../lib/utils/strings";
+const HEADER_TEXT_FONT_SIZES = 17;
+const HEADER_HEIGHT = 100;
 
-const useDynamicStyles = () => {
-	const { token } = useStyleHelpers();
-	return {
-		container: css`
-			display: flex;
-			align-items: center;
-			padding: 2rem;
-			background-color: white;
-			box-shadow: 1px 0px 5px 1px rgba(69, 51, 51, 0.1);
-			z-index: 3;
-		`,
-		title: css`
-			margin-block: 0px !important;
-			color: ${token.colorPrimary} !important;
-		`,
-		wrapper: css`
-			width: 100%;
-		`,
-		contextMenu: css`
-      display: flex;
-      align-items: center;
-
-      position: relative;
-      padding: 0.5rem 1rem 0.5rem 2rem;
-
-      border: 2px solid white;
-      box-shadow: 1px 0 3px 1px rgba(0, 0, 0, 0.25);
-      border-radius: 4px;
-
-      cursor: pointer;
-
-      svg {
-        transition: all 0.3s;
-      }
-
-      svg:first-of-type {
-        position: absolute;
-        left: -10px;
-        height: 40px;
-        width: 40px;
-
-        padding: 0.5rem;
-        font-size: 1.75rem !important;
-        color: gray;
-
-        border-radius: 32px;
-        background-color: white;
-        box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.25);
-        z-index: 3;
-      }
-
-      span {
-        line-height: 1;
-        font-size: 1rem !important;
-      }
-
-      &:focus,
-      &:active,
-      &:hover {
-        background-color: white;
-
-        svg:first-of-type {
-          color: var(--color-primary);
-          background-color: white;
-        }
-
-        span {
-          color: var(--color-primary);
-        }
-      }
-    }`
-	};
+const styles = {
+	header: css`
+		width: 100%;
+		min-height: ${HEADER_HEIGHT}px !important;
+		height: ${HEADER_HEIGHT}px !important;
+		padding-inline: 2.5rem;
+		background-color: ${THEME_COLORS.WHITE_COLOR};
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	`,
+	headerUsername: css`
+		color: ${THEME_COLORS.PRIMARY_COLOR};
+		text-align: center;
+		font-size: ${HEADER_TEXT_FONT_SIZES}px;
+		font-weight: 500;
+	`,
+	headerIcon: css`
+		height: ${HEADER_TEXT_FONT_SIZES}px !important;
+		cursor: pointer;
+	`,
+	profileContainer: css`
+		cursor: pointer;
+	`,
+	divider: css`
+		height: ${HEADER_HEIGHT / 3}px;
+		background-color: #acacac;
+	`
 };
 
-const Header = () => {
-	const styles = useDynamicStyles();
-	const account = useAccount();
-	const logout = useLogout();
-	const { modal } = App.useApp();
+interface Props {
+	account?: Account;
+}
 
+const Header = ({ account }: Props) => {
 	if (!account) {
-		return null;
+		return;
 	}
+	const logout = useLogout();
 
-	const handleLogout = () => {
-		modal.confirm({
-			title: "Tem certeza que deseja sair da plataforma?",
-			onOk: logout
-		});
-	};
-
-	const userContextMenuItems = [
-		{
-			key: 0,
-			label: "Sair",
-			icon: <IoExitOutline />,
-			onClick: handleLogout,
-			danger: true
-		}
-	] as MenuProps["items"];
-
-	const contextMenu = { items: userContextMenuItems };
+	useEffect(() => {
+		console.log(account);
+	}, [account]);
 
 	return (
-		<Layout.Header css={styles.container} title="Property Manager">
-			<Flex css={styles.wrapper} align="center" justify="space-between">
-				<Typography.Title level={1} css={styles.title}>
-					Property Manager
-				</Typography.Title>
-				<Dropdown menu={contextMenu} trigger={["click"]}>
-					<div css={styles.contextMenu}>
-						<UserOutlined />
-						<Typography.Text>{captalize(account.name, true)}</Typography.Text>
-					</div>
-				</Dropdown>
+		<Flex css={styles.header} align="center" justify="right" gap={15}>
+			<img src={bellIcon} css={styles.headerIcon} />
+			<Divider css={styles.divider} type="vertical" />
+			<Flex
+				align="center"
+				gap={15}
+				css={styles.profileContainer}
+				onClick={() => logout()}
+			>
+				<img src={userPrimaryIcon} css={styles.headerIcon} />
+				<p css={styles.headerUsername}>{account?.email}</p>
 			</Flex>
-		</Layout.Header>
+		</Flex>
 	);
 };
 

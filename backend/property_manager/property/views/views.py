@@ -38,18 +38,16 @@ class PropertyListCreateView(APIView):
             )
         user = request.user
         response = PropertyService.create_property(
-            data=serializer.validated_data,
-            user=user
+            data=serializer.validated_data, user=user
         )
         return Response(
-            ListPropertySerializer(response).data,
-            status=status.HTTP_201_CREATED
+            ListPropertySerializer(response).data, status=status.HTTP_201_CREATED
         )
 
 
 class PropertyDetailView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     @swagger_auto_schema(
         operation_summary="Retrieve a property by ID", tags=[PROPERTY_TAG_IDENTIFIER]
     )
