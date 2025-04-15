@@ -1,7 +1,8 @@
 from django.test import TestCase
-from property.models import Property
-from property.service import PropertyService
 from django.contrib.auth import get_user_model
+
+from property.service import PropertyService
+from property.models import Property
 
 
 class PropertyServiceTests(TestCase):

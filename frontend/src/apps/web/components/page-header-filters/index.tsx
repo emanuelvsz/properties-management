@@ -9,12 +9,13 @@ import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
 	onSearchChange?: (value: string) => void;
-	onFurnishedChange?: (value: string) => void;
+	onSelectChange?: (value: string) => void;
 	onFilterClick?: () => void;
 	onReloadClick?: () => void;
 	searchValue?: string;
-	furnishedValue?: string;
-	placeholder?: string;
+	searchPlaceholder?: string;
+	selectPlaceholder?: string;
+	selectValue?: string;
 }
 
 const inputHeight = 35;
@@ -47,12 +48,13 @@ const styles = {
 
 const PageHeaderFilters = ({
 	onSearchChange,
-	onFurnishedChange,
+	onSelectChange,
 	onFilterClick,
 	onReloadClick,
 	searchValue,
-	furnishedValue,
-	placeholder = "Search properties..."
+	selectValue,
+	searchPlaceholder = "Search something...",
+	selectPlaceholder
 }: Props) => {
 	return (
 		<Flex gap={10} align="center">
@@ -60,28 +62,31 @@ const PageHeaderFilters = ({
 				allowClear
 				prefix={<SearchOutlined color={THEME_COLORS.PRIMARY_COLOR} />}
 				value={searchValue}
-				onChange={(e) => onSearchChange?.(e.target.value)}
-				placeholder={placeholder}
+				onChange={(e) => {
+					e.preventDefault();
+					onSearchChange?.(e.target.value);
+				}}
+				placeholder={searchPlaceholder}
 				css={styles.input}
 			/>
 			<Select
 				allowClear
-				placeholder="Furnished"
-				value={furnishedValue}
-				onChange={onFurnishedChange}
+				placeholder={selectPlaceholder}
+				value={selectValue === "" ? undefined : selectValue} // Aqui, garantimos que o valor seja `undefined` se estiver vazio
+				onChange={onSelectChange}
 				options={[
-					{ label: "Yes", value: "true" },
-					{ label: "No", value: "false" }
+					{ label: `${selectPlaceholder}: Yes`, value: "true" },
+					{ label: `${selectPlaceholder}: No`, value: "false" }
 				]}
 				css={styles.select}
 			/>
-			<Tooltip title="Filters">
+			{/* <Tooltip title="Filters">
 				<Button
 					icon={<FilterOutlined />}
 					onClick={onFilterClick}
 					css={styles.button}
 				/>
-			</Tooltip>
+			</Tooltip> */}
 			<Tooltip title="Reload List">
 				<Button
 					icon={<ReloadOutlined />}

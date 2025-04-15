@@ -10,6 +10,7 @@ class Property extends Model {
 	#furnished: boolean;
 	#description?: string;
 	#status: string;
+	#location: string;
 
 	constructor(
 		id: string,
@@ -20,6 +21,7 @@ class Property extends Model {
 		rent: number,
 		furnished: boolean,
 		status: string,
+		location: string,
 		description?: string
 	) {
 		super();
@@ -31,6 +33,7 @@ class Property extends Model {
 		this.#rent = rent;
 		this.#furnished = furnished;
 		this.#status = status;
+		this.#location = location;
 		this.#description = description;
 	}
 
@@ -45,6 +48,7 @@ class Property extends Model {
 			formData.rent,
 			formData.furnished ?? false,
 			formData.status,
+			formData.location,
 			formData.description,
 		);
 	}
@@ -59,7 +63,8 @@ class Property extends Model {
 			rent: this.#rent,
 			furnished: this.#furnished,
 			description: this.#description,
-			status: this.#status
+			status: this.#status,
+			location: this.#location
 		};
 	}
 
@@ -105,6 +110,10 @@ class Property extends Model {
 
 	get status(){
 		return this.#status
+	}
+
+	get location () {
+		return this.#location
 	}
 }
 

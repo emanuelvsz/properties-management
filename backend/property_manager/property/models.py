@@ -1,8 +1,9 @@
+from property_manager.models import BaseModel
+
 from django.db import models
 from django.contrib.auth.models import User
-from property_manager.models import BaseModel
-import uuid
 from django.conf import settings
+import uuid
 
 
 class Property(BaseModel):
@@ -25,6 +26,7 @@ class Property(BaseModel):
         ],
         default="free"
     )
+    location = models.TextField()
     class Meta:
         db_table = "property"
         verbose_name = "Property"

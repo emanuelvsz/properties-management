@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Button, Empty, Flex, Popconfirm, Table, Tag } from "antd";
+import { Button, Flex, Popconfirm, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { css, Global } from "@emotion/react";
+import { css } from "@emotion/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
 
 import BoardPageHeader from "../home/components/finance-bar-panel";
-import PageHeaderFilters from "./components/page-header-filters";
-import PageHeaderActions from "./components/page-header-actions";
+import PageHeaderFilters from "../../../../components/page-header-filters";
+import PageHeaderActions from "../../../../components/page-header-actions";
 
 import {
 	useCreateProperty,
@@ -16,7 +16,9 @@ import {
 } from "@web/lib/contexts/property/hooks";
 import { Property } from "@core/domain/models/property";
 import { THEME_COLORS } from "@web/config/theme";
-import AddPropertyModalForm from "./components/add-property-modal-form";
+import AddPropertyModalForm from "../../../../components/add-property-modal-form";
+
+import Table from "@web/components/table";
 
 const styles = {
 	container: css`
@@ -32,9 +34,25 @@ const styles = {
 	title: css`
 		color: ${THEME_COLORS.PRIMARY_COLOR};
 		cursor: pointer;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	`,
+
 	text: css`
 		font-size: 14px;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	`,
+	location: css`
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		font-weight: 500;
+		font-size: 15px;
 	`
 };
 
@@ -56,12 +74,16 @@ const PropertiesPage = () => {
 
 	const handleFetchProperties = async () => {
 		setLoadingProperties(true);
-
 		const q = searchParams.get("q") ?? "";
 		const order_by = searchParams.get("order_by") ?? "newest";
-
-		const response = await listProperties({ q, order_by });
-
+		const furnishedParam = searchParams.get("furnished");
+		const furnished =
+			furnishedParam === "true"
+				? true
+				: furnishedParam === "false"
+					? false
+					: undefined;
+		const response = await listProperties({ q, order_by, furnished });
 		setLoadingProperties(false);
 		if (response) {
 			setProperties(response);
@@ -69,7 +91,9 @@ const PropertiesPage = () => {
 	};
 
 	const handleDelete = async (id: string) => {
+		setLoadingProperties(true);
 		await deleteProperty(id);
+		setLoadingProperties(false);
 		await handleFetchProperties();
 	};
 
@@ -100,6 +124,16 @@ const PropertiesPage = () => {
 		setSearchParams(newParams);
 	};
 
+	const handleFurnishedChange = (value: string) => {
+		const newParams = new URLSearchParams(searchParams);
+		if (value) {
+			newParams.set("furnished", value);
+		} else {
+			newParams.delete("furnished");
+		}
+		setSearchParams(newParams);
+	};
+
 	const handleOrderChange = (value: string) => {
 		const newParams = new URLSearchParams(searchParams);
 		if (value) {
@@ -123,7 +157,7 @@ const PropertiesPage = () => {
 		) => <div style={{ marginLeft: 15 }}>{originNode}</div>
 	};
 
-	const tableFields: ColumnsType<Property> = [
+	const propertyTableFields: ColumnsType<Property> = [
 		{
 			title: "Title",
 			dataIndex: "title",
@@ -138,6 +172,9 @@ const PropertiesPage = () => {
 					>
 						{data.title}
 					</h4>
+					<p css={[styles.clearWhiteSpaces, styles.location]}>
+						{data.location}
+					</p>
 					<p css={[styles.clearWhiteSpaces, styles.text]}>{data.description}</p>
 				</Flex>
 			),
@@ -216,13 +253,6 @@ const PropertiesPage = () => {
 
 	return (
 		<>
-			<Global
-				styles={css`
-					.ant-table-thead .ant-table-selection-column .ant-checkbox-wrapper {
-						margin-left: 15px;
-					}
-				`}
-			/>
 			<Flex css={styles.container} vertical gap={10} flex={1}>
 				<BoardPageHeader
 					title="Properties"
@@ -230,7 +260,11 @@ const PropertiesPage = () => {
 						<PageHeaderFilters
 							onReloadClick={handleFetchProperties}
 							onSearchChange={handleSearchChange}
+							onSelectChange={handleFurnishedChange}
 							searchValue={searchParams.get("q") ?? ""}
+							selectValue={searchParams.get("furnished") ?? ""}
+							selectPlaceholder="Furnished"
+							searchPlaceholder="Search properties"
 						/>
 					}
 					extra={
@@ -241,13 +275,13 @@ const PropertiesPage = () => {
 					}
 				/>
 				<Table
-					columns={tableFields}
+					columns={propertyTableFields}
 					dataSource={properties}
 					rowKey="id"
 					pagination={{ pageSize: PAGE_SIZE }}
 					rowSelection={rowSelection}
 					loading={loadingProperties}
-					locale={{ emptyText: <Empty description="No properties found" /> }}
+					selectedRowKeys={selectedRowKeys}
 				/>
 			</Flex>
 			<AddPropertyModalForm

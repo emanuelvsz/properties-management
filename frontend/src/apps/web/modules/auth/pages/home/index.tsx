@@ -51,7 +51,7 @@ const HomePage = () => {
 	return (
 		<Flex css={styles.container} vertical gap={10} flex={1}>
 			<BoardPageHeader
-				title="Control Panel"
+				title="Dashboard"
 				prefix={
 					<Flex gap={15}>
 						<DatePicker

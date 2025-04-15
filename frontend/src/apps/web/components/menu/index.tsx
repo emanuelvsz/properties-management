@@ -9,6 +9,8 @@ import homeIcon from "@web/assets/icons/fi-rs-home.svg";
 import chartHistogramIcon from "@web/assets/icons/fi-rs-chart-histogram.svg";
 import chartHistogramIconWhite from "@web/assets/icons/fi-rs-chart-histogram-white.svg";
 import homeIconWhite from "@web/assets/icons/fi-rs-home-white.svg";
+import userIconWhite from "@web/assets/icons/user-white.svg";
+import userIcon from "@web/assets/icons/user.svg";
 
 import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
@@ -133,7 +135,7 @@ const SideMenu = ({ account }: Props) => {
 
 	const data: NavigationItem[] = [
 		{
-			text: "Control Panel",
+			text: "Dashboard",
 			icon: chartHistogramIconWhite,
 			activeIcon: chartHistogramIcon,
 			url: "/"
@@ -143,7 +145,25 @@ const SideMenu = ({ account }: Props) => {
 			icon: homeIconWhite,
 			activeIcon: homeIcon,
 			url: "/properties"
-		}
+		},
+		{
+			text: "Tenants",
+			icon: userIconWhite,
+			activeIcon: userIcon,
+			url: "/tenants"
+		},
+		{
+			text: "Expenses",
+			icon: homeIconWhite,
+			activeIcon: homeIcon,
+			url: "/tenants"
+		},
+		{
+			text: "Payments",
+			icon: homeIconWhite,
+			activeIcon: homeIcon,
+			url: "/tenants"
+		},
 	];
 
 	return (
@@ -171,7 +191,7 @@ const SideMenu = ({ account }: Props) => {
 						const isActive =
 							location.pathname === item.url ||
 							location.pathname.startsWith(`${item.url}/`);
-							
+
 						return (
 							<Flex
 								key={idx}

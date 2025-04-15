@@ -72,6 +72,9 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 				<Form.Item name="description" label="Description">
 					<Input.TextArea placeholder="This property is a good one to live!" />
 				</Form.Item>
+				<Form.Item name="location" label="Location">
+					<Input placeholder="Planalto 221, Arapiraca, Alagoas - BR" />
+				</Form.Item>
 				<Flex align="center" justify="center" gap={15}>
 					<Form.Item
 						name="bedrooms"

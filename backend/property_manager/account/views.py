@@ -24,6 +24,7 @@ class RegisterView(APIView):
         tags=[ACCOUNT_TAG_IDENTIFIER],
     )
     def post(self, request):
+        print("Password: request.data", request.data)
         user = AccountService.create_user(request.data)
         serializer = AccountSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

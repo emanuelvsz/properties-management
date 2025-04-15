@@ -14,14 +14,22 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = ("id", "email", "username", "password", "confirm_password")
 
     def validate(self, data):
-        if data["confirm_password"] != data["confirm_password"]:
-            raise serializers.ValidationError("Passwords do not match.")
+        try:
+            print(data)  # Verifique os dados
+            print("Jacquin")
+            if data["password"] != data["confirm_password"]:
+                print("hey")
+                raise serializers.ValidationError("Passwords do not match.")
+        except serializers.ValidationError as e:
+            print(f"Validation error: {e}")
+            raise e  # Relevante para capturar o erro para debugging
         return data
 
     def create(self, validated_data):
         validated_data.pop("confirm_password")
         user = User.objects.create_user(**validated_data)
         return user
-    
+
+
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()

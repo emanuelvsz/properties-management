@@ -1,5 +1,10 @@
+from property.views import (
+    PropertyDetailView,
+    PropertyListCreateView,
+    PropertyExpensesView,
+)
+
 from django.urls import path
-from property.views import PropertyDetailView, PropertyListCreateView
 
 
 urlpatterns = [
@@ -8,5 +13,10 @@ urlpatterns = [
         "properties/<uuid:id>",
         PropertyDetailView.as_view(),
         name="properties-detail",
+    ),
+    path(
+        "properties/<uuid:id>/expenses",
+        PropertyExpensesView.as_view(),
+        name="property-expenses",
     ),
 ]

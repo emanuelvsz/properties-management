@@ -8,6 +8,7 @@ import { theme } from "./config/theme";
 import DIContainer from "./dicontainer";
 import AuthProvider from "./lib/contexts/auth/provider";
 import PropertyProvider from "./lib/contexts/property/provider";
+import ExpenseProvider from "./lib/contexts/expense/provider";
 
 const styles = {
 	antAppRoot: css`
@@ -21,7 +22,9 @@ const App = () => (
 			<BrowserRouter>
 				<AuthProvider usecase={DIContainer.getAuthUseCase()}>
 					<PropertyProvider usecase={DIContainer.getPropertyUseCase()}>
-						<Scaffold />
+						<ExpenseProvider usecase={DIContainer.getExpenseUseCase()}>
+							<Scaffold />
+						</ExpenseProvider>
 					</PropertyProvider>
 				</AuthProvider>
 			</BrowserRouter>

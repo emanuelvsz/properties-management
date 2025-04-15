@@ -16,8 +16,13 @@ export function useDeleteProperty() {
 }
 
 export function useCreateProperty() {
-    return  useContextSelector(PropertyCTX, (ctx) => ctx.create);
+    return useContextSelector(PropertyCTX, (ctx) => ctx.create);
 }
+
+export function useListPropertyByID() {
+    return useContextSelector(PropertyCTX, (ctx) => ctx.listByID);
+}
+
 
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;

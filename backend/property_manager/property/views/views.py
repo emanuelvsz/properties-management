@@ -1,6 +1,3 @@
-from rest_framework import status
-from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
 from property.serializers import (
     ListPropertySerializer,
     CreatePropertySerializer,
@@ -9,8 +6,13 @@ from property.serializers import (
 )
 from property.service import PropertyService
 from property_manager.utils import PROPERTY_TAG_IDENTIFIER
+from expense.serializers import ExpenseSerializer
+
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 
 
 class PropertyListCreateView(APIView):
@@ -26,6 +28,8 @@ class PropertyListCreateView(APIView):
         bathrooms = request.query_params.get("bathrooms")
         surface = request.query_params.get("surface")
         order_by = request.query_params.get("order_by")
+        furnished = request.query_params.get("furnished")
+
         try:
             bedrooms = int(bedrooms) if bedrooms is not None else None
             bathrooms = int(bathrooms) if bathrooms is not None else None
@@ -33,15 +37,31 @@ class PropertyListCreateView(APIView):
         except ValueError:
             return Response(
                 {"detail": "bedrooms, bathrooms e surface devem ser inteiros."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
+
+        if furnished is not None:
+            furnished = furnished.lower()
+            if furnished == "true":
+                furnished = True
+            elif furnished == "false":
+                furnished = False
+            elif furnished == "undefined":
+                furnished = None
+            else:
+                return Response(
+                    {"detail": "furnished should be 'true', 'false' or 'undefined'."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
         properties = PropertyService.list_properties(
             user=user,
             q=q,
             bedrooms=bedrooms,
             bathrooms=bathrooms,
             surface=surface,
-            order_by=order_by
+            order_by=order_by,
+            furnished=furnished,
         )
         serializer = ListPropertySerializer(properties, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -117,3 +137,33 @@ class PropertyDetailView(APIView):
                 {"detail": "Property not found."}, status=status.HTTP_404_NOT_FOUND
             )
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PropertyExpensesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_summary="Get property expenses classified by type and grouped by date",
+        tags=[PROPERTY_TAG_IDENTIFIER],
+    )
+    def get(self, request, id):
+        property_id = id
+        date_by = request.query_params.get("date_by", "month")
+        q = request.query_params.get("q")
+        payed = request.query_params.get("payed", None)
+        order_by = request.query_params.get("order_by", "newest")
+        if date_by not in ["week", "month", "year"]:
+            return Response(
+                {"detail": "date_by must be 'week', 'month', or 'year'."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            expenses = PropertyService.get_property_expenses(
+                request.user, property_id, date_by, q, payed, order_by
+            )
+            serializer = ExpenseSerializer(expenses, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

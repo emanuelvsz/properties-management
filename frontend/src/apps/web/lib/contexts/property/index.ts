@@ -7,6 +7,7 @@ interface Props {
 	list(filters?: PropertyFilters): Promise<Property[]>;
 	deleteProperty(id: string): Promise<void>;
 	create(data: Property): Promise<void>;
+	listByID(id: string): Promise<Property | null>;
 }
 
 export const PropertyCTX = createContext({} as Props);

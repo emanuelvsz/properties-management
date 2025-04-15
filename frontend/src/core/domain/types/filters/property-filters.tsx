@@ -4,4 +4,5 @@ export type PropertyFilters = {
 	bedrooms?: number;
 	bathrooms?: number;
 	surface?: number;
+	furnished?: boolean;
 };

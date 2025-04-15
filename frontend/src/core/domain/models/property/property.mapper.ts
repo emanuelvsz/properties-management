@@ -13,6 +13,7 @@ class PropertyMapper extends Mapper<Property> {
 		const furnished = Boolean(data.furnished);
 		const description = data.description ? String(data.description) : undefined;
 		const status = String(data.status);
+		const location = String(data.location);
 
 		return new Property(
 			id,
@@ -23,6 +24,7 @@ class PropertyMapper extends Mapper<Property> {
 			rent,
 			furnished,
 			status,
+			location,
 			description
 		);
 	}
@@ -37,7 +39,8 @@ class PropertyMapper extends Mapper<Property> {
 			rent: data.rent,
 			furnished: data.furnished,
 			description: data.description,
-			status: data.status
+			status: data.status,
+			location: data.location
 		};
 	}
 }

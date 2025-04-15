@@ -1,4 +1,4 @@
-import PropertyUseCase from "@core/interfaces/usecase/property.repository";
+import PropertyUseCase from "@core/interfaces/usecase/property.use-case";
 import { Property } from "@core/domain/models/property";
 import PropertyRepository from "@core/interfaces/repository/property.repository";
 import { PropertyFilters } from "@core/domain/types/filters/property-filters";
@@ -16,6 +16,10 @@ class PropertyService implements PropertyUseCase {
 
 	async create(data: Property): Promise<void> {
 		return await this.adapter.create(data)
+	}
+
+	async listByID(id: string): Promise<Property> {
+		return await this.adapter.listByID(id)
 	}
 }
 
