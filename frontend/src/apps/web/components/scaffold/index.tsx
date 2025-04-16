@@ -7,6 +7,7 @@ import { useAccount } from "apps/web/lib/contexts/auth/hooks";
 import SideMenu from "../menu";
 import Router from "../router";
 import Header from "../header";
+import Footer from "../footer";
 
 const styles = {
 	layout: css`
@@ -42,6 +43,7 @@ const Scaffold = () => {
 						<Header account={account} />
 						<div css={styles.contentArea}>
 							<Router />
+							<Footer />
 						</div>
 					</Layout>
 				</Layout>
