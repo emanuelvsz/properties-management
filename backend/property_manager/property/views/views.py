@@ -64,6 +64,7 @@ class PropertyListCreateView(APIView):
             furnished=furnished,
         )
         serializer = ListPropertySerializer(properties, many=True)
+        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(

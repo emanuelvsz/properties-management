@@ -1,4 +1,4 @@
-import { Col, Flex, Row } from "antd";
+import { Button, Col, Flex, Popconfirm, Row } from "antd";
 import BoardPageHeader from "../../../home/components/finance-bar-panel";
 import { ColumnsType } from "antd/es/table";
 import { Expense } from "@core/domain/models/expense";
@@ -7,6 +7,9 @@ import PageHeaderActions from "@web/components/page-header-actions";
 import { css } from "@emotion/react";
 import { THEME_COLORS } from "@web/config/theme";
 import Table from "@web/components/table";
+import { useDeleteExpense } from "@web/lib/contexts/expense/hooks";
+import { DeleteOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 interface Props {
 	expenses: Expense[];
@@ -38,6 +41,16 @@ const ExpenseListRow = ({
 	searchValue,
 	selectValue
 }: Props) => {
+	const [loading, setLoading] = useState(false);
+	const deleteExpense = useDeleteExpense();
+
+	const handleDelete = async (id: string) => {
+		setLoading(true);
+		await deleteExpense(id);
+		setLoading(false);
+		onReloadExpenses();
+	};
+
 	const expenseTableFields: ColumnsType<Expense> = [
 		{
 			title: "Name",
@@ -85,6 +98,25 @@ const ExpenseListRow = ({
 				<p>{new Date(data.updatedAt).toLocaleDateString()}</p>
 			),
 			width: 150
+		},
+		{
+			title: "Delete",
+			dataIndex: "delete",
+			key: "delete",
+			render: (_, { id }) => (
+				<Popconfirm
+					title="Do you want to delete it?"
+					onConfirm={() => handleDelete(id)}
+					okText="Submit"
+					cancelText="Cancel"
+					placement="left"
+				>
+					<Button type="text" danger>
+						<DeleteOutlined />
+					</Button>
+				</Popconfirm>
+			),
+			width: 100
 		}
 	];
 
@@ -123,7 +155,7 @@ const ExpenseListRow = ({
 						rowKey="id"
 						pagination={{ pageSize: PAGE_SIZE }}
 						scroll={{ x: "max-content" }}
-						loading={loadingExpenses}
+						loading={loading || loadingExpenses}
 						size="small"
 					/>
 				</Flex>

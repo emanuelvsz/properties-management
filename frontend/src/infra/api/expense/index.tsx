@@ -19,6 +19,11 @@ class ExpenseAPI implements ExpenseRepository {
 		const expensesDTOs = response.data;
 		return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
 	}
+
+	async delete(id: string): Promise<void> {
+		const response = await BackendClient.delete(`/expenses/${id}`);
+		return response.data;
+	}
 }
 
 export default ExpenseAPI;

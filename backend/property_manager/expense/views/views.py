@@ -34,13 +34,15 @@ class ExpenseListCreateView(APIView):
 
 
 class ExpenseDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_summary="Retrieve an expense by ID",
         responses={200: ExpenseSerializer()},
         tags=[EXPENSE_TAG_IDENTIFIER],
     )
-    def get(self, _, pk):
-        expense = ExpenseService.get_expense_by_id(pk)
+    def get(self, _, id):
+        expense = ExpenseService.get_expense_by_id(id)
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -50,8 +52,8 @@ class ExpenseDetailView(APIView):
         responses={200: ExpenseSerializer()},
         tags=[EXPENSE_TAG_IDENTIFIER],
     )
-    def patch(self, request, pk):
-        expense = ExpenseService.update_expense(pk, request.data, partial=True)
+    def patch(self, request, id):
+        expense = ExpenseService.update_expense(id, request.data, partial=True)
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -61,8 +63,8 @@ class ExpenseDetailView(APIView):
         responses={200: ExpenseSerializer()},
         tags=[EXPENSE_TAG_IDENTIFIER],
     )
-    def put(self, request, pk):
-        expense = ExpenseService.update_expense(pk, request.data, partial=False)
+    def put(self, request, id):
+        expense = ExpenseService.update_expense(id, request.data, partial=False)
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -71,8 +73,8 @@ class ExpenseDetailView(APIView):
         responses={204: "No Content"},
         tags=[EXPENSE_TAG_IDENTIFIER],
     )
-    def delete(self, _, pk):
-        message = ExpenseService.delete_expense(pk)
+    def delete(self, _, id):
+        message = ExpenseService.delete_expense(id)
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 

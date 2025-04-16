@@ -31,9 +31,21 @@ const ExpenseProvider = ({
 		[message, panic, usecase]
 	);
 
+	const deleteExpense = useCallback(
+		async (id: string) => {
+			try {
+				await usecase.delete(id);
+			} catch (error) {
+				panic(error);
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const values = useMemo(
 		() => ({
-			list
+			list,
+			deleteExpense
 		}),
 		[list]
 	);

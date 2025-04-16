@@ -154,7 +154,18 @@ const PropertiesPage = () => {
 			record: Property,
 			index: number,
 			originNode: React.ReactNode
-		) => <div style={{ marginLeft: 15 }}>{originNode}</div>
+		) => (
+			<Flex
+				style={{ marginLeft: 15 }}
+				vertical
+				justify="center"
+				align="center"
+				gap={5}
+			>
+				{originNode}
+				<p style={{ fontSize: "14px", margin: 0 }}>{record.formattedCode}</p>
+			</Flex>
+		)
 	};
 
 	const propertyTableFields: ColumnsType<Property> = [
@@ -183,17 +194,24 @@ const PropertiesPage = () => {
 		{
 			title: "Bedrooms",
 			dataIndex: "bedrooms",
-			key: "bedrooms"
+			key: "bedrooms",
+			width: "40px"
 		},
 		{
 			title: "Bathrooms",
 			dataIndex: "bathrooms",
-			key: "bathrooms"
+			key: "bathrooms",
+			width: "40px"
 		},
 		{
 			title: "Status",
 			dataIndex: "status",
-			key: "status"
+			key: "status",
+			render: (value: string) => (
+				<Tag>
+					{value.charAt(0).toLocaleUpperCase() + value.replace(value[0], "")}
+				</Tag>
+			)
 		},
 		{
 			title: "Surface",

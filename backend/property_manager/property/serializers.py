@@ -29,6 +29,7 @@ class ListPropertySerializer(serializers.ModelSerializer):
             "status",
             "tenant",
             "location",
+            "code",
         ]
 
     def get_tenant(self, obj):

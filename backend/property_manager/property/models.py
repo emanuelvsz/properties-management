@@ -24,9 +24,22 @@ class Property(BaseModel):
             ("maintance", "Maintance"),
             ("reforbish", "Reforbish"),
         ],
-        default="free"
+        default="free",
     )
     location = models.TextField()
+    code = models.CharField(max_length=6, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_unique_code()
+        super().save(*args, **kwargs)
+
+    def generate_unique_code(self):
+        while True:
+            code = f"{random.randint(100000, 999999)}"
+            if not Property.objects.filter(code=code).exists():
+                return code
+
     class Meta:
         db_table = "property"
         verbose_name = "Property"

@@ -7,6 +7,7 @@ import { THEME_COLORS } from "@web/config/theme";
 import bedIcon from "@web/assets/icons/fi-rs-bed.svg";
 import pencilIcon from "@web/assets/icons/fi-rs-pencil.svg";
 import raindropsIcon from "@web/assets/icons/fi-rs-raindrops.svg";
+import { BiArea } from "react-icons/bi";
 
 interface Props {
 	property: Property;
@@ -34,6 +35,12 @@ const styles = {
 		font-weight: 600;
 		margin-bottom: 0.5rem;
 		color: ${THEME_COLORS.PRIMARY_COLOR};
+	`,
+	propertyCode: css`
+		font-size: 18px;
+	`,
+	icon: css`
+		font-size: 18px;
 	`
 };
 
@@ -51,16 +58,19 @@ const DetailsRow = ({ property }: Props) => {
 			<Col span={10}>
 				<Flex vertical gap={8}>
 					<Title level={3} style={{ margin: 0 }}>
-						{property.title}
+						{property.title}{" "}
+						<Text type="secondary" css={styles.propertyCode}>
+							{property.formattedCode}
+						</Text>
 					</Title>
-					<Text type="secondary">ID: {property.id}</Text>
+
 					<Divider />
 					<Text css={styles.sectionTitle}>Location</Text>
 					<Tag color="blue">{property.location}</Tag>
 					<Text css={styles.sectionTitle}>Characteristics</Text>
 					<Space size="large">
 						<span css={styles.iconInfo}>
-							<img src={pencilIcon} alt="Surface" width={18} />
+							<BiArea css={styles.icon} color={THEME_COLORS.PRIMARY_DARK_COLOR} />
 							{property.surface} m²
 						</span>
 						<span css={styles.iconInfo}>

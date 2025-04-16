@@ -14,6 +14,7 @@ class PropertyMapper extends Mapper<Property> {
 		const description = data.description ? String(data.description) : undefined;
 		const status = String(data.status);
 		const location = String(data.location);
+		const code = String(data.code);
 
 		return new Property(
 			id,
@@ -25,6 +26,7 @@ class PropertyMapper extends Mapper<Property> {
 			furnished,
 			status,
 			location,
+			code,
 			description
 		);
 	}
@@ -40,7 +42,8 @@ class PropertyMapper extends Mapper<Property> {
 			furnished: data.furnished,
 			description: data.description,
 			status: data.status,
-			location: data.location
+			location: data.location,
+			code: data.code
 		};
 	}
 }

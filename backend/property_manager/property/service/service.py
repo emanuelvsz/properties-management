@@ -26,7 +26,9 @@ class PropertyService:
 
         if q:
             queryset = queryset.filter(
-                Q(title__icontains=q) | Q(description__icontains=q)
+                Q(title__icontains=q)
+                | Q(description__icontains=q)
+                | Q(code__icontains=q)
             )
         if bedrooms is not None:
             queryset = queryset.filter(bedrooms=bedrooms)
@@ -193,4 +195,3 @@ class PropertyService:
             )
 
         return queryset
-

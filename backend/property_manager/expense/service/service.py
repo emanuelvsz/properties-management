@@ -31,7 +31,7 @@ class ExpenseService:
 
     @staticmethod
     def delete_expense(expense_id):
-        expense = get_object_or_404(Expense, id=expense_id)
+        expense = Expense.objects.filter(id=expense_id).last()
         expense.delete()
         return {"detail": "Expense deleted successfully"}
 

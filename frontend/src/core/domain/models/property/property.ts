@@ -11,6 +11,7 @@ class Property extends Model {
 	#description?: string;
 	#status: string;
 	#location: string;
+	#code: string
 
 	constructor(
 		id: string,
@@ -22,7 +23,8 @@ class Property extends Model {
 		furnished: boolean,
 		status: string,
 		location: string,
-		description?: string
+		code: string,
+		description?: string,
 	) {
 		super();
 		this.#id = id;
@@ -35,6 +37,7 @@ class Property extends Model {
 		this.#status = status;
 		this.#location = location;
 		this.#description = description;
+		this.#code = code
 	}
 
 	static fromForm(formData: any): Property {
@@ -49,6 +52,7 @@ class Property extends Model {
 			formData.furnished ?? false,
 			formData.status,
 			formData.location,
+			formData.code,
 			formData.description,
 		);
 	}
@@ -114,6 +118,14 @@ class Property extends Model {
 
 	get location () {
 		return this.#location
+	}
+
+	get code () {
+		return this.#code
+	}
+
+	get formattedCode () {
+		return "#" + this.#code
 	}
 }
 

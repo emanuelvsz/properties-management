@@ -11,6 +11,10 @@ export function useListExpenses() {
     return useContextSelector(ExpenseCTX, (ctx) => ctx.list);
 }
 
+export function useDeleteExpense() {
+    return useContextSelector(ExpenseCTX, (ctx) => ctx.deleteExpense);
+}
+
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;
     let shouldLogout: boolean = false;
