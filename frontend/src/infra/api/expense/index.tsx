@@ -24,6 +24,10 @@ class ExpenseAPI implements ExpenseRepository {
 		return await BackendClient.post("/expenses", data.toJSON());
 	}
 
+	async update(data: Expense, propertyId: string): Promise<void> {
+		return await BackendClient.patch(`/expenses/${propertyId}`, data.toJSON());
+	}
+
 	async delete(id: string): Promise<void> {
 		const response = await BackendClient.delete(`/expenses/${id}`);
 		return response.data;

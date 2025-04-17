@@ -21,10 +21,12 @@ const styles = {
 		padding: 1rem 2rem 2rem 2rem;
 		background-color: ${THEME_COLORS.GRAY_COLOR};
 		min-height: calc(100vh - 4rem - 36px);
+		gap: 10px;
 	`,
 	breadcrumb: css`
 		margin-block: 0 1rem;
 		padding: 0;
+		margin: 0 0 5px 0;
 	`,
 	content: css`
 		background-color: ${THEME_COLORS.WHITE_COLOR};
@@ -165,19 +167,17 @@ const PropertyPage = () => {
 					}
 				]}
 			/>
-			<Flex css={styles.content} vertical gap={32}>
-				<DetailsRow property={property} />
-				<ExpenseListRow
-					expenses={expenses}
-					loadingExpenses={loadingExpenses}
-					onReloadExpenses={handleListExpenses}
-					onSearchChange={handleSearchChange}
-					onSelectChange={handlePayedSelectChange}
-					searchValue={searchParams.get("q") ?? ""}
-					selectValue={searchParams.get("payed") ?? ""}
-				/>
-				<ChartListRow expenses={expenses} />
-			</Flex>
+			<DetailsRow property={property} />
+			<ExpenseListRow
+				expenses={expenses}
+				loadingExpenses={loadingExpenses}
+				onReloadExpenses={handleListExpenses}
+				onSearchChange={handleSearchChange}
+				onSelectChange={handlePayedSelectChange}
+				searchValue={searchParams.get("q") ?? ""}
+				selectValue={searchParams.get("payed") ?? ""}
+			/>
+			<ChartListRow expenses={expenses} />
 		</Flex>
 	);
 };

@@ -63,12 +63,24 @@ const ExpenseProvider = ({
 		}
 	}, [message, panic, usecase]);
 
+	const update = useCallback(
+		async (data: Expense, propertyId: string) => {
+			try {
+				await usecase.update(data, propertyId);
+			} catch (error) {
+				panic(error);
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const values = useMemo(
 		() => ({
 			list,
 			create,
 			deleteExpense,
-			listExpenseTypes
+			listExpenseTypes,
+			update
 		}),
 		[list]
 	);

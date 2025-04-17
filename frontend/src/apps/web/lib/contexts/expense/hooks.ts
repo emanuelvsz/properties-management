@@ -15,6 +15,10 @@ export function useCreateExpense() {
     return useContextSelector(ExpenseCTX, (ctx) => ctx.create);
 }
 
+export function useUpdateExpense() {
+    return useContextSelector(ExpenseCTX, (ctx) => ctx.update);
+}
+
 export function useDeleteExpense() {
     return useContextSelector(ExpenseCTX, (ctx) => ctx.deleteExpense);
 }

@@ -14,6 +14,10 @@ class ExpenseService implements ExpenseUseCase {
 		return await this.adapter.create(data);
 	}
 
+	async update(data: Expense, propertyId: string): Promise<void> {
+		return await this.adapter.update(data, propertyId)
+	}
+
 	async delete(id: string): Promise<void> {
 		return await this.adapter.delete(id);
 	}

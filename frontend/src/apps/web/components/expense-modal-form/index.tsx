@@ -14,14 +14,19 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import ExpenseTypeSelect from "./components/expense-type-select";
-import { useListExpenseTypes } from "@web/lib/contexts/expense/hooks";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { Expense } from "@core/domain/models/expense";
 
 interface Props {
 	visible: boolean;
 	loadingButton: boolean;
 	onCancel: () => void;
 	onSubmit: (values: any) => void;
+	expense?: Expense;
+	types: string[];
+	title: string;
+	loading: boolean;
+	formName: string;
 }
 
 const styles = {
@@ -33,19 +38,20 @@ const styles = {
 	`
 };
 
-const AddExpenseModalForm = ({
+const ExpenseModalForm = ({
 	visible,
 	loadingButton,
 	onCancel,
-	onSubmit
+	onSubmit,
+	expense,
+	title,
+	types,
+	loading,
+	formName
 }: Props) => {
-	const [expenseTypes, setExpenseTypes] = useState<string[]>([]);
-	const [loadingExpenseTypes, setLoadingExpenseTypes] = useState(false);
 	const [isPayed, setIsPayed] = useState(false);
 	const [form] = useForm();
 	const intl = useIntl();
-
-	const listExpenseTypes = useListExpenseTypes();
 
 	const handleOk = () => {
 		form
@@ -66,25 +72,24 @@ const AddExpenseModalForm = ({
 	};
 
 	useEffect(() => {
-		if (!visible) {
-			form.resetFields();
+		if (visible && expense) {
+			const values = expense.toJSON();
+			form.setFieldsValue({
+				name: values.name ?? "",
+				description: values.description !== "null" ? values.description : null,
+				expense_value: values.expense_value ?? 0,
+				expense_type: values.expense_type ?? null,
+				due_date: values.due_date ? dayjs(values.due_date) : null,
+				payed_at: values.payed_at ? dayjs(values.payed_at) : null,
+				payed: !!values.payed_at
+			});
+			setIsPayed(!!values.payed_at);
 		}
-	}, [visible]);
-
-	useEffect(() => {
-		const fetchTypes = async () => {
-			setLoadingExpenseTypes(true);
-			const result = await listExpenseTypes();
-			setLoadingExpenseTypes(false);
-			setExpenseTypes(result);
-		};
-
-		fetchTypes();
-	}, [listExpenseTypes]);
+	}, [visible, expense]);
 
 	return (
 		<Modal
-			title="Add Property Expense"
+			title={title}
 			open={visible}
 			onOk={handleOk}
 			okButtonProps={{
@@ -103,18 +108,10 @@ const AddExpenseModalForm = ({
 			okText={intl.formatMessage({ id: "general.submit" })}
 			cancelText={intl.formatMessage({ id: "general.cancel" })}
 			confirmLoading={loadingButton}
-			loading={loadingExpenseTypes}
+			loading={loading}
 			centered
 		>
-			<Form
-				form={form}
-				layout="vertical"
-				name="add_property_form"
-				initialValues={{
-					expense_value: 0,
-					expense_type: expenseTypes[0]
-				}}
-			>
+			<Form form={form} layout="vertical" name={formName} onFinish={handleOk}>
 				<Form.Item
 					name="name"
 					label="Name"
@@ -127,9 +124,16 @@ const AddExpenseModalForm = ({
 						}
 					]}
 				>
-					<Input placeholder="Water" />
+					<Input
+						placeholder="Water"
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								form.submit();
+							}
+						}}
+					/>
 				</Form.Item>
-
 				<Form.Item name="description" label="Description">
 					<Input.TextArea
 						placeholder="Property monthly bills of water"
@@ -137,9 +141,14 @@ const AddExpenseModalForm = ({
 						maxLength={200}
 						draggable={false}
 						style={{ height: 120, resize: "none" }}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								form.submit();
+							}
+						}}
 					/>
 				</Form.Item>
-
 				<Form.Item
 					name="expense_value"
 					label="Expense Value"
@@ -147,9 +156,18 @@ const AddExpenseModalForm = ({
 						{ required: true, message: "Please enter the expense value" }
 					]}
 				>
-					<InputNumber placeholder="0" css={styles.inputNumber} min={0} />
+					<InputNumber
+						placeholder="0"
+						css={styles.inputNumber}
+						min={0}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								form.submit();
+							}
+						}}
+					/>
 				</Form.Item>
-
 				<Flex gap={16}>
 					<Form.Item
 						name="due_date"
@@ -185,7 +203,6 @@ const AddExpenseModalForm = ({
 							}
 							name="payed_at"
 						>
-							{" "}
 							<DatePicker
 								style={{ width: "100%" }}
 								disabled={!isPayed}
@@ -201,11 +218,11 @@ const AddExpenseModalForm = ({
 						{ required: true, message: "Please select the expense type" }
 					]}
 				>
-					<ExpenseTypeSelect types={expenseTypes} />
+					<ExpenseTypeSelect types={types} />
 				</Form.Item>
 			</Form>
 		</Modal>
 	);
 };
 
-export default AddExpenseModalForm;
+export default ExpenseModalForm;

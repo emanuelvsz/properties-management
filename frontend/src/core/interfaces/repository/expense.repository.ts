@@ -8,6 +8,7 @@ interface ExpenseRepository {
 
 	list(propertyId: string, filters?: ExpenseFilters): Promise<Expense[]>;
 	create(data: Expense): Promise<void>;
+	update(data: Expense, propertyId: string): Promise<void>;
 	delete(id: string): Promise<void>;
 	listExpenseTypes(): Promise<string[]>
 }

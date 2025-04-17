@@ -1,21 +1,26 @@
-import { Button, Col, Flex, Popconfirm, Row } from "antd";
-import BoardPageHeader from "../../../home/components/finance-bar-panel";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useIntl } from "react-intl";
+import { css } from "@emotion/react";
+import { Button, Card, Col, Flex, Popconfirm, Row } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
 import { ColumnsType } from "antd/es/table";
 import { Expense } from "@core/domain/models/expense";
+import { THEME_COLORS } from "@web/config/theme";
+
+import Table from "@web/components/table";
+import ExpenseModalForm from "@web/components/expense-modal-form";
 import PageHeaderFilters from "@web/components/page-header-filters";
 import PageHeaderActions from "@web/components/page-header-actions";
-import { css } from "@emotion/react";
-import { THEME_COLORS } from "@web/config/theme";
-import Table from "@web/components/table";
+import BoardPageHeader from "../../../home/components/finance-bar-panel";
+
 import {
 	useCreateExpense,
-	useDeleteExpense
+	useDeleteExpense,
+	useListExpenseTypes,
+	useUpdateExpense
 } from "@web/lib/contexts/expense/hooks";
-import { DeleteOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { useIntl } from "react-intl";
-import AddExpenseModalForm from "@web/components/add-expense-modal-form";
-import { useParams } from "react-router-dom";
 import useCheckOrderByParam from "@web/lib/hooks/params/use-check-order-by-param";
 
 interface Props {
@@ -33,7 +38,6 @@ const PAGE_SIZE = 5;
 const styles = {
 	container: (itemsLengh: number) => css`
 		${itemsLengh > 0 ? "padding-top: 1rem;" : "padding-block: 1rem;"}
-		// background-color: ${THEME_COLORS.GRAY_LIGHT_COLOR};
 		border-radius: 6px;
 	`,
 	tableItemExpanded: css`
@@ -50,53 +54,69 @@ const ExpenseListRow = ({
 	searchValue,
 	selectValue
 }: Props) => {
-	const [loading, setLoading] = useState(false);
-	const [creatingExpense, setCreatingExpense] = useState(false);
-	const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
-	const deleteExpense = useDeleteExpense();
-	const createExpense = useCreateExpense();
 	const intl = useIntl();
 	const { id: propertyId } = useParams<{ id: string }>();
+	const checkOrderByParam = useCheckOrderByParam();
 
-	const checkOrderByParam = useCheckOrderByParam()
+	const deleteExpense = useDeleteExpense();
+	const createExpense = useCreateExpense();
+	const updateExpense = useUpdateExpense();
+	const listExpenseTypes = useListExpenseTypes();
+
+	const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+	const [editingExpense, setEditingExpense] = useState<Expense | undefined>(undefined);
+
+	const [loading, setLoading] = useState({
+		create: false,
+		update: false,
+		delete: false,
+		types: false
+	});
+
+	const [expenseTypes, setExpenseTypes] = useState<string[]>([]);
 
 	const handleDelete = async (id: string) => {
-		setLoading(true);
+		setLoading((prev) => ({ ...prev, delete: true }));
 		await deleteExpense(id);
-		setLoading(false);
+		setLoading((prev) => ({ ...prev, delete: false }));
 		onReloadExpenses();
 	};
 
-	const handleOpenAddModal = () => {
-		setIsAddModalVisible(true);
-	};
-
-	const handleCloseAddModal = () => {
-		setIsAddModalVisible(false);
-	};
-
-	const handleAddProperty = async (values: any) => {
-		const expense = Expense.fromForm({
-			...values,
-			property: propertyId
-		});
-		console.log("Expense: ", expense.toJSON());
-		setCreatingExpense(true);
+	const handleAddExpense = async (values: any) => {
+		const expense = Expense.fromForm({ ...values, property: propertyId });
+		setLoading((prev) => ({ ...prev, create: true }));
 		await createExpense(expense);
-		setCreatingExpense(false);
-		handleCloseAddModal();
+		setLoading((prev) => ({ ...prev, create: false }));
+		setIsAddModalVisible(false);
 		onReloadExpenses();
 	};
 
-	const expenseTableFields: ColumnsType<Expense> = [
+	const handleUpdateExpense = async (values: any) => {
+		if (!editingExpense) return;
+		const expense = Expense.fromForm(values);
+		setLoading((prev) => ({ ...prev, update: true }));
+		await updateExpense(expense, editingExpense.id);
+		setLoading((prev) => ({ ...prev, update: false }));
+		setIsEditModalVisible(false);
+		setEditingExpense(undefined);
+		onReloadExpenses();
+	};
+
+	const openEditModal = (expense: Expense) => {
+		setEditingExpense(expense);
+		setIsEditModalVisible(true);
+	};
+
+	const expenseColumns: ColumnsType<Expense> = [
 		{
 			title: intl.formatMessage({
 				id: "page.property.component.expense-list-row.table.item.name"
 			}),
 			dataIndex: "name",
 			key: "name",
-			render: (_, data: Expense) => <p>{data.name}</p>,
-			width: 200
+			width: 200,
+			render: (_, expense) => <p>{expense.name}</p>
 		},
 		{
 			title: intl.formatMessage({
@@ -104,16 +124,16 @@ const ExpenseListRow = ({
 			}),
 			dataIndex: "payed_at",
 			key: "payed_at",
+			width: 150,
 			render: (_, data: Expense) => {
-				const date =
-					typeof data.payedAt === "string" ? new Date(data.payedAt) : null;
-				const isValid = date instanceof Date && !isNaN(date.getTime());
-
-				console.log("Data: ", data, typeof data.payedAt, JSON.stringify(data));
-
-				return isValid ? <p>{date.toLocaleDateString()}</p> : <p>—</p>;
-			},
-			width: 150
+				if (!data.payedAt) return <p>—</p>;
+				const date = new Date(data.payedAt);
+				return isNaN(date.getTime()) ? (
+					<p>—</p>
+				) : (
+					<p>{date.toLocaleDateString()}</p>
+				);
+			}
 		},
 		{
 			title: intl.formatMessage({
@@ -121,12 +141,12 @@ const ExpenseListRow = ({
 			}),
 			dataIndex: "expense_value",
 			key: "expense_value",
-			render: (_, data: Expense) =>
+			width: 150,
+			render: (_, expense) =>
 				new Intl.NumberFormat("en-US", {
 					style: "currency",
 					currency: "USD"
-				}).format(data.expenseValue),
-			width: 150
+				}).format(expense.expenseValue)
 		},
 		{
 			title: intl.formatMessage({
@@ -134,101 +154,138 @@ const ExpenseListRow = ({
 			}),
 			dataIndex: "updated_at",
 			key: "updated_at",
-			render: (_, data: Expense) => (
-				<p>{new Date(data.updatedAt).toLocaleDateString()}</p>
-			),
-			width: 150
+			width: 150,
+			render: (_, expense) => (
+				<p>{new Date(expense.updatedAt).toLocaleDateString()}</p>
+			)
 		},
 		{
-			title: intl.formatMessage({
-				id: "page.property.component.expense-list-row.table.item.delete"
-			}),
-			dataIndex: "delete",
-			key: "delete",
-			render: (_, { id }) => (
-				<Popconfirm
-					title={intl.formatMessage({ id: "general.delete.message" })}
-					onConfirm={() => handleDelete(id)}
-					okText="Submit"
-					cancelText="Cancel"
-					placement="left"
-				>
-					<Button type="text" danger>
-						<DeleteOutlined />
-					</Button>
-				</Popconfirm>
-			),
-			width: 100
+			title: "",
+			dataIndex: "actions",
+			key: "actions",
+			width: 100,
+			render: (_, expense) => (
+				<Flex justify="center" align="center" gap={10}>
+					<Popconfirm
+						title={intl.formatMessage({ id: "general.delete.message" })}
+						onConfirm={() => handleDelete(expense.id)}
+						okText="Submit"
+						cancelText="Cancel"
+						placement="left"
+					>
+						<Button type="text" danger icon={<DeleteOutlined />} />
+					</Popconfirm>
+					<Button
+						type="text"
+						icon={<EditOutlined />}
+						onClick={() => openEditModal(expense)}
+					/>
+				</Flex>
+			)
 		}
 	];
 
+	useEffect(() => {
+		const fetchExpenseTypes = async () => {
+			setLoading((prev) => ({ ...prev, types: true }));
+			const types = await listExpenseTypes();
+			setExpenseTypes(types);
+			setLoading((prev) => ({ ...prev, types: false }));
+		};
+
+		fetchExpenseTypes();
+	}, [listExpenseTypes]);
+
 	return (
-		<Row gutter={24}>
-			<Col span={24}>
-				<Flex
-					css={styles.container(expenses.length)}
-					vertical
-					gap={10}
-					flex={1}
-				>
-					<BoardPageHeader
-						title={intl.formatMessage({
-							id: "page.property.component.expense-list-row.board-page-header.title"
-						})}
-						prefix={
-							<PageHeaderFilters
-								onReloadClick={onReloadExpenses}
-								onSearchChange={onSearchChange}
-								onSelectChange={onSelectChange}
-								searchValue={searchValue}
-								selectValue={selectValue}
-								selectPlaceholder={intl.formatMessage({
-									id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
-								})}
-								searchPlaceholder={intl.formatMessage({
-									id: "page.property.component.expense-list-row.board-page-header.filters.search-placeholder"
-								})}
-								disabled={expenses.length === 0 && loadingExpenses === false && checkOrderByParam}
-							/>
-						}
-						extra={
-							<PageHeaderActions
-								onAddClick={handleOpenAddModal}
-								onOrderByChange={() => {}}
-								disabled={expenses.length === 0 && loadingExpenses === false}
-							/>
-						}
-					/>
-					<Table
-						columns={expenseTableFields}
-						dataSource={expenses}
-						rowKey="id"
-						pagination={{ pageSize: PAGE_SIZE }}
-						scroll={{ x: "max-content" }}
-						loading={loading || loadingExpenses}
-						size="small"
-						expandable={{
-							expandedRowRender: (record: Expense) => (
-								<p css={styles.tableItemExpanded}>
-									{record.description && record.description !== "null"
-										? record.description
-										: "—"}
-								</p>
-							),
-							rowExpandable: (record: Expense) =>
-								!!record.description && record.description !== "null"
-						}}
-						bordered
-					/>
-				</Flex>
-			</Col>
-			<AddExpenseModalForm
+		<Card>
+			<Row gutter={24}>
+				<Col span={24}>
+					<Flex css={styles.container(expenses.length)} vertical gap={10}>
+						<BoardPageHeader
+							title={intl.formatMessage({
+								id: "page.property.component.expense-list-row.board-page-header.title"
+							})}
+							prefix={
+								<PageHeaderFilters
+									onReloadClick={onReloadExpenses}
+									onSearchChange={onSearchChange}
+									onSelectChange={onSelectChange}
+									searchValue={searchValue}
+									selectValue={selectValue}
+									searchPlaceholder={intl.formatMessage({
+										id: "page.property.component.expense-list-row.board-page-header.filters.search-placeholder"
+									})}
+									selectPlaceholder={intl.formatMessage({
+										id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
+									})}
+									disabled={
+										expenses.length === 0 &&
+										!loadingExpenses &&
+										checkOrderByParam
+									}
+								/>
+							}
+							extra={
+								<PageHeaderActions
+									onAddClick={() => setIsAddModalVisible(true)}
+									onOrderByChange={() => {}}
+									disabled={expenses.length === 0 && !loadingExpenses}
+								/>
+							}
+						/>
+						<Table
+							columns={expenseColumns}
+							dataSource={expenses}
+							rowKey="id"
+							pagination={{ pageSize: PAGE_SIZE }}
+							scroll={{ x: "max-content" }}
+							loading={
+								loading.create ||
+								loading.update ||
+								loading.delete ||
+								loadingExpenses
+							}
+							size="small"
+							expandable={{
+								expandedRowRender: (record) => (
+									<p css={styles.tableItemExpanded}>
+										{record.description && record.description !== "null"
+											? record.description
+											: "—"}
+									</p>
+								),
+								rowExpandable: (record) =>
+									!!record.description && record.description !== "null"
+							}}
+							bordered
+						/>
+					</Flex>
+				</Col>
+			</Row>
+
+			<ExpenseModalForm
 				visible={isAddModalVisible}
-				loadingButton={creatingExpense}
-				onCancel={handleCloseAddModal}
-				onSubmit={handleAddProperty}
+				loadingButton={loading.create}
+				onCancel={() => setIsAddModalVisible(false)}
+				onSubmit={handleAddExpense}
+				title="Add Property Expense"
+				types={expenseTypes}
+				loading={loading.types}
+				formName="add_expense_form"
 			/>
-		</Row>
+
+			<ExpenseModalForm
+				visible={isEditModalVisible}
+				loadingButton={loading.update}
+				onCancel={() => setIsEditModalVisible(false)}
+				onSubmit={handleUpdateExpense}
+				title="Update Property Expense"
+				expense={editingExpense}
+				types={expenseTypes}
+				loading={loading.types}
+				formName="edit_expense_form"
+			/>
+		</Card>
 	);
 };
 
