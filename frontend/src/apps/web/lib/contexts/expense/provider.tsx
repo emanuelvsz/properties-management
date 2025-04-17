@@ -6,6 +6,7 @@ import { usePanic } from "./hooks";
 import { ExpenseCTX } from ".";
 import ExpenseUseCase from "@core/interfaces/usecase/expense.use-case";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
+import { Expense } from "@core/domain/models/expense";
 
 interface ExpenseProviderProps {
 	usecase: ExpenseUseCase;
@@ -31,6 +32,17 @@ const ExpenseProvider = ({
 		[message, panic, usecase]
 	);
 
+	const create = useCallback(
+		async (data: Expense) => {
+			try {
+				await usecase.create(data);
+			} catch (error) {
+				panic(error);
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const deleteExpense = useCallback(
 		async (id: string) => {
 			try {
@@ -42,10 +54,21 @@ const ExpenseProvider = ({
 		[message, panic, usecase]
 	);
 
+	const listExpenseTypes = useCallback(async () => {
+		try {
+			return await usecase.listExpenseTypes();
+		} catch (error) {
+			panic(error);
+			return [];
+		}
+	}, [message, panic, usecase]);
+
 	const values = useMemo(
 		() => ({
 			list,
-			deleteExpense
+			create,
+			deleteExpense,
+			listExpenseTypes
 		}),
 		[list]
 	);

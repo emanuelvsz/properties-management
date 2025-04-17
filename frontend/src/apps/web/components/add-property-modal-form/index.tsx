@@ -45,7 +45,7 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 				form.resetFields();
 			})
 			.catch((info) => {
-				console.log("Validate Failed:", info);
+				console.info("Validate Failed: ", info);
 			});
 	};
 
@@ -74,6 +74,7 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 			okText={intl.formatMessage({ id: "general.submit" })}
 			cancelText={intl.formatMessage({ id: "general.cancel" })}
 			confirmLoading={loadingButton}
+			centered
 		>
 			<Form form={form} layout="vertical" name="add_property_form">
 				<Form.Item
@@ -106,6 +107,10 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						placeholder={intl.formatMessage({
 							id: "component.add-property-modal-form.form.item.description.placeholder"
 						})}
+						showCount
+						maxLength={200}
+						draggable={false}
+						style={{ height: 120, resize: "none" }}
 					/>
 				</Form.Item>
 				<Form.Item
@@ -118,6 +123,8 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						placeholder={intl.formatMessage({
 							id: "component.add-property-modal-form.form.item.location.placeholder"
 						})}
+						showCount
+						maxLength={100}
 					/>
 				</Form.Item>
 				<Flex align="center" justify="center" gap={15}>

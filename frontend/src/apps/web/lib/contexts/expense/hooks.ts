@@ -11,8 +11,16 @@ export function useListExpenses() {
     return useContextSelector(ExpenseCTX, (ctx) => ctx.list);
 }
 
+export function useCreateExpense() {
+    return useContextSelector(ExpenseCTX, (ctx) => ctx.create);
+}
+
 export function useDeleteExpense() {
     return useContextSelector(ExpenseCTX, (ctx) => ctx.deleteExpense);
+}
+
+export function useListExpenseTypes() {
+    return useContextSelector(ExpenseCTX, (ctx) => ctx.listExpenseTypes);
 }
 
 const treatAxiosError = (error: AxiosError): [string, boolean] => {

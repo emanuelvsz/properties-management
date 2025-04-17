@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Popconfirm, Tag } from "antd";
+import { Button, Flex, Popconfirm, Tag, Tooltip } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { css } from "@emotion/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -166,7 +166,9 @@ const PropertiesPage = () => {
 				gap={5}
 			>
 				{originNode}
-				<p style={{ fontSize: "14px", margin: 0 }}>{record.formattedCode}</p>
+				<Tooltip title="Property Code" placement="bottom">
+					<p style={{ fontSize: "14px", margin: 0 }}>{record.formattedCode}</p>
+				</Tooltip>
 			</Flex>
 		)
 	};
@@ -294,12 +296,14 @@ const PropertiesPage = () => {
 							searchPlaceholder={intl.formatMessage({
 								id: "page.properties.page-header-filters.search.placeholder"
 							})}
+							disabled={properties.length === 0 && loadingProperties === false}
 						/>
 					}
 					extra={
 						<PageHeaderActions
 							onAddClick={handleOpenAddModal}
 							onOrderByChange={handleOrderChange}
+							disabled={properties.length === 0 && loadingProperties === false}
 						/>
 					}
 				/>

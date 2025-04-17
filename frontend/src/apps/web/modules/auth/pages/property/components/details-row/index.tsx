@@ -2,13 +2,11 @@ import { Col, Divider, Flex, Image, Row, Space, Tag, Typography } from "antd";
 import { css } from "@emotion/react";
 
 import { Property } from "@core/domain/models/property";
-import propertyDefaultImage from "@web/assets/images/prop.jpg";
 import { THEME_COLORS } from "@web/config/theme";
 import bedIcon from "@web/assets/icons/fi-rs-bed.svg";
-import pencilIcon from "@web/assets/icons/fi-rs-pencil.svg";
 import raindropsIcon from "@web/assets/icons/fi-rs-raindrops.svg";
 import { BiArea } from "react-icons/bi";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 interface Props {
 	property: Property;
@@ -16,88 +14,73 @@ interface Props {
 
 const { Title, Text } = Typography;
 
+const ICONS_SIZE = 18;
+
 const styles = {
-	image: css`
-		width: 100%;
-		height: 300px;
-		object-fit: cover;
-		border-radius: 8px;
-	`,
 	iconInfo: css`
-		display: flex;
 		align-items: center;
 		gap: 8px;
-		font-size: 15px;
 		font-weight: 500;
-		color: ${THEME_COLORS.PRIMARY_COLOR};
+		color: #00000073;
+		font-size: 15px;
 	`,
 	sectionTitle: css`
-		font-size: 16px;
+		font-size: 18px;
 		font-weight: 600;
 		margin-bottom: 0.5rem;
-		color: ${THEME_COLORS.PRIMARY_COLOR};
-	`,
-	propertyCode: css`
-		font-size: 18px;
+		color: #00000073;
 	`,
 	icon: css`
-		font-size: 18px;
+		font-size: ${ICONS_SIZE}px;
+	`,
+	tag: css`
+		width: fit-content;
+	`,
+	image: css`
+		border-radius: 6px;
+		border: none;
+		object-fit: cover;
 	`
 };
 
 const DetailsRow = ({ property }: Props) => {
-	const intl = useIntl();
-
 	return (
 		<Row gutter={32}>
-			<Col span={14}>
-				<Image
-					src={propertyDefaultImage}
-					preview={false}
-					css={styles.image}
-					alt={intl.formatMessage({
-						id: "page.property.component.details-row.image.alt"
-					})}
-				/>
-			</Col>
-			<Col span={10}>
-				<Flex vertical gap={8}>
-					<Title level={3} style={{ margin: 0 }}>
-						{property.title}{" "}
-						<Text type="secondary" css={styles.propertyCode}>
-							{property.formattedCode}
-						</Text>
-					</Title>
-
-					<Divider />
-					<Text css={styles.sectionTitle}>
-						<FormattedMessage id="page.property.component.details-row.location.title" />
-					</Text>
-					<Tag color="blue">{property.location}</Tag>
-					<Text css={styles.sectionTitle}>
-						{" "}
-						<FormattedMessage id="page.property.component.details-row.characteristics.title" />
-					</Text>
-					<Space size="large">
-						<span css={styles.iconInfo}>
-							<BiArea
-								css={styles.icon}
-								color={THEME_COLORS.PRIMARY_DARK_COLOR}
-							/>
-							{property.surface} m²
-						</span>
-						<span css={styles.iconInfo}>
-							<img src={bedIcon} alt="Bedrooms" width={18} />
-							{property.bedrooms}{" "}
-							<FormattedMessage id="page.property.component.details-row.bedrooms.title" />
-						</span>
-						<span css={styles.iconInfo}>
-							<img src={raindropsIcon} alt="Bathrooms" width={18} />
-							{property.bathrooms}{" "}
-							<FormattedMessage id="page.property.component.details-row.bathrooms.title" />
-						</span>
-					</Space>
-					<Divider />
+			<Col>
+				<Flex vertical gap={30}>
+					<Flex vertical gap={8}>
+						<Title level={5} style={{ margin: 0 }}>
+							{property.title}{" "}
+							<Text type="secondary">{property.formattedCode}</Text>
+						</Title>
+						<Tag color="blue" css={styles.tag}>
+							{property.location}
+						</Tag>
+						<Space size="large">
+							<Flex css={styles.iconInfo}>
+								<BiArea css={styles.icon} color="#00000073" />
+								{property.surface} m²
+							</Flex>
+							<Flex css={styles.iconInfo}>
+								<img src={bedIcon} alt="Bedrooms" width={ICONS_SIZE} />
+								{property.bedrooms}{" "}
+								<FormattedMessage id="page.property.component.details-row.bedrooms.title" />
+							</Flex>
+							<Flex css={styles.iconInfo}>
+								<img src={raindropsIcon} alt="Bathrooms" width={ICONS_SIZE} />
+								{property.bathrooms}{" "}
+								<FormattedMessage id="page.property.component.details-row.bathrooms.title" />
+							</Flex>
+						</Space>
+					</Flex>
+					<Image
+						css={styles.image}
+						height={350}
+						width={450}
+						src="https://images.ctfassets.net/n2ifzifcqscw/3QRMlAcJFrYAEAbhziixZW/d4b9aa50215c5ea7a161b8a6b59f1974/hero-real-estate-facts-trends.jpeg"
+					/>
+				</Flex>
+				<Flex vertical>
 					<Text css={styles.sectionTitle}>
 						<FormattedMessage id="page.property.component.details-row.description.title" />
 					</Text>

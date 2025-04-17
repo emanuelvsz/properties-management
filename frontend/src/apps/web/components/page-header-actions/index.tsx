@@ -9,6 +9,7 @@ import { useIntl } from "react-intl";
 interface Props {
 	onAddClick?: () => void;
 	onOrderByChange?: (orderBy: string) => void;
+	disabled: boolean;
 }
 
 const dropdownHeight = 35;
@@ -38,7 +39,11 @@ const styles = {
 	`
 };
 
-const PageHeaderActions = ({ onAddClick, onOrderByChange }: Props) => {
+const PageHeaderActions = ({
+	onAddClick,
+	onOrderByChange,
+	disabled
+}: Props) => {
 	const [selectedKey, setSelectedKey] = useState("newest");
 	const intl = useIntl();
 
@@ -113,6 +118,7 @@ const PageHeaderActions = ({ onAddClick, onOrderByChange }: Props) => {
 					onClick: handleMenuClick
 				}}
 				trigger={["click"]}
+				disabled={disabled}
 			>
 				<Button css={styles.dropdownButton}>
 					{keyToLabelMap[selectedKey]} <DownOutlined />

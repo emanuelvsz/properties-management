@@ -4,9 +4,7 @@ import { css } from "@emotion/react";
 import { THEME_COLORS } from "@web/config/theme";
 
 import userPrimaryIcon from "@web/assets/icons/user.svg";
-import bellIcon from "@web/assets/icons/fi-rs-bell.svg";
 import { useLogout } from "@web/lib/contexts/auth/hooks";
-import { useEffect } from "react";
 import { Account } from "@core/domain/models/account";
 import SelectLanguageDropdown from "../select-language-dropdown";
 
@@ -49,18 +47,13 @@ interface Props {
 
 const Header = ({ account }: Props) => {
 	if (!account) {
-		return;
+		return null;
 	}
 	const logout = useLogout();
-
-	useEffect(() => {
-		console.log(account);
-	}, [account]);
 
 	return (
 		<Flex css={styles.header} align="center" justify="right" gap={15}>
 			<SelectLanguageDropdown />
-			{/* <img src={bellIcon} css={styles.headerIcon} /> */}
 			<Divider css={styles.divider} type="vertical" />
 			<Flex
 				align="center"

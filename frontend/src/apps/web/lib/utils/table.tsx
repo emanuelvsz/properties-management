@@ -2,6 +2,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import { css } from "@emotion/react";
 import { Space, TableProps } from "antd";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 const styles = {
 	emptyTableIcon: css`
@@ -13,7 +14,7 @@ export const getDefaultTableLocale = (): TableProps["locale"] => ({
 	emptyText: (
 		<Space direction="vertical">
 			<InboxOutlined css={styles.emptyTableIcon} />
-			Sem dados
+			<FormattedMessage id="component.empty.description" />
 		</Space>
 	)
 });

@@ -80,7 +80,6 @@ export function usePanic() {
 		}
 		message.error(feedback);
 		if (shouldLogout) {
-			console.log("Hey")
 			logout();
 		}
 		return shouldLogout;

@@ -3,7 +3,6 @@ from expense.views import (
     ExpenseDetailView,
     ExpenseListCreateView,
     ExpenseTypesView,
-    ExpenseTypesDetailsView,
 )
 
 
@@ -15,9 +14,4 @@ urlpatterns = [
         name="expenses-detail",
     ),
     path("expenses/types", ExpenseTypesView.as_view(), name="expenses-types"),
-    path(
-        "expenses/types/<uuid:id>",
-        ExpenseTypesDetailsView.as_view(),
-        name="expenses-types-by-id",
-    ),
 ]

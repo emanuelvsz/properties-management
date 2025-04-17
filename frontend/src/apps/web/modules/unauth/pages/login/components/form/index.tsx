@@ -14,15 +14,7 @@ const styles = {
 		max-width: 500px;
 		width: 100%;
 		box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-
-		@media (max-height: 800px) {
-			box-shadow: unset;
-			border: unset;
-			.ant-card-body {
-				padding-inline: 0px !important;
-			}
-		}
+		border-radius: 6px;
 	`,
 	form: css`
 		display: flex;
@@ -50,19 +42,17 @@ const LoginForm = () => {
 	const submit = async () => {
 		const values = await form.validateFields();
 		if (!values) {
-			console.log("There's no form values ");
 			return false;
 		}
 		const { username, password } = values;
 		setLoading(true);
-		console.log("There's form values ");
 		const response = await login(username, password);
 		setLoading(false);
 		return response;
 	};
 
 	return (
-		<Card css={styles.container}>
+		<Card css={styles.container} bordered>
 			<Typography.Title css={styles.title} level={4}>
 				Login
 			</Typography.Title>

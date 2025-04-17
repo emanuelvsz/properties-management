@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from expense.service import ExpenseService
-from expense.serializers import ExpenseSerializer, ExpenseTypeSerializer
+from expense.serializers import ExpenseSerializer
 from property_manager.utils import EXPENSE_TAG_IDENTIFIER
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -87,25 +87,3 @@ class ExpenseTypesView(APIView):
     )
     def get(self, request):
         return ExpenseService.get_expense_types(request.user)
-
-    @swagger_auto_schema(
-        operation_summary="Create expense type",
-        tags=[EXPENSE_TAG_IDENTIFIER],
-        request_body=ExpenseTypeSerializer,
-    )
-    def post(self, request):
-        created_type = ExpenseService.create_expense_type(request.user, request.data)
-        return Response(created_type, status=status.HTTP_201_CREATED)
-
-
-class ExpenseTypesDetailsView(APIView):
-    permission_classes = []
-
-    @swagger_auto_schema(
-        operation_summary="Update expense type partially",
-        tags=[EXPENSE_TAG_IDENTIFIER],
-        request_body=ExpenseTypeSerializer,
-    )
-    def patch(self, request, id):
-        updated = ExpenseService.update_expense_type_partial(id, request.data)
-        return Response(updated, status=status.HTTP_200_OK)

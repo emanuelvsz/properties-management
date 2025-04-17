@@ -20,7 +20,6 @@ const styles = {
 		flex: 1;
 		overflow: hidden;
 	`,
-
 	mainContent: css`
 		display: flex;
 		flex-direction: column;

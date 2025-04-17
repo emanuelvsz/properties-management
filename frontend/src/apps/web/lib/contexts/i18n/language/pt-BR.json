@@ -23,7 +23,7 @@
     "component.add-property-modal-form.form.item.rent-price.label": "Valor do Aluguel",
     "component.add-property-modal-form.form.item.furnished.label": "Mobilhado",
 
-    "component.empty.description": "Nenhum dado encontrado.",
+    "component.empty.description": "Nenhum dado encontrado",
     "component.text.empty": "Não Informado",
    
     "component.footer.text.rights": "2025 - Todos direitos reservados",
@@ -68,8 +68,6 @@
     "page.property.breadcrumb.title.second": "Detalhes",
     "page.property.component.chart.list.row.card.first.title": "Despesas por tipo",
     "page.property.component.details-row.image.alt": "Imagem da propriedade",
-    "page.property.component.details-row.location.title": "Localização",
-    "page.property.component.details-row.characteristics.title": "Localização",
     "page.property.component.details-row.bedrooms.title": "Quartos",
     "page.property.component.details-row.bathrooms.title": "Banheiros",
     "page.property.component.details-row.description.title": "Descrição",

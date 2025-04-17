@@ -12,9 +12,9 @@ class ExpenseMapper extends Mapper<Expense> {
 			Number(data.expenseValue),
 			String(data.description),
 			String(data.dueDate),
-			data.payed_at ? String(data.payedAt) : null,
+			data.payedAt ? String(data.payedAt) : null,
 			String(data.property),
-			Number(data.expenseType)
+			String(data.expenseType)
 		);
 	}
 

@@ -51,8 +51,6 @@ const PropertyPage = () => {
 		const payedParam = searchParams.get("payed");
 		const payed =
 			payedParam === "true" ? true : payedParam === "false" ? false : undefined;
-		console.log("Payed Param: ", payed);
-		console.log("Payed Param: ", payedParam);
 		try {
 			const result = await listPropertyExpenses(id, {
 				dateBy: "month",
@@ -64,7 +62,6 @@ const PropertyPage = () => {
 			if (!result) {
 				return;
 			}
-			console.log(result);
 			setExpenses(result);
 		} catch (error) {
 			console.error("Erro ao buscar despesas do imóvel:", error);
@@ -93,15 +90,15 @@ const PropertyPage = () => {
 		setSearchParams(newParams);
 	};
 
-	const handleOrderChange = (value: string) => {
-		const newParams = new URLSearchParams(searchParams);
-		if (value) {
-			newParams.set("order_by", value);
-		} else {
-			newParams.delete("order_by");
-		}
-		setSearchParams(newParams);
-	};
+	// const handleOrderChange = (value: string) => {
+	// 	const newParams = new URLSearchParams(searchParams);
+	// 	if (value) {
+	// 		newParams.set("order_by", value);
+	// 	} else {
+	// 		newParams.delete("order_by");
+	// 	}
+	// 	setSearchParams(newParams);
+	// };
 
 	useEffect(() => {
 		const orderByParam = searchParams.get("order_by");

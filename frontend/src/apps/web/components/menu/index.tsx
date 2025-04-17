@@ -193,7 +193,6 @@ const SideMenu = ({ account }: Props) => {
 						<FormattedMessage id="component.side-menu.section.pages.title" />
 					</p>
 					{data.map((item, idx) => {
-						const location = useLocation();
 						const isActive =
 							location.pathname === item.url ||
 							location.pathname.startsWith(`${item.url}/`);

@@ -20,8 +20,17 @@ class ExpenseAPI implements ExpenseRepository {
 		return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
 	}
 
+	async create(data: Expense): Promise<void> {
+		return await BackendClient.post("/expenses", data.toJSON());
+	}
+
 	async delete(id: string): Promise<void> {
 		const response = await BackendClient.delete(`/expenses/${id}`);
+		return response.data;
+	}
+
+	async listExpenseTypes(): Promise<string[]> {
+		const response = await BackendClient.get<string[]>("/expenses/types");
 		return response.data;
 	}
 }

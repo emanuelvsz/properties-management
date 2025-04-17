@@ -1,6 +1,1 @@
-from .views import (
-    ExpenseListCreateView,
-    ExpenseDetailView,
-    ExpenseTypesView,
-    ExpenseTypesDetailsView,
-)
+from .views import ExpenseListCreateView, ExpenseDetailView, ExpenseTypesView

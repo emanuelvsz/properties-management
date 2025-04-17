@@ -23,8 +23,8 @@
     "component.add-property-modal-form.form.item.rent-price.label": "Precio de Alquiler",
     "component.add-property-modal-form.form.item.furnished.label": "Amueblado",
 
-    "component.empty.description": "No se encontraron datos.",
-    "component.text.empty": "Not Informed.",
+    "component.empty.description": "No se encontraron datos",
+    "component.text.empty": "Not Informed",
 
     "component.footer.text.rights": "2025 - Todos los derechos reservados",
     "component.footer.creator": "Creado por Emanuel Vilela",
@@ -68,8 +68,6 @@
     "page.property.breadcrumb.title.second": "Detalles",
     "page.property.component.chart.list.row.card.first.title": "Gastos por tipo",
     "page.property.component.details-row.image.alt": "Imagen de la propiedad",
-    "page.property.component.details-row.location.title": "Ubicación",
-    "page.property.component.details-row.characteristics.title": "Ubicación",
     "page.property.component.details-row.bedrooms.title": "Dormitorios",
     "page.property.component.details-row.bathrooms.title": "Baños",
     "page.property.component.details-row.description.title": "Descripción",

@@ -23,8 +23,8 @@
     "component.add-property-modal-form.form.item.rent-price.label": "Rent Price",
     "component.add-property-modal-form.form.item.furnished.label": "Furnished",
 
-    "component.empty.description": "No data found.",
-    "component.text.empty": "Not informed.",
+    "component.empty.description": "No data found",
+    "component.text.empty": "Not informed",
 
     "component.footer.text.rights": "2025 - All rights reserved",
     "component.footer.creator": "Created by Emanuel Vilela",
@@ -68,10 +68,8 @@
     "page.property.breadcrumb.title.second": "Details",
     "page.property.component.chart.list.row.card.first.title": "Expenses by Type",
     "page.property.component.details-row.image.alt": "Property image",
-    "page.property.component.details-row.location.title": "Location",
-    "page.property.component.details-row.characteristics.title": "Location",
-    "page.property.component.details-row.bedrooms.title": "Bedrooms",
-    "page.property.component.details-row.bathrooms.title": "Bathrooms",
+    "page.property.component.details-row.bedrooms.title": "Beds",
+    "page.property.component.details-row.bathrooms.title": "Baths",
     "page.property.component.details-row.description.title": "Description",
     "page.property.component.expense-list-row.table.item.name": "Name",
     "page.property.component.expense-list-row.table.item.payed-at": "Payed At",

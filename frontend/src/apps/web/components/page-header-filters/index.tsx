@@ -7,12 +7,12 @@ import { THEME_COLORS } from "@web/config/theme";
 interface Props {
 	onSearchChange?: (value: string) => void;
 	onSelectChange?: (value: string) => void;
-	onFilterClick?: () => void;
 	onReloadClick?: () => void;
 	searchValue?: string;
 	searchPlaceholder?: string;
 	selectPlaceholder?: string;
 	selectValue?: string;
+	disabled: boolean;
 }
 
 const inputHeight = 35;
@@ -46,12 +46,12 @@ const styles = {
 const PageHeaderFilters = ({
 	onSearchChange,
 	onSelectChange,
-	onFilterClick,
 	onReloadClick,
 	searchValue,
 	selectValue,
 	searchPlaceholder = "Search something...",
-	selectPlaceholder
+	selectPlaceholder,
+	disabled
 }: Props) => {
 	const intl = useIntl();
 
@@ -65,12 +65,13 @@ const PageHeaderFilters = ({
 					e.preventDefault();
 					onSearchChange?.(e.target.value);
 				}}
-				placeholder={intl.formatMessage({ id: searchPlaceholder })}
+				placeholder={searchPlaceholder}
 				css={styles.input}
+				disabled={disabled}
 			/>
 			<Select
 				allowClear
-				placeholder={intl.formatMessage({ id: selectPlaceholder })}
+				placeholder={selectPlaceholder}
 				value={selectValue === "" ? undefined : selectValue}
 				onChange={onSelectChange}
 				options={[
@@ -84,6 +85,7 @@ const PageHeaderFilters = ({
 					}
 				]}
 				css={styles.select}
+				disabled={disabled}
 			/>
 			{/* 
 			<Tooltip title={intl.formatMessage({ id: 'component.page-header-filters.filters' })}>
@@ -103,6 +105,7 @@ const PageHeaderFilters = ({
 					icon={<ReloadOutlined />}
 					onClick={onReloadClick}
 					css={styles.button}
+					disabled={disabled}
 				/>
 			</Tooltip>
 		</Flex>

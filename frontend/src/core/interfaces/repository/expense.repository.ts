@@ -7,7 +7,9 @@ interface ExpenseRepository {
 	mapper: Mapper<Expense>;
 
 	list(propertyId: string, filters?: ExpenseFilters): Promise<Expense[]>;
+	create(data: Expense): Promise<void>;
 	delete(id: string): Promise<void>;
+	listExpenseTypes(): Promise<string[]>
 }
 
 export default ExpenseRepository;

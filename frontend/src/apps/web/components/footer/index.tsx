@@ -8,6 +8,7 @@ import {
 	LinkedinOutlined
 } from "@ant-design/icons";
 import { FormattedMessage } from "react-intl";
+import { Account } from "@core/domain/models/account";
 
 const styles = {
 	footer: css`
@@ -36,7 +37,15 @@ const styles = {
 	`
 };
 
-const Footer = () => {
+interface Props {
+	account?: Account;
+}
+
+const Footer = ({ account }: Props) => {
+	if (!account) {
+		return null;
+	}
+
 	return (
 		<Flex css={styles.footer} align="center" justify="center" vertical gap={10}>
 			<Flex vertical align="center">

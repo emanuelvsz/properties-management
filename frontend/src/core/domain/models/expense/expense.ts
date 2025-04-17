@@ -10,7 +10,7 @@ class Expense extends Model {
 	#dueDate: string;
 	#payedAt: string | null;
 	#property: string;
-	#expenseType: number;
+	#expenseType: string;
 
 	constructor(
 		id: string,
@@ -22,7 +22,7 @@ class Expense extends Model {
 		dueDate: string,
 		payedAt: string | null,
 		property: string,
-		expenseType: number
+		expenseType: string
 	) {
 		super();
 		this.#id = id;
@@ -38,7 +38,7 @@ class Expense extends Model {
 	}
 
 	static fromForm(formData: any): Expense {
-		return new Expense(
+		const data = new Expense(
 			formData.id,
 			formData.created_at,
 			formData.updated_at,
@@ -50,10 +50,14 @@ class Expense extends Model {
 			formData.property,
 			formData.expense_type
 		);
+
+		console.log(data.toJSON())
+
+		return data
 	}
 
 	public toJSON() {
-		return {
+		const data = {
 			id: this.#id,
 			created_at: this.#createdAt,
 			updated_at: this.#updatedAt,
@@ -65,6 +69,7 @@ class Expense extends Model {
 			property: this.#property,
 			expense_type: this.#expenseType,
 		};
+		return data
 	}
 
 	get id() {

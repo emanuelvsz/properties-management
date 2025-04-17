@@ -1,4 +1,3 @@
-import { Expense } from "@core/domain/models/expense";
 import { Mapper } from "@core/domain/models/mapper";
 import { Property } from "@core/domain/models/property";
 import { PropertyFilters } from "@core/domain/types/filters/property-filters";
