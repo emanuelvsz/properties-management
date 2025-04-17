@@ -42,7 +42,7 @@ export const theme = {
 		},
 		Button: {
 			controlHeight: 36,
-			boxShadow: "none !important"
+			boxShadow: "none"
 		},
 		DatePicker: {
 			borderRadius: 6
@@ -52,7 +52,13 @@ export const theme = {
 		},
 		Table: {
 			borderRadius: 6,
-		}
+		},
+		Dropdown: {
+			algorithm: true,
+			borderRadius: 6,
+			colorText: THEME_COLORS.PRIMARY_COLOR,
+		},
 
 	}
 } as ThemeConfig;
+

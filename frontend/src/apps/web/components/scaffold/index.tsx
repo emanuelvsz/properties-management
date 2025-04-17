@@ -8,6 +8,7 @@ import SideMenu from "../menu";
 import Router from "../router";
 import Header from "../header";
 import Footer from "../footer";
+import I18nProvider from "@web/lib/contexts/i18n/provider";
 
 const styles = {
 	layout: css`
@@ -36,18 +37,20 @@ const Scaffold = () => {
 	const account = useAccount();
 	return (
 		<ProviderManager account={account}>
-			<Layout css={styles.layout}>
-				<Layout css={styles.sideLayout}>
-					<SideMenu account={account} />
-					<Layout css={styles.mainContent}>
-						<Header account={account} />
-						<div css={styles.contentArea}>
-							<Router />
-							<Footer />
-						</div>
+			<I18nProvider>
+				<Layout css={styles.layout}>
+					<Layout css={styles.sideLayout}>
+						<SideMenu account={account} />
+						<Layout css={styles.mainContent}>
+							<Header account={account} />
+							<div css={styles.contentArea}>
+								<Router />
+								<Footer />
+							</div>
+						</Layout>
 					</Layout>
 				</Layout>
-			</Layout>
+			</I18nProvider>
 		</ProviderManager>
 	);
 };

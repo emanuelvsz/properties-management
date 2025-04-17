@@ -1,5 +1,6 @@
 import { Flex, Typography } from "antd";
 import { PropsWithChildren, ReactNode } from "react";
+import { useIntl } from "react-intl";
 
 interface Props {
 	className?: string;
@@ -13,6 +14,7 @@ const Text = ({
 	label,
 	valueIsFacultative = false
 }: PropsWithChildren<Props>) => {
+	const intl = useIntl();
 	let content: ReactNode = children;
 	if (
 		!children ||
@@ -20,7 +22,7 @@ const Text = ({
 			children.length === 0 &&
 			valueIsFacultative)
 	) {
-		content = "Não informado.";
+		content = intl.formatMessage({ id: "component.text.empty" });
 	}
 
 	return (

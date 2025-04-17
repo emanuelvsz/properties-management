@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { Modal, Form, Input, InputNumber, Switch, Flex } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 interface AddPropertyModalFormProps {
 	visible: boolean;
@@ -48,37 +49,83 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 			});
 	};
 
+	const intl = useIntl();
+
 	return (
 		<Modal
-			title="Add New Property"
+			title={intl.formatMessage({
+				id: "component.add-property-modal-form.modal.title"
+			})}
 			visible={visible}
 			onOk={handleOk}
 			okButtonProps={{
 				style: {
+					height: "36px !important",
+					boxShadow: "none"
+				}
+			}}
+			cancelButtonProps={{
+				style: {
+					height: "36px !important",
 					boxShadow: "none"
 				}
 			}}
 			onCancel={onCancel}
+			okText={intl.formatMessage({ id: "general.submit" })}
+			cancelText={intl.formatMessage({ id: "general.cancel" })}
 			confirmLoading={loadingButton}
 		>
 			<Form form={form} layout="vertical" name="add_property_form">
 				<Form.Item
 					name="title"
-					label="Title"
-					rules={[{ required: true, message: "Please input the title!" }]}
+					label={intl.formatMessage({
+						id: "component.add-property-modal-form.form.item.title.label"
+					})}
+					rules={[
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "component.add-property-modal-form.form.item.title.required-rule.message"
+							})
+						}
+					]}
 				>
-					<Input placeholder="Property in Caracas" />
+					<Input
+						placeholder={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.title.placeholder"
+						})}
+					/>
 				</Form.Item>
-				<Form.Item name="description" label="Description">
-					<Input.TextArea placeholder="This property is a good one to live!" />
+				<Form.Item
+					name="description"
+					label={intl.formatMessage({
+						id: "component.add-property-modal-form.form.item.description.label"
+					})}
+				>
+					<Input.TextArea
+						placeholder={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.description.placeholder"
+						})}
+					/>
 				</Form.Item>
-				<Form.Item name="location" label="Location">
-					<Input placeholder="Planalto 221, Arapiraca, Alagoas - BR" />
+				<Form.Item
+					name="location"
+					label={intl.formatMessage({
+						id: "component.add-property-modal-form.form.item.location.label"
+					})}
+				>
+					<Input
+						placeholder={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.location.placeholder"
+						})}
+					/>
 				</Form.Item>
 				<Flex align="center" justify="center" gap={15}>
 					<Form.Item
 						name="bedrooms"
-						label="Bedrooms"
+						label={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.bedrooms.label"
+						})}
 						rules={[
 							{
 								required: true,
@@ -94,7 +141,9 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 					</Form.Item>
 					<Form.Item
 						name="bathrooms"
-						label="Bathrooms"
+						label={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.bathrooms.label"
+						})}
 						rules={[
 							{
 								required: true,
@@ -110,7 +159,9 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 					</Form.Item>
 					<Form.Item
 						name="surface"
-						label="Surface (m²)"
+						label={intl.formatMessage({
+							id: "component.add-property-modal-form.form.item.surface.label"
+						})}
 						rules={[{ required: true, message: "" }]}
 					>
 						<InputNumber
@@ -122,7 +173,9 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 				</Flex>
 				<Form.Item
 					name="rent"
-					label="Rent Price"
+					label={intl.formatMessage({
+						id: "component.add-property-modal-form.form.item.rent-price.label"
+					})}
 					rules={[{ required: true, message: "" }]}
 				>
 					<InputNumber
@@ -131,7 +184,13 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						css={styles.soloInputNumber}
 					/>
 				</Form.Item>
-				<Form.Item name="furnished" label="Furnished" valuePropName="checked">
+				<Form.Item
+					name="furnished"
+					label={intl.formatMessage({
+						id: "component.add-property-modal-form.form.item.furnished.label"
+					})}
+					valuePropName="checked"
+				>
 					<Switch />
 				</Form.Item>
 			</Form>

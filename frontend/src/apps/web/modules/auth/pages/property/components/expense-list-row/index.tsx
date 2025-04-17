@@ -10,6 +10,7 @@ import Table from "@web/components/table";
 import { useDeleteExpense } from "@web/lib/contexts/expense/hooks";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useIntl } from "react-intl";
 
 interface Props {
 	expenses: Expense[];
@@ -43,6 +44,7 @@ const ExpenseListRow = ({
 }: Props) => {
 	const [loading, setLoading] = useState(false);
 	const deleteExpense = useDeleteExpense();
+	const intl = useIntl();
 
 	const handleDelete = async (id: string) => {
 		setLoading(true);
@@ -53,14 +55,18 @@ const ExpenseListRow = ({
 
 	const expenseTableFields: ColumnsType<Expense> = [
 		{
-			title: "Name",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.name"
+			}),
 			dataIndex: "name",
 			key: "name",
 			render: (_, data: Expense) => <p>{data.name}</p>,
 			width: 200
 		},
 		{
-			title: "Description",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.description"
+			}),
 			dataIndex: "description",
 			key: "description",
 			render: (_, data: Expense) => <p>{data.description}</p>,
@@ -68,7 +74,9 @@ const ExpenseListRow = ({
 		},
 
 		{
-			title: "Payed At",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.payed-at"
+			}),
 			dataIndex: "payed_at",
 			key: "payed_at",
 			render: (_, data: Expense) =>
@@ -80,7 +88,9 @@ const ExpenseListRow = ({
 			width: 150
 		},
 		{
-			title: "Expense Value",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.expense-value"
+			}),
 			dataIndex: "expense_value",
 			key: "expense_value",
 			render: (_, data: Expense) =>
@@ -91,7 +101,9 @@ const ExpenseListRow = ({
 			width: 150
 		},
 		{
-			title: "Updated At",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.updated-at"
+			}),
 			dataIndex: "updated_at",
 			key: "updated_at",
 			render: (_, data: Expense) => (
@@ -100,12 +112,14 @@ const ExpenseListRow = ({
 			width: 150
 		},
 		{
-			title: "Delete",
+			title: intl.formatMessage({
+				id: "page.property.component.expense-list-row.table.item.delete"
+			}),
 			dataIndex: "delete",
 			key: "delete",
 			render: (_, { id }) => (
 				<Popconfirm
-					title="Do you want to delete it?"
+					title={intl.formatMessage({ id: "general.delete.message" })}
 					onConfirm={() => handleDelete(id)}
 					okText="Submit"
 					cancelText="Cancel"
@@ -130,7 +144,9 @@ const ExpenseListRow = ({
 					flex={1}
 				>
 					<BoardPageHeader
-						title="Property Expenses"
+						title={intl.formatMessage({
+							id: "page.property.component.expense-list-row.board-page-header.title"
+						})}
 						prefix={
 							<PageHeaderFilters
 								onReloadClick={onReloadExpenses}
@@ -138,8 +154,12 @@ const ExpenseListRow = ({
 								onSelectChange={onSelectChange}
 								searchValue={searchValue}
 								selectValue={selectValue}
-								selectPlaceholder="Payed"
-								searchPlaceholder="Search expenses"
+								selectPlaceholder={intl.formatMessage({
+									id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
+								})}
+								searchPlaceholder={intl.formatMessage({
+									id: "page.property.component.expense-list-row.board-page-header.filters.search-placeholder"
+								})}
 							/>
 						}
 						extra={

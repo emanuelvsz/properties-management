@@ -19,6 +19,7 @@ import { THEME_COLORS } from "@web/config/theme";
 import AddPropertyModalForm from "../../../../components/add-property-modal-form";
 
 import Table from "@web/components/table";
+import { useIntl } from "react-intl";
 
 const styles = {
 	container: css`
@@ -64,6 +65,8 @@ const PropertiesPage = () => {
 	const [loadingProperties, setLoadingProperties] = useState<boolean>(false);
 	const [creatingProperty, setCreatingProperty] = useState<boolean>(false);
 	const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+
+	const intl = useIntl();
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
@@ -170,7 +173,7 @@ const PropertiesPage = () => {
 
 	const propertyTableFields: ColumnsType<Property> = [
 		{
-			title: "Title",
+			title: intl.formatMessage({ id: "page.properties.table.item.title" }),
 			dataIndex: "title",
 			key: "title",
 			render: (_, data: Property) => (
@@ -192,19 +195,19 @@ const PropertiesPage = () => {
 			width: "30%"
 		},
 		{
-			title: "Bedrooms",
+			title: intl.formatMessage({ id: "page.properties.table.item.bedrooms" }),
 			dataIndex: "bedrooms",
 			key: "bedrooms",
 			width: "40px"
 		},
 		{
-			title: "Bathrooms",
+			title: intl.formatMessage({ id: "page.properties.table.item.bathrooms" }),
 			dataIndex: "bathrooms",
 			key: "bathrooms",
 			width: "40px"
 		},
 		{
-			title: "Status",
+			title: intl.formatMessage({ id: "page.properties.table.item.status" }),
 			dataIndex: "status",
 			key: "status",
 			render: (value: string) => (
@@ -214,13 +217,15 @@ const PropertiesPage = () => {
 			)
 		},
 		{
-			title: "Surface",
+			title: intl.formatMessage({ id: "page.properties.table.item.surface" }),
 			dataIndex: "surface",
 			key: "surface",
 			render: (value: number) => `${value}m²`
 		},
 		{
-			title: "Rent Price",
+			title: intl.formatMessage({
+				id: "page.properties.table.item.rent-price"
+			}),
 			dataIndex: "rent",
 			key: "rent",
 			render: (value: number) =>
@@ -230,22 +235,22 @@ const PropertiesPage = () => {
 				}).format(value)
 		},
 		{
-			title: "Furnished",
+			title: intl.formatMessage({ id: "page.properties.table.item.furnished" }),
 			dataIndex: "furnished",
 			key: "furnished",
 			render: (value: boolean) =>
 				value ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>
 		},
 		{
-			title: "Delete",
+			title: intl.formatMessage({ id: "page.properties.table.item.delete" }),
 			dataIndex: "delete",
 			key: "delete",
 			render: (_, { id }) => (
 				<Popconfirm
-					title="Do you want to delete it?"
+					title={intl.formatMessage({ id: "general.delete.message" })}
 					onConfirm={() => handleDelete(id)}
-					okText="Submit"
-					cancelText="Cancel"
+					okText={intl.formatMessage({ id: "general.submit" })}
+					cancelText={intl.formatMessage({ id: "general.cancel" })}
 					placement="left"
 				>
 					<Button type="text" danger>
@@ -273,7 +278,9 @@ const PropertiesPage = () => {
 		<>
 			<Flex css={styles.container} vertical gap={10} flex={1}>
 				<BoardPageHeader
-					title="Properties"
+					title={intl.formatMessage({
+						id: "page.properties.board-page-header.title"
+					})}
 					prefix={
 						<PageHeaderFilters
 							onReloadClick={handleFetchProperties}
@@ -281,8 +288,12 @@ const PropertiesPage = () => {
 							onSelectChange={handleFurnishedChange}
 							searchValue={searchParams.get("q") ?? ""}
 							selectValue={searchParams.get("furnished") ?? ""}
-							selectPlaceholder="Furnished"
-							searchPlaceholder="Search properties"
+							selectPlaceholder={intl.formatMessage({
+								id: "page.properties.page-header-filters.select.placeholder"
+							})}
+							searchPlaceholder={intl.formatMessage({
+								id: "page.properties.page-header-filters.search.placeholder"
+							})}
 						/>
 					}
 					extra={

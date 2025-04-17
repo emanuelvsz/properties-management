@@ -2,8 +2,9 @@
 import { css } from "@emotion/react";
 import { Button, Dropdown, Flex, MenuProps, Tooltip } from "antd";
 import { PlusOutlined, DownOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { THEME_COLORS } from "@web/config/theme";
+import { useIntl } from "react-intl";
 
 interface Props {
 	onAddClick?: () => void;
@@ -37,23 +38,67 @@ const styles = {
 	`
 };
 
-const sortOptions = [
-	{ key: "newest", label: "Newest first" },
-	{ key: "oldest", label: "Oldest first" },
-	{ key: "price_high", label: "Price: High to Low" },
-	{ key: "price_low", label: "Price: Low to High" },
-	{ key: "most_bedrooms", label: "Most Bedrooms" },
-	{ key: "most_bathrooms", label: "Most Bathrooms" },
-	{ key: "less_bedrooms", label: "Less Bedrooms" },
-	{ key: "less_bathrooms", label: "Less Bathrooms" }
-] as const;
-
-const keyToLabelMap = Object.fromEntries(
-	sortOptions.map((item) => [item.key, item.label])
-);
-
 const PageHeaderActions = ({ onAddClick, onOrderByChange }: Props) => {
 	const [selectedKey, setSelectedKey] = useState("newest");
+	const intl = useIntl();
+
+	const sortOptions = useMemo(
+		() => [
+			{
+				key: "newest",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.newest"
+				})
+			},
+			{
+				key: "oldest",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.oldest"
+				})
+			},
+			{
+				key: "price_high",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.price_high"
+				})
+			},
+			{
+				key: "price_low",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.price_low"
+				})
+			},
+			{
+				key: "most_bedrooms",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.most_bedrooms"
+				})
+			},
+			{
+				key: "most_bathrooms",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.most_bathrooms"
+				})
+			},
+			{
+				key: "less_bedrooms",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.less_bedrooms"
+				})
+			},
+			{
+				key: "less_bathrooms",
+				label: intl.formatMessage({
+					id: "component.page-header-actions.sort.less_bathrooms"
+				})
+			}
+		],
+		[intl]
+	);
+
+	const keyToLabelMap = Object.fromEntries(
+		sortOptions.map((item) => [item.key, item.label])
+	);
 
 	const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
 		setSelectedKey(key);
@@ -73,7 +118,11 @@ const PageHeaderActions = ({ onAddClick, onOrderByChange }: Props) => {
 					{keyToLabelMap[selectedKey]} <DownOutlined />
 				</Button>
 			</Dropdown>
-			<Tooltip title="Add Item">
+			<Tooltip
+				title={intl.formatMessage({
+					id: "component.page-header-actions.tooltip.add"
+				})}
+			>
 				<Button
 					type="primary"
 					icon={<PlusOutlined />}

@@ -8,6 +8,7 @@ import bellIcon from "@web/assets/icons/fi-rs-bell.svg";
 import { useLogout } from "@web/lib/contexts/auth/hooks";
 import { useEffect } from "react";
 import { Account } from "@core/domain/models/account";
+import SelectLanguageDropdown from "../select-language-dropdown";
 
 const HEADER_TEXT_FONT_SIZES = 17;
 const HEADER_HEIGHT = 100;
@@ -58,7 +59,8 @@ const Header = ({ account }: Props) => {
 
 	return (
 		<Flex css={styles.header} align="center" justify="right" gap={15}>
-			<img src={bellIcon} css={styles.headerIcon} />
+			<SelectLanguageDropdown />
+			{/* <img src={bellIcon} css={styles.headerIcon} /> */}
 			<Divider css={styles.divider} type="vertical" />
 			<Flex
 				align="center"

@@ -12,6 +12,7 @@ import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 import ChartListRow from "./components/chart-list-row";
 import DetailsRow from "./components/details-row";
 import { ExpenseFiltersOrderBy } from "@core/domain/types/filters/expense-filters";
+import { FormattedMessage } from "react-intl";
 
 const { Text } = Typography;
 
@@ -150,8 +151,21 @@ const PropertyPage = () => {
 			<Breadcrumb
 				css={styles.breadcrumb}
 				items={[
-					{ title: <Text>Properties</Text>, href: "/properties" },
-					{ title: <Text strong>Details</Text> }
+					{
+						title: (
+							<Text>
+								<FormattedMessage id="page.property.breadcrumb.title.first" />
+							</Text>
+						),
+						href: "/properties"
+					},
+					{
+						title: (
+							<Text strong>
+								<FormattedMessage id="page.property.breadcrumb.title.second" />
+							</Text>
+						)
+					}
 				]}
 			/>
 			<Flex css={styles.content} vertical gap={32}>

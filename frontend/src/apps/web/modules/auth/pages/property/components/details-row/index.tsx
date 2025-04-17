@@ -8,6 +8,7 @@ import bedIcon from "@web/assets/icons/fi-rs-bed.svg";
 import pencilIcon from "@web/assets/icons/fi-rs-pencil.svg";
 import raindropsIcon from "@web/assets/icons/fi-rs-raindrops.svg";
 import { BiArea } from "react-icons/bi";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface Props {
 	property: Property;
@@ -45,6 +46,8 @@ const styles = {
 };
 
 const DetailsRow = ({ property }: Props) => {
+	const intl = useIntl();
+
 	return (
 		<Row gutter={32}>
 			<Col span={14}>
@@ -52,7 +55,9 @@ const DetailsRow = ({ property }: Props) => {
 					src={propertyDefaultImage}
 					preview={false}
 					css={styles.image}
-					alt="Imagem do imóvel"
+					alt={intl.formatMessage({
+						id: "page.property.component.details-row.image.alt"
+					})}
 				/>
 			</Col>
 			<Col span={10}>
@@ -65,25 +70,37 @@ const DetailsRow = ({ property }: Props) => {
 					</Title>
 
 					<Divider />
-					<Text css={styles.sectionTitle}>Location</Text>
+					<Text css={styles.sectionTitle}>
+						<FormattedMessage id="page.property.component.details-row.location.title" />
+					</Text>
 					<Tag color="blue">{property.location}</Tag>
-					<Text css={styles.sectionTitle}>Characteristics</Text>
+					<Text css={styles.sectionTitle}>
+						{" "}
+						<FormattedMessage id="page.property.component.details-row.characteristics.title" />
+					</Text>
 					<Space size="large">
 						<span css={styles.iconInfo}>
-							<BiArea css={styles.icon} color={THEME_COLORS.PRIMARY_DARK_COLOR} />
+							<BiArea
+								css={styles.icon}
+								color={THEME_COLORS.PRIMARY_DARK_COLOR}
+							/>
 							{property.surface} m²
 						</span>
 						<span css={styles.iconInfo}>
 							<img src={bedIcon} alt="Bedrooms" width={18} />
-							{property.bedrooms} Quartos
+							{property.bedrooms}{" "}
+							<FormattedMessage id="page.property.component.details-row.bedrooms.title" />
 						</span>
 						<span css={styles.iconInfo}>
 							<img src={raindropsIcon} alt="Bathrooms" width={18} />
-							{property.bathrooms} Banheiros
+							{property.bathrooms}{" "}
+							<FormattedMessage id="page.property.component.details-row.bathrooms.title" />
 						</span>
 					</Space>
 					<Divider />
-					<Text css={styles.sectionTitle}>Description</Text>
+					<Text css={styles.sectionTitle}>
+						<FormattedMessage id="page.property.component.details-row.description.title" />
+					</Text>
 					<Text>{property.description}</Text>
 				</Flex>
 			</Col>

@@ -1,10 +1,7 @@
 import { css } from "@emotion/react";
 import { Input, Button, Flex, Tooltip, Select } from "antd";
-import {
-	SearchOutlined,
-	FilterOutlined,
-	ReloadOutlined
-} from "@ant-design/icons";
+import { SearchOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useIntl } from "react-intl"; // Importando o hook useIntl
 import { THEME_COLORS } from "@web/config/theme";
 
 interface Props {
@@ -56,6 +53,8 @@ const PageHeaderFilters = ({
 	searchPlaceholder = "Search something...",
 	selectPlaceholder
 }: Props) => {
+	const intl = useIntl();
+
 	return (
 		<Flex gap={10} align="center">
 			<Input
@@ -66,28 +65,40 @@ const PageHeaderFilters = ({
 					e.preventDefault();
 					onSearchChange?.(e.target.value);
 				}}
-				placeholder={searchPlaceholder}
+				placeholder={intl.formatMessage({ id: searchPlaceholder })}
 				css={styles.input}
 			/>
 			<Select
 				allowClear
-				placeholder={selectPlaceholder}
-				value={selectValue === "" ? undefined : selectValue} // Aqui, garantimos que o valor seja `undefined` se estiver vazio
+				placeholder={intl.formatMessage({ id: selectPlaceholder })}
+				value={selectValue === "" ? undefined : selectValue}
 				onChange={onSelectChange}
 				options={[
-					{ label: `${selectPlaceholder}: Yes`, value: "true" },
-					{ label: `${selectPlaceholder}: No`, value: "false" }
+					{
+						label: intl.formatMessage({ id: "general.yes" }),
+						value: "true"
+					},
+					{
+						label: intl.formatMessage({ id: "general.no" }),
+						value: "false"
+					}
 				]}
 				css={styles.select}
 			/>
-			{/* <Tooltip title="Filters">
+			{/* 
+			<Tooltip title={intl.formatMessage({ id: 'component.page-header-filters.filters' })}>
 				<Button
-					icon={<FilterOutlined />}
-					onClick={onFilterClick}
-					css={styles.button}
+				icon={<FilterOutlined />}
+				onClick={onFilterClick}
+				css={styles.button}
 				/>
-			</Tooltip> */}
-			<Tooltip title="Reload List">
+			</Tooltip> 
+	  */}
+			<Tooltip
+				title={intl.formatMessage({
+					id: "component.page-header-filters.reload"
+				})}
+			>
 				<Button
 					icon={<ReloadOutlined />}
 					onClick={onReloadClick}

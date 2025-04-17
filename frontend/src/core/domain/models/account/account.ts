@@ -69,7 +69,7 @@ class Account extends Model {
 	}
 
 	get firstName() {
-		return this.name?.split(" ")[0] ?? "Não informado";
+		return this.name?.split(" ")[0] ?? "Not Informed.";
 	}
 
 	get isAdmin() {

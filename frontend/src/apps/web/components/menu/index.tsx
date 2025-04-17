@@ -15,6 +15,7 @@ import userIcon from "@web/assets/icons/user.svg";
 import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
 import { Account } from "@core/domain/models/account";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface Props {
 	account?: Account;
@@ -130,40 +131,43 @@ const SideMenu = ({ account }: Props) => {
 	const { collapsed, toggleCollapsed } = useSideMenu();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const intl = useIntl();
 
 	if (!account) return null;
 
 	const data: NavigationItem[] = [
 		{
-			text: "Dashboard",
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.dashboard"
+			}),
 			icon: chartHistogramIconWhite,
 			activeIcon: chartHistogramIcon,
 			url: "/"
 		},
 		{
-			text: "Properties",
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.properties"
+			}),
 			icon: homeIconWhite,
 			activeIcon: homeIcon,
 			url: "/properties"
 		},
 		{
-			text: "Tenants",
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.tenants"
+			}),
 			icon: userIconWhite,
 			activeIcon: userIcon,
 			url: "/tenants"
 		},
 		{
-			text: "Expenses",
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.payments"
+			}),
 			icon: homeIconWhite,
 			activeIcon: homeIcon,
 			url: "/tenants"
-		},
-		{
-			text: "Payments",
-			icon: homeIconWhite,
-			activeIcon: homeIcon,
-			url: "/tenants"
-		},
+		}
 	];
 
 	return (
@@ -185,7 +189,9 @@ const SideMenu = ({ account }: Props) => {
 					/>
 				</Flex>
 				<Flex css={styles.body(collapsed)} vertical gap={10}>
-					<p css={styles.sectionTitle(collapsed)}>PAGES</p>
+					<p css={styles.sectionTitle(collapsed)}>
+						<FormattedMessage id="component.side-menu.section.pages.title" />
+					</p>
 					{data.map((item, idx) => {
 						const location = useLocation();
 						const isActive =
@@ -215,7 +221,9 @@ const SideMenu = ({ account }: Props) => {
 					) : (
 						<>
 							<MenuFoldOutlined css={styles.icon(true)} />
-							<p css={styles.toggleText}>Close menu</p>
+							<p css={styles.toggleText}>
+								<FormattedMessage id="component.side-menu.section.close.button.title" />
+							</p>
 						</>
 					)}
 				</Flex>

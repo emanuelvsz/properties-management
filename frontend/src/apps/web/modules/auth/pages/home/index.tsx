@@ -10,6 +10,7 @@ import { financeCardItems } from "./data";
 import shareIcon from "@web/assets/icons/fi-rs-share.svg";
 import downloadIcon from "@web/assets/icons/fi-rs-download.svg";
 import { THEME_COLORS } from "@web/config/theme";
+import { useIntl } from "react-intl";
 
 const styles = {
 	container: css`
@@ -48,10 +49,12 @@ const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
 };
 
 const HomePage = () => {
+	const intl = useIntl();
+
 	return (
 		<Flex css={styles.container} vertical gap={10} flex={1}>
 			<BoardPageHeader
-				title="Dashboard"
+				title={intl.formatMessage({ id: "page.home.title" })}
 				prefix={
 					<Flex gap={15}>
 						<DatePicker
