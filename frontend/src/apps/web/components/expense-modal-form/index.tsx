@@ -132,6 +132,8 @@ const ExpenseModalForm = ({
 								form.submit();
 							}
 						}}
+						showCount
+						maxLength={40}
 					/>
 				</Form.Item>
 				<Form.Item name="description" label="Description">

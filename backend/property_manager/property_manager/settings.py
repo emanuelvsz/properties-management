@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "expense",
     "resources",
     "account",
+    "dashboard",
 ]
 
 REST_FRAMEWORK = {

@@ -25,7 +25,8 @@ urlpatterns = [
     path("", include("rent_payment.urls")),
     path("", include("expense.urls")),
     path("", include("account.urls")),
-    path('resources/', include('resources.urls')), 
+    path("", include("dashboard.urls")),
+    path("resources/", include("resources.urls")),
     path(
         "api/docs/",
         schema_view.with_ui("swagger", cache_timeout=0),
