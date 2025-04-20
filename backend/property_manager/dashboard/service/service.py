@@ -18,7 +18,7 @@ class DashboardService:
         expenses = expenses_qs.aggregate(total=Sum("expense_value"))["total"] or 0
 
         return {
-            "gross_return": gross_return,
+            "gross": gross_return,
             "expenses": expenses,
-            "liquid_return": gross_return - expenses,
+            "liquid": gross_return - expenses,
         }

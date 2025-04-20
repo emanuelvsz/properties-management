@@ -3,6 +3,7 @@ import { Route } from "@web/lib/types/route";
 import HomePage from "../auth/pages/home";
 import PropertiesPage from "./pages/properties";
 import PropertyPage from "./pages/property";
+import TenantsPage from "./pages/tenants";
 
 const getAuthRoutes = (): Route[] => [
 	{
@@ -22,10 +23,17 @@ const getAuthRoutes = (): Route[] => [
 	{
 		key: 3,
 		title: "Property",
-		path: "/properties/:id",
+		path: PropertyPage.route,
 		page: PropertyPage,
 		hidden: true
-	}
+	},
+	{
+		key: 3,
+		title: "Tenants",
+		path: TenantsPage.route,
+		page: TenantsPage,
+		hidden: true
+	},
 ];
 
 export default getAuthRoutes;

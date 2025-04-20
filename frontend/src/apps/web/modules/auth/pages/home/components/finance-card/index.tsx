@@ -1,56 +1,72 @@
-import { Card, Flex } from "antd";
+import { Card, Flex, Skeleton } from "antd";
 import { ReactNode } from "react";
 import { css } from "@emotion/react";
 
 import { FinanceValueColor } from "@core/domain/types/finance-card/finance-value-color";
 import { THEME_COLORS } from "@web/config/theme";
-import FinanceCardTitle from "../finance-card-title";
 
 const styles = {
 	card: css`
 		width: 100%;
-		min-height: 155px;
-		border-radius: 6px;
-		align-items: flex-end;
-		justify-content: flex-end;
+		height: 140px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.ant-card-body {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 23px !important;
+		}
 	`,
 	titleWrapper: css`
-		display: flex;
-		justify-content: space-between;
+		display: flex !important;
+		justify-content: space-between !important;
 		align-items: center;
 		width: 100%;
-	`,
-	extraText: css`
-		font-size: 17px;
-		font-weight: bold;
-		margin: 0 !important;
-		padding: 0 !important;
+		margin-bottom: 10px;
+		font-size: 18px;
 	`,
 	cardTitle: css`
-		font-size: 20px;
-		font-weight: 600;
-	`,
-	priceContainer: css`
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-		flex-grow: 1;
-		height: 100%;
+		color: #333;
 		padding: 0 !important;
 		margin: 0 !important;
+	`,
+	valueWrapper: css`
+		display: flex !important;
+		justify-content: space-between !important;
+		align-items: center;
+		width: 100%;
 		line-height: 1;
 	`,
-	priceText: css`
-		margin: 0 !important;
-		padding: 0 !important;
-		color: ${THEME_COLORS.PRIMARY_COLOR};
-		font-size: 28px;
-		font-weight: 600;
-	`,
-	priceTextCurrency: css`
-		font-size: 20px;
-		color: #000;
+	valueText: css`
+		font-size: 22px;
 		font-weight: bold;
+		color: ${THEME_COLORS.PRIMARY_COLOR};
+		line-height: 1;
+		padding: 0 !important;
+		margin: 0 !important;
+	`,
+	currency: css`
+		font-size: 16px;
+		font-weight: 500;
+		color: #000;
+		margin-left: 4px;
+	`,
+	percentageChange: css`
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 1;
+		padding: 0 !important;
+		margin: 0 !important;
+	`,
+	paddinglessCard: css`
+		.ant-card-body {
+			flex: 1;
+			padding-block: 10px !important;
+		}
 	`
 };
 
@@ -71,45 +87,40 @@ const FinanceCard = ({
 	icon,
 	loading = false
 }: Props) => (
-	<Card
-		css={styles.card}
-		headStyle={{ borderBottom: "none" }}
-		bodyStyle={{
-			padding: 22,
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "flex-end"
-		}}
-		title={<FinanceCardTitle title={title} icon={icon} />}
-		bordered
-		loading={loading}
-	>
-		<Flex justify="space-between">
-			<></>
-			<Flex css={styles.priceContainer}>
-				<p css={styles.priceText}>
-					${value}
-					<span css={styles.priceTextCurrency}> USD</span>
-				</p>
-				{value && (
+	<Card css={[styles.card, loading && styles.paddinglessCard]} bordered>
+		{loading ? (
+			<Skeleton active title={false} paragraph={{ rows: 3 }} />
+		) : (
+			<>
+				<Flex css={styles.titleWrapper}>
+					<h3 css={styles.cardTitle}>{title}</h3>
+					{icon}
+				</Flex>
+				<Flex css={styles.valueWrapper}>
+					<p css={styles.valueText}>
+						{new Intl.NumberFormat("en-US", {
+							style: "currency",
+							currency: "USD"
+						}).format(value)}
+						<span css={styles.currency}>USD</span>
+					</p>
 					<p
+						css={styles.percentageChange}
 						style={{
 							color:
 								extraColor === "green"
 									? THEME_COLORS.LIGHT_GREEN_COLOR
 									: THEME_COLORS.LIGHT_RED_COLOR
 						}}
-						css={styles.extraText}
 					>
-						{extraValue}%
+						{extraValue > 0 ? "↑" : extraValue === 0 ? "-" : "↓"}{" "}
+						{Math.abs(extraValue)}%
 					</p>
-				)}
-			</Flex>
-		</Flex>
+				</Flex>
+			</>
+		)}
 	</Card>
 );
-
-FinanceCard.route = "/home";
 
 export type FinanceCardProps = Props;
 

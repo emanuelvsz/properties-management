@@ -12,14 +12,30 @@ class ExpenseListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
-        operation_summary="List all expenses",
+        operation_summary="List all user expenses",
         responses={200: ExpenseSerializer(many=True)},
         tags=[EXPENSE_TAG_IDENTIFIER],
     )
-    def get(self, _):
-        expenses = ExpenseService.get_expenses()
-        serializer = ExpenseSerializer(expenses, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        date_by = request.query_params.get("date_by", "month")
+        q = request.query_params.get("q")
+        payed = request.query_params.get("payed", None)
+        order_by = request.query_params.get("order_by", "newest")
+        if date_by not in ["week", "month", "year"]:
+            return Response(
+                {"detail": "date_by must be 'week', 'month', or 'year'."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            expenses = ExpenseService.get_expenses(
+                request.user, date_by, q, payed, order_by
+            )
+            serializer = ExpenseSerializer(expenses, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @swagger_auto_schema(
         operation_summary="Create a new expense for a property",

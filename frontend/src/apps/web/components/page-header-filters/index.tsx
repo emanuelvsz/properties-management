@@ -13,6 +13,7 @@ interface Props {
 	selectPlaceholder?: string;
 	selectValue?: string;
 	disabled: boolean;
+	hideActions: boolean;
 }
 
 const inputHeight = 35;
@@ -51,9 +52,14 @@ const PageHeaderFilters = ({
 	selectValue,
 	searchPlaceholder = "Search something...",
 	selectPlaceholder,
-	disabled
+	disabled,
+	hideActions
 }: Props) => {
 	const intl = useIntl();
+
+	if (hideActions) {
+		return null;
+	}
 
 	return (
 		<Flex gap={10} align="center">
@@ -87,15 +93,6 @@ const PageHeaderFilters = ({
 				css={styles.select}
 				disabled={disabled}
 			/>
-			{/* 
-			<Tooltip title={intl.formatMessage({ id: 'component.page-header-filters.filters' })}>
-				<Button
-				icon={<FilterOutlined />}
-				onClick={onFilterClick}
-				css={styles.button}
-				/>
-			</Tooltip> 
-	  */}
 			<Tooltip
 				title={intl.formatMessage({
 					id: "component.page-header-filters.reload"

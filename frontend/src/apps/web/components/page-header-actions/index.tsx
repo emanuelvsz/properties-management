@@ -10,6 +10,7 @@ interface Props {
 	onAddClick?: () => void;
 	onOrderByChange?: (orderBy: string) => void;
 	disabled: boolean;
+	disableActions: boolean;
 }
 
 const dropdownHeight = 35;
@@ -42,7 +43,8 @@ const styles = {
 const PageHeaderActions = ({
 	onAddClick,
 	onOrderByChange,
-	disabled
+	disabled,
+	disableActions
 }: Props) => {
 	const [selectedKey, setSelectedKey] = useState("newest");
 	const intl = useIntl();
@@ -109,6 +111,10 @@ const PageHeaderActions = ({
 		setSelectedKey(key);
 		onOrderByChange?.(key);
 	};
+
+	if (disableActions) {
+		return null;
+	}
 
 	return (
 		<Flex css={styles.container} gap={10}>

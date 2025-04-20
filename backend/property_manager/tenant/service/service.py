@@ -1,10 +1,30 @@
 from tenant.models import Tenant
-
+from django.db.models import Q
 
 class TenantService:
     @staticmethod
-    def list_tenants():
-        return Tenant.objects.all()
+    def list_tenants(
+        user,
+        q=None,
+        order_by=None,
+    ):
+        queryset = Tenant.objects.filter(user=user)
+
+        if q:
+            queryset = queryset.filter(
+                Q(name__icontains=q)
+                | Q(phone__icontains=q)
+                | Q(email__icontains=q)
+            )
+
+        if order_by:
+            if order_by == "newest":
+                queryset = queryset.order_by("-created_at")
+            elif order_by == "oldest":
+                queryset = queryset.order_by("created_at")
+        else:
+            queryset = queryset.order_by("-id")
+        return queryset
 
     @staticmethod
     def get_tenant_by_id(tenant_id):

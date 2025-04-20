@@ -1,16 +1,30 @@
 import { css } from "@emotion/react";
-import { Button, DatePicker, DatePickerProps, Flex } from "antd";
+import { Button, Card, DatePicker, DatePickerProps, Flex } from "antd";
 
-import FinanceCard from "./components/finance-card";
-
+import FinanceCard, { FinanceCardProps } from "./components/finance-card";
 import FinanceBarChartCard from "./components/finance-bar-chart-card";
 import FinancePieChartCard from "./components/finance-pie-chart-card";
 import BoardPageHeader from "./components/finance-bar-panel";
-import { financeCardItems } from "./data";
+
+import arrowDownIcon from "@web/assets/icons/fi-rs-chat-arrow-down.svg";
+import arrowUpIcon from "@web/assets/icons/fi-rs-chat-arrow-grow.svg";
+import moneyIcon from "@web/assets/icons/fi-rs-money.svg";
 import shareIcon from "@web/assets/icons/fi-rs-share.svg";
 import downloadIcon from "@web/assets/icons/fi-rs-download.svg";
+
 import { THEME_COLORS } from "@web/config/theme";
 import { useIntl } from "react-intl";
+import { useListDashboardReturnSummary } from "@web/lib/contexts/dashboard/hooks";
+import { useEffect, useState } from "react";
+import { ReturnsSummary } from "@core/domain/models/returns-summary";
+import ExpenseListRow from "../property/components/expense-list-row";
+import { useListExpenses } from "@web/lib/contexts/expense/hooks";
+import { Expense } from "@core/domain/models/expense";
+import {
+	ExpenseFilters,
+	ExpenseFiltersOrderBy
+} from "@core/domain/types/filters/expense-filters";
+import { useSearchParams } from "react-router-dom";
 
 const styles = {
 	container: css`
@@ -41,28 +55,118 @@ const styles = {
 	`,
 	chartCard: css`
 		width: 100%;
+	`,
+	cardIcon: css`
+		height: 30px;
+		color: ${THEME_COLORS.PRIMARY_COLOR} !important;
 	`
-};
-
-const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
-	console.log(date, dateString);
 };
 
 const HomePage = () => {
 	const intl = useIntl();
+	const [returnSummary, setReturnSummary] = useState<ReturnsSummary | null>(
+		null
+	);
+	const [loadingReturnSummary, setLoadingReturnSummary] =
+		useState<boolean>(false);
+	const [loadingExpenses, setLoadingExpenses] = useState<boolean>(false);
+	const [expenses, setExpenses] = useState<Expense[]>([]);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const listReturnSummary = useListDashboardReturnSummary();
+	const listExpenses = useListExpenses();
+
+	const financeCardItems: FinanceCardProps[] = [
+		{
+			title: "Gross Return",
+			extraColor: "green",
+			extraValue: 0,
+			value: returnSummary?.gross || 0,
+			icon: <img src={moneyIcon} css={styles.cardIcon} />
+		},
+		{
+			title: "Expenses",
+			extraColor: "red",
+			extraValue: 0,
+			value: returnSummary?.expenses || 0,
+			icon: <img src={arrowDownIcon} css={styles.cardIcon} />
+		},
+		{
+			title: "Liquid Return",
+			extraColor: "green",
+			extraValue: 0,
+			value: returnSummary?.liquid || 0,
+			icon: <img src={arrowUpIcon} css={styles.cardIcon} />
+		}
+	];
+
+	const handleDateChange: DatePickerProps["onChange"] = (date, dateString) => {
+		if (!date) return;
+		const newParams = new URLSearchParams(searchParams);
+		newParams.set("month", date.format("YYYY-MM"));
+		setSearchParams(newParams);
+	};
+
+	const handleFetchReturnSummary = async () => {
+		setLoadingReturnSummary(true);
+		const data = await listReturnSummary();
+		setLoadingReturnSummary(false);
+		setReturnSummary(data);
+	};
+
+	const handleFetchExpenses = async () => {
+		const q = searchParams.get("q") ?? "";
+		const order_by = searchParams.get("order_by") ?? "newest";
+		const month = searchParams.get("month") ?? undefined;
+		console.log(month);
+
+		const filters: ExpenseFilters = {
+			q,
+			orderBy: order_by as ExpenseFiltersOrderBy,
+			payed: false
+		} as ExpenseFilters;
+
+		console.log("Fetching expenses with filters:", filters);
+
+		try {
+			const result = await listExpenses(undefined, filters);
+			setLoadingExpenses(false);
+			if (!result) return;
+			setExpenses(result);
+		} catch (error) {
+			console.error("Erro ao buscar despesas do imóvel:", error);
+		} finally {
+			setLoadingExpenses(false);
+		}
+	};
+
+	useEffect(() => {
+		handleFetchReturnSummary();
+		handleFetchExpenses();
+	}, [listReturnSummary, listExpenses]);
+
+	useEffect(() => {
+		const orderByParam = searchParams.get("order_by");
+		if (!orderByParam) {
+			const newParams = new URLSearchParams(searchParams);
+			newParams.set("order_by", "newest");
+			setSearchParams(newParams);
+		}
+	}, []);
+
+	useEffect(() => {
+		handleFetchExpenses();
+	}, [searchParams]);
 
 	return (
 		<Flex css={styles.container} vertical gap={10} flex={1}>
 			<BoardPageHeader
 				title={intl.formatMessage({ id: "page.home.title" })}
 				prefix={
-					<Flex gap={15}>
-						<DatePicker
-							css={styles.filterInput}
-							onChange={onDateChange}
-							picker="month"
-						/>
-					</Flex>
+					<DatePicker
+						css={styles.filterInput}
+						onChange={handleDateChange}
+						picker="month"
+					/>
 				}
 				extra={
 					<Flex gap={10} justify="space-between">
@@ -77,7 +181,7 @@ const HomePage = () => {
 					</Flex>
 				}
 			/>
-			<Flex gap={15} css={styles.cardList}>
+			<Flex gap={10} css={styles.cardList}>
 				{financeCardItems.map((item, index) => (
 					<FinanceCard
 						key={index}
@@ -86,13 +190,21 @@ const HomePage = () => {
 						extraValue={item.extraValue}
 						value={item.value}
 						icon={item.icon}
+						loading={loadingReturnSummary}
 					/>
 				))}
 			</Flex>
-			<Flex gap={15} css={styles.cardList}>
+			<ExpenseListRow
+				expenses={expenses}
+				loading={loadingExpenses}
+				hideActions={true}
+				title="Pending Expenses"
+				onReloadExpenses={handleFetchExpenses}
+			/>
+			{/* <Flex gap={10} css={styles.cardList}>
 				<FinanceBarChartCard />
 				<FinancePieChartCard />
-			</Flex>
+			</Flex> */}
 		</Flex>
 	);
 };

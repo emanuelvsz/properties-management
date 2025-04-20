@@ -44,7 +44,7 @@ class CreatePropertySerializer(serializers.Serializer):
     surface = serializers.FloatField()
     rent = serializers.FloatField()
     furnished = serializers.BooleanField(default=False)
-    description = serializers.CharField()
+    description = serializers.CharField(required=False)
     location = serializers.CharField()
 
 

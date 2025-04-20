@@ -10,6 +10,8 @@ import AuthProvider from "./lib/contexts/auth/provider";
 import PropertyProvider from "./lib/contexts/property/provider";
 import ExpenseProvider from "./lib/contexts/expense/provider";
 import I18nProvider from "./lib/contexts/i18n/provider";
+import DashboardProvider from "./lib/contexts/dashboard/provider";
+import TenantProvider from "./lib/contexts/tenant/provider";
 
 const styles = {
 	antAppRoot: css`
@@ -25,7 +27,11 @@ const App = () => (
 					<AuthProvider usecase={DIContainer.getAuthUseCase()}>
 						<PropertyProvider usecase={DIContainer.getPropertyUseCase()}>
 							<ExpenseProvider usecase={DIContainer.getExpenseUseCase()}>
-								<Scaffold />
+								<DashboardProvider usecase={DIContainer.getDashboardUseCase()}>
+									<TenantProvider usecase={DIContainer.getTenantUseCase()}>
+										<Scaffold />
+									</TenantProvider>
+								</DashboardProvider>
 							</ExpenseProvider>
 						</PropertyProvider>
 					</AuthProvider>

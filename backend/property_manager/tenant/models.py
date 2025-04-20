@@ -1,6 +1,7 @@
 from django.db import models
 from property_manager.models import BaseModel
 import uuid
+from django.conf import settings
 
 
 class Tenant(BaseModel):
@@ -9,6 +10,7 @@ class Tenant(BaseModel):
     birth_date = models.DateField()
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "tenant"

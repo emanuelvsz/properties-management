@@ -159,14 +159,6 @@ const SideMenu = ({ account }: Props) => {
 			icon: userIconWhite,
 			activeIcon: userIcon,
 			url: "/tenants"
-		},
-		{
-			text: intl.formatMessage({
-				id: "component.side-menu.section.pages.item.payments"
-			}),
-			icon: homeIconWhite,
-			activeIcon: homeIcon,
-			url: "/tenants"
 		}
 	];
 

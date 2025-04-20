@@ -20,7 +20,7 @@ const ExpenseProvider = ({
 	const { message } = App.useApp();
 
 	const list = useCallback(
-		async (propertyId: string, filters?: ExpenseFilters) => {
+		async (propertyId?: string, filters?: ExpenseFilters) => {
 			try {
 				const expenses = await usecase.list(propertyId, filters);
 				return expenses;

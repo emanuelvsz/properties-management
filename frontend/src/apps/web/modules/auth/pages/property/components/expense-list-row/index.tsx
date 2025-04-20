@@ -7,7 +7,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import { ColumnsType } from "antd/es/table";
 import { Expense } from "@core/domain/models/expense";
-import { THEME_COLORS } from "@web/config/theme";
 
 import Table from "@web/components/table";
 import ExpenseModalForm from "@web/components/expense-modal-form";
@@ -25,19 +24,20 @@ import useCheckOrderByParam from "@web/lib/hooks/params/use-check-order-by-param
 
 interface Props {
 	expenses: Expense[];
-	loadingExpenses?: boolean;
-	onReloadExpenses: () => void;
-	onSelectChange: (value: string) => void;
-	onSearchChange: (value: string) => void;
-	searchValue: string;
-	selectValue: string;
+	loading?: boolean;
+	onReloadExpenses?: () => void;
+	onSelectChange?: (value: string) => void;
+	onSearchChange?: (value: string) => void;
+	searchValue?: string;
+	selectValue?: string;
+	hideActions: boolean;
+	title: string;
 }
 
 const PAGE_SIZE = 5;
 
 const styles = {
-	container: (itemsLengh: number) => css`
-		${itemsLengh > 0 ? "padding-top: 1rem;" : "padding-block: 1rem;"}
+	container: css`
 		border-radius: 6px;
 	`,
 	tableItemExpanded: css`
@@ -47,12 +47,14 @@ const styles = {
 
 const ExpenseListRow = ({
 	expenses,
-	loadingExpenses,
+	loading: loadingExpenses,
 	onReloadExpenses,
 	onSelectChange,
 	onSearchChange,
 	searchValue,
-	selectValue
+	selectValue,
+	hideActions,
+	title
 }: Props) => {
 	const intl = useIntl();
 	const { id: propertyId } = useParams<{ id: string }>();
@@ -65,7 +67,9 @@ const ExpenseListRow = ({
 
 	const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-	const [editingExpense, setEditingExpense] = useState<Expense | undefined>(undefined);
+	const [editingExpense, setEditingExpense] = useState<Expense | undefined>(
+		undefined
+	);
 
 	const [loading, setLoading] = useState({
 		create: false,
@@ -80,7 +84,9 @@ const ExpenseListRow = ({
 		setLoading((prev) => ({ ...prev, delete: true }));
 		await deleteExpense(id);
 		setLoading((prev) => ({ ...prev, delete: false }));
-		onReloadExpenses();
+		if (onReloadExpenses) {
+			onReloadExpenses();
+		}
 	};
 
 	const handleAddExpense = async (values: any) => {
@@ -89,7 +95,9 @@ const ExpenseListRow = ({
 		await createExpense(expense);
 		setLoading((prev) => ({ ...prev, create: false }));
 		setIsAddModalVisible(false);
-		onReloadExpenses();
+		if (onReloadExpenses) {
+			onReloadExpenses();
+		}
 	};
 
 	const handleUpdateExpense = async (values: any) => {
@@ -97,10 +105,12 @@ const ExpenseListRow = ({
 		const expense = Expense.fromForm(values);
 		setLoading((prev) => ({ ...prev, update: true }));
 		await updateExpense(expense, editingExpense.id);
+		if (onReloadExpenses) {
+			onReloadExpenses();
+		}
 		setLoading((prev) => ({ ...prev, update: false }));
 		setIsEditModalVisible(false);
 		setEditingExpense(undefined);
-		onReloadExpenses();
 	};
 
 	const openEditModal = (expense: Expense) => {
@@ -197,14 +207,12 @@ const ExpenseListRow = ({
 	}, [listExpenseTypes]);
 
 	return (
-		<Card>
+		<Card loading={loadingExpenses}>
 			<Row gutter={24}>
 				<Col span={24}>
-					<Flex css={styles.container(expenses.length)} vertical gap={10}>
+					<Flex css={styles.container} vertical gap={10}>
 						<BoardPageHeader
-							title={intl.formatMessage({
-								id: "page.property.component.expense-list-row.board-page-header.title"
-							})}
+							title={title}
 							prefix={
 								<PageHeaderFilters
 									onReloadClick={onReloadExpenses}
@@ -223,6 +231,7 @@ const ExpenseListRow = ({
 										!loadingExpenses &&
 										checkOrderByParam
 									}
+									hideActions={hideActions}
 								/>
 							}
 							extra={
@@ -230,6 +239,7 @@ const ExpenseListRow = ({
 									onAddClick={() => setIsAddModalVisible(true)}
 									onOrderByChange={() => {}}
 									disabled={expenses.length === 0 && !loadingExpenses}
+									disableActions={hideActions}
 								/>
 							}
 						/>

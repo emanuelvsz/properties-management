@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
-from django.db.models import Sum
 from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 
 

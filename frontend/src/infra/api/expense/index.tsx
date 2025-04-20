@@ -8,16 +8,26 @@ import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 class ExpenseAPI implements ExpenseRepository {
 	mapper = new ExpenseMapper();
 
-	async list(propertyId: string, filters?: ExpenseFilters): Promise<Expense[]> {
-		const response = await BackendClient.get<DTO[]>(
-			`/properties/${propertyId}/expenses`,
-			{
+	async list(
+		propertyId?: string,
+		filters?: ExpenseFilters
+	): Promise<Expense[]> {
+		if (propertyId) {
+			const response = await BackendClient.get<DTO[]>(
+				`/properties/${propertyId}/expenses`,
+				{
+					params: filters
+				}
+			);
+			const expensesDTOs = response.data;
+			return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
+		} else {
+			const response = await BackendClient.get<DTO[]>("/expenses", {
 				params: filters
-			}
-		);
-
-		const expensesDTOs = response.data;
-		return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
+			});
+			const expensesDTOs = response.data;
+			return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
+		}
 	}
 
 	async create(data: Expense): Promise<void> {

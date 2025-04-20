@@ -3,7 +3,7 @@ from dashboard.views import ReturnsSummaryView
 
 urlpatterns = [
     path(
-        "dashboard/returns/summary/",
+        "dashboard/returns/summary",
         ReturnsSummaryView.as_view(),
         name="returns-summary",
     ),

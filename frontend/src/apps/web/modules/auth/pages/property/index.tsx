@@ -12,7 +12,7 @@ import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 import ChartListRow from "./components/chart-list-row";
 import DetailsRow from "./components/details-row";
 import { ExpenseFiltersOrderBy } from "@core/domain/types/filters/expense-filters";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const { Text } = Typography;
 
@@ -45,9 +45,12 @@ const PropertyPage = () => {
 	const [loading, setLoading] = useState(true);
 	const [loadingExpenses, setLoadingExpenses] = useState(true);
 	const [searchParams, setSearchParams] = useSearchParams();
+	const intl = useIntl();
 
 	const handleListExpenses = async () => {
-		if (!id) return;
+		if (!id) {
+			return;
+		}
 		const q = searchParams.get("q") ?? "";
 		const order_by = searchParams.get("order_by") ?? "newest";
 		const payedParam = searchParams.get("payed");
@@ -170,12 +173,16 @@ const PropertyPage = () => {
 			<DetailsRow property={property} />
 			<ExpenseListRow
 				expenses={expenses}
-				loadingExpenses={loadingExpenses}
+				loading={loadingExpenses}
 				onReloadExpenses={handleListExpenses}
 				onSearchChange={handleSearchChange}
 				onSelectChange={handlePayedSelectChange}
 				searchValue={searchParams.get("q") ?? ""}
 				selectValue={searchParams.get("payed") ?? ""}
+				hideActions={false}
+				title={intl.formatMessage({
+					id: "page.property.component.expense-list-row.board-page-header.title"
+				})}
 			/>
 			<ChartListRow expenses={expenses} />
 		</Flex>

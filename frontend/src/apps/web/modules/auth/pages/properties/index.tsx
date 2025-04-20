@@ -34,26 +34,22 @@ const styles = {
 	`,
 	title: css`
 		color: ${THEME_COLORS.PRIMARY_COLOR};
+		font-weight: 500;
 		cursor: pointer;
-		display: -webkit-box;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	`,
-
-	text: css`
-		font-size: 14px;
-		display: -webkit-box;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
+		font-size: 16px;
+		transition: color 0.2s;
+		
+		&:hover {
+			color: ${THEME_COLORS.SECONDARY_COLOR}; // ou outro highlight
+		}
 	`,
 	location: css`
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		font-weight: 500;
-		font-size: 15px;
+		font-size: 14px;
+		color: #666;
+	`,
+	description: css`
+		font-size: 14px;
+		color: #999;
 	`
 };
 
@@ -180,18 +176,14 @@ const PropertiesPage = () => {
 			key: "title",
 			render: (_, data: Property) => (
 				<Flex vertical>
-					<h4
-						css={[styles.clearWhiteSpaces, styles.title]}
-						onClick={() => {
-							navigate(`/properties/${data.id}`);
-						}}
+					<span
+						css={styles.title}
+						onClick={() => navigate(`/properties/${data.id}`)}
 					>
 						{data.title}
-					</h4>
-					<p css={[styles.clearWhiteSpaces, styles.location]}>
-						{data.location}
-					</p>
-					<p css={[styles.clearWhiteSpaces, styles.text]}>{data.description}</p>
+					</span>
+					<span css={styles.location}>{data.location}</span>
+					<span css={styles.description}>{data.description}</span>
 				</Flex>
 			),
 			width: "30%"
@@ -244,7 +236,6 @@ const PropertiesPage = () => {
 				value ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>
 		},
 		{
-			title: intl.formatMessage({ id: "page.properties.table.item.delete" }),
 			dataIndex: "delete",
 			key: "delete",
 			render: (_, { id }) => (
@@ -297,6 +288,7 @@ const PropertiesPage = () => {
 								id: "page.properties.page-header-filters.search.placeholder"
 							})}
 							disabled={properties.length === 0 && loadingProperties === false}
+							hideActions={false}
 						/>
 					}
 					extra={
@@ -304,6 +296,7 @@ const PropertiesPage = () => {
 							onAddClick={handleOpenAddModal}
 							onOrderByChange={handleOrderChange}
 							disabled={properties.length === 0 && loadingProperties === false}
+							disableActions={false}
 						/>
 					}
 				/>

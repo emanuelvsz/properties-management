@@ -6,7 +6,7 @@ import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 class ExpenseService implements ExpenseUseCase {
 	constructor(protected readonly adapter: ExpenseRepository) {}
 
-	async list(propertyId: string, filters?: ExpenseFilters): Promise<Expense[]> {
+	async list(propertyId?: string, filters?: ExpenseFilters): Promise<Expense[]> {
 		 return await this.adapter.list(propertyId, filters)
 	}
 

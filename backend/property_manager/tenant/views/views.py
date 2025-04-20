@@ -16,8 +16,11 @@ class TenantListCreateView(APIView):
         responses={200: TenantSerializer(many=True)},
         tags=[TENANT_TAG_IDENTIFIER],
     )
-    def get(self, _):
-        tenants = TenantService.list_tenants()
+    def get(self, request):
+        user = request.user
+        q = request.query_params.get("q")
+        order_by = request.query_params.get("order_by")
+        tenants = TenantService.list_tenants(user, q, order_by)
         serializer = TenantSerializer(tenants, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
