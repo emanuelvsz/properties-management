@@ -7,6 +7,10 @@ interface TenantRepository {
 	mapper: Mapper<Tenant>;
 
     list(filters?: DefaultFilters): Promise<Tenant[]>;
+    delete(id: string): Promise<void>;
+	create(data: Tenant): Promise<void>;
+    update(data: Tenant): Promise<void>;
+	listByID(id: string): Promise<Tenant>
 }
 
 export default TenantRepository;

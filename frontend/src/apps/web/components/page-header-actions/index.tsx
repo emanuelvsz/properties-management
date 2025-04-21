@@ -2,15 +2,21 @@
 import { css } from "@emotion/react";
 import { Button, Dropdown, Flex, MenuProps, Tooltip } from "antd";
 import { PlusOutlined, DownOutlined } from "@ant-design/icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { THEME_COLORS } from "@web/config/theme";
 import { useIntl } from "react-intl";
 
+interface OrderByOption {
+	key: string;
+	label: string;
+}
+
 interface Props {
 	onAddClick?: () => void;
-	onOrderByChange?: (orderBy: string) => void;
-	disabled: boolean;
-	disableActions: boolean;
+	onOrderByChange?: (value: string) => void;
+	orderByOptions?: OrderByOption[];
+	disabled?: boolean;
+	disableActions?: boolean;
 }
 
 const dropdownHeight = 35;
@@ -43,69 +49,29 @@ const styles = {
 const PageHeaderActions = ({
 	onAddClick,
 	onOrderByChange,
-	disabled,
-	disableActions
+	orderByOptions,
+	disabled = false,
+	disableActions = false
 }: Props) => {
-	const [selectedKey, setSelectedKey] = useState("newest");
 	const intl = useIntl();
 
-	const sortOptions = useMemo(
-		() => [
-			{
-				key: "newest",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.newest"
-				})
-			},
-			{
-				key: "oldest",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.oldest"
-				})
-			},
-			{
-				key: "price_high",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.price_high"
-				})
-			},
-			{
-				key: "price_low",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.price_low"
-				})
-			},
-			{
-				key: "most_bedrooms",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.most_bedrooms"
-				})
-			},
-			{
-				key: "most_bathrooms",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.most_bathrooms"
-				})
-			},
-			{
-				key: "less_bedrooms",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.less_bedrooms"
-				})
-			},
-			{
-				key: "less_bathrooms",
-				label: intl.formatMessage({
-					id: "component.page-header-actions.sort.less_bathrooms"
-				})
-			}
-		],
-		[intl]
-	);
+	const hasOptions = !!orderByOptions?.length;
 
-	const keyToLabelMap = Object.fromEntries(
-		sortOptions.map((item) => [item.key, item.label])
-	);
+	const [selectedKey, setSelectedKey] = useState<string>("");
+
+	// Atualiza apenas quando o componente for montado ou quando a lista de opções mudar.
+	useEffect(() => {
+		if (hasOptions && !selectedKey) {
+			setSelectedKey(orderByOptions[0].key);
+		}
+	}, [hasOptions, orderByOptions, selectedKey]);
+
+	const keyToLabelMap = useMemo(() => {
+		if (!hasOptions) return {};
+		return Object.fromEntries(
+			orderByOptions.map((item) => [item.key, item.label])
+		);
+	}, [orderByOptions]);
 
 	const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
 		setSelectedKey(key);
@@ -120,14 +86,16 @@ const PageHeaderActions = ({
 		<Flex css={styles.container} gap={10}>
 			<Dropdown
 				menu={{
-					items: sortOptions as unknown as MenuProps["items"],
+					items: hasOptions
+						? (orderByOptions as unknown as MenuProps["items"])
+						: [],
 					onClick: handleMenuClick
 				}}
 				trigger={["click"]}
-				disabled={disabled}
+				disabled={!hasOptions || disabled}
 			>
 				<Button css={styles.dropdownButton}>
-					{keyToLabelMap[selectedKey]} <DownOutlined />
+					{keyToLabelMap[selectedKey] || "-"} <DownOutlined />
 				</Button>
 			</Dropdown>
 			<Tooltip

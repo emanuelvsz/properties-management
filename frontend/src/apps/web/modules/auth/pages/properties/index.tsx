@@ -38,7 +38,7 @@ const styles = {
 		cursor: pointer;
 		font-size: 16px;
 		transition: color 0.2s;
-		
+
 		&:hover {
 			color: ${THEME_COLORS.SECONDARY_COLOR}; // ou outro highlight
 		}
@@ -267,6 +267,17 @@ const PropertiesPage = () => {
 		}
 	}, []);
 
+	const orderByOptions = [
+		{ key: "newest", label: "Mais recentes" },
+		{ key: "oldest", label: "Mais antigos" },
+		{ key: "price_high", label: "Maior preço" },
+		{ key: "price_low", label: "Menor preço" },
+		{ key: "most_bedrooms", label: "Mais quartos" },
+		{ key: "less_bedrooms", label: "Menos quartos" },
+		{ key: "most_bathrooms", label: "Mais banheiros" },
+		{ key: "less_bathrooms", label: "Menos banheiros" }
+	];
+
 	return (
 		<>
 			<Flex css={styles.container} vertical gap={10} flex={1}>
@@ -287,16 +298,13 @@ const PropertiesPage = () => {
 							searchPlaceholder={intl.formatMessage({
 								id: "page.properties.page-header-filters.search.placeholder"
 							})}
-							disabled={properties.length === 0 && loadingProperties === false}
-							hideActions={false}
 						/>
 					}
 					extra={
 						<PageHeaderActions
 							onAddClick={handleOpenAddModal}
 							onOrderByChange={handleOrderChange}
-							disabled={properties.length === 0 && loadingProperties === false}
-							disableActions={false}
+							orderByOptions={orderByOptions}
 						/>
 					}
 				/>

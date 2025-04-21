@@ -1,6 +1,7 @@
 from tenant.models import Tenant
 from django.db.models import Q
 
+
 class TenantService:
     @staticmethod
     def list_tenants(
@@ -12,9 +13,7 @@ class TenantService:
 
         if q:
             queryset = queryset.filter(
-                Q(name__icontains=q)
-                | Q(phone__icontains=q)
-                | Q(email__icontains=q)
+                Q(name__icontains=q) | Q(phone__icontains=q) | Q(email__icontains=q)
             )
 
         if order_by:
@@ -44,6 +43,7 @@ class TenantService:
 
     @staticmethod
     def delete_tenant(tenant_id):
-        tenant = Tenant.objects.get(pk=tenant_id)
+        print("tenant: ", tenant_id)
+        tenant = Tenant.objects.get(id=tenant_id)
         tenant.delete()
         return {"detail": "Tenant deleted successfully"}

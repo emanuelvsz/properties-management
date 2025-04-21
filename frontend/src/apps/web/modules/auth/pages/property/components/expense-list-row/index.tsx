@@ -28,6 +28,7 @@ interface Props {
 	onReloadExpenses?: () => void;
 	onSelectChange?: (value: string) => void;
 	onSearchChange?: (value: string) => void;
+	onOrderByChange?: (value: string) => void;
 	searchValue?: string;
 	selectValue?: string;
 	hideActions: boolean;
@@ -51,6 +52,7 @@ const ExpenseListRow = ({
 	onReloadExpenses,
 	onSelectChange,
 	onSearchChange,
+	onOrderByChange,
 	searchValue,
 	selectValue,
 	hideActions,
@@ -159,14 +161,12 @@ const ExpenseListRow = ({
 				}).format(expense.expenseValue)
 		},
 		{
-			title: intl.formatMessage({
-				id: "page.property.component.expense-list-row.table.item.updated-at"
-			}),
-			dataIndex: "updated_at",
-			key: "updated_at",
+			title: "Due Date",
+			dataIndex: "due_date",
+			key: "due_date",
 			width: 150,
 			render: (_, expense) => (
-				<p>{new Date(expense.updatedAt).toLocaleDateString()}</p>
+				<p>{new Date(expense.dueDate).toLocaleDateString()}</p>
 			)
 		},
 		{
@@ -206,6 +206,15 @@ const ExpenseListRow = ({
 		fetchExpenseTypes();
 	}, [listExpenseTypes]);
 
+	const orderByOptions = [
+		{ key: "newest", label: "Mais recentes" },
+		{ key: "oldest", label: "Mais antigos" },
+		{ key: "highest_value", label: "Maior valor" },
+		{ key: "lowest_value", label: "Menor valor" },
+		{ key: "due_soon", label: "Vencimento mais próximo" },
+		{ key: "due_late", label: "Vencimento mais distante" }
+	];
+
 	return (
 		<Card loading={loadingExpenses}>
 			<Row gutter={24}>
@@ -237,9 +246,10 @@ const ExpenseListRow = ({
 							extra={
 								<PageHeaderActions
 									onAddClick={() => setIsAddModalVisible(true)}
-									onOrderByChange={() => {}}
+									onOrderByChange={onOrderByChange}
 									disabled={expenses.length === 0 && !loadingExpenses}
 									disableActions={hideActions}
+									orderByOptions={orderByOptions}
 								/>
 							}
 						/>

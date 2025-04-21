@@ -4,7 +4,7 @@ from tenant.views import TenantListCreateView, TenantDetailView
 urlpatterns = [
     path("tenants", TenantListCreateView.as_view(), name="tenant-list"),
     path(
-        "tenants/<int:id>",
+        "tenants/<uuid:pk>",
         TenantDetailView.as_view(),
         name="tenant-detail",
     ),

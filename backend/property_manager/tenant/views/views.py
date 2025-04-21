@@ -31,7 +31,10 @@ class TenantListCreateView(APIView):
         tags=[TENANT_TAG_IDENTIFIER],
     )
     def post(self, request):
-        tenant = TenantService.create_tenant(request.data)
+        user = request.user
+        data = request.data
+        data["user_id"] = user.id
+        tenant = TenantService.create_tenant(data)
         serializer = TenantSerializer(tenant)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -44,7 +47,7 @@ class TenantDetailView(APIView):
         responses={200: TenantSerializer()},
         tags=[TENANT_TAG_IDENTIFIER],
     )
-    def get(self, _, pk):
+    def get(self, request, pk):
         tenant = TenantService.get_tenant_by_id(pk)
         serializer = TenantSerializer(tenant)
         return Response(serializer.data, status=status.HTTP_200_OK)

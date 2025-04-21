@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Popconfirm, Tag, Tooltip } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Flex, Popconfirm, Tag } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { css } from "@emotion/react";
 import { useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
@@ -9,12 +9,18 @@ import BoardPageHeader from "../home/components/finance-bar-panel";
 import PageHeaderFilters from "../../../../components/page-header-filters";
 import PageHeaderActions from "../../../../components/page-header-actions";
 
-import { useListTenants } from "@web/lib/contexts/tenant/hooks";
+import {
+	useListTenants,
+	useDeleteTenant,
+	useCreateTenant,
+	useUpdateTenant
+} from "@web/lib/contexts/tenant/hooks";
 import { Tenant } from "@core/domain/models/tenant";
 import { THEME_COLORS } from "@web/config/theme";
 
 import Table from "@web/components/table";
 import { useIntl } from "react-intl";
+import TenantModalForm from "@web/components/tenant-modal-form";
 
 const styles = {
 	container: css`
@@ -55,28 +61,42 @@ const TenantsPage = () => {
 	const [tenants, setTenants] = useState<Tenant[]>([]);
 	const [loadingTenants, setLoadingTenants] = useState(false);
 	const [creatingTenant, setCreatingTenant] = useState(false);
+	const [updatingTenant, setUpdatingTenant] = useState(false);
 	const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+	const [editingTenant, setEditingTenant] = useState<Tenant | undefined>(
+		undefined
+	);
 
 	const intl = useIntl();
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const listTenants = useListTenants();
-	// const deleteTenant = useDeleteTenant();
-	// const createTenant = useCreateTenant();
+	const deleteTenant = useDeleteTenant();
+	const createTenant = useCreateTenant();
+	const updateTenant = useUpdateTenant();
 
 	const handleFetchTenants = async () => {
 		setLoadingTenants(true);
-		const q = searchParams.get("q") ?? "";
-		const response = await listTenants({ q });
+		const q = searchParams.get("q");
+		const order_by = searchParams.get("order_by");
+		const filters: Record<string, any> = {};
+		if (q && q.trim() !== "") {
+			filters["q"] = q;
+		}
+		if (order_by) {
+			filters["order_by"] = order_by;
+		}
+		const response = await listTenants(filters);
 		setLoadingTenants(false);
 		if (response) setTenants(response);
 	};
 
 	const handleDelete = async (id: string) => {
-		// setLoadingTenants(true);
-		// await deleteTenant(id);
-		// setLoadingTenants(false);
-		// await handleFetchTenants();
+		setLoadingTenants(true);
+		await deleteTenant(id);
+		setLoadingTenants(false);
+		await handleFetchTenants();
 	};
 
 	const handleSearchChange = (value: string) => {
@@ -86,22 +106,45 @@ const TenantsPage = () => {
 		setSearchParams(newParams);
 	};
 
-	const handleOpenAddModal = () => setIsAddModalVisible(true);
-	const handleCloseAddModal = () => setIsAddModalVisible(false);
+	const handleOrderByChange = (value: string) => {
+		const newParams = new URLSearchParams(searchParams);
+		if (value) {
+			newParams.set("order_by", value);
+		} else {
+			newParams.delete("order_by");
+		}
+		setSearchParams(newParams);
+	};
 
 	const handleAddTenant = async (values: any) => {
-		// const tenant = Tenant.fromForm(values);
-		// setCreatingTenant(true);
-		// await createTenant(tenant);
-		// setCreatingTenant(false);
-		// handleCloseAddModal();
-		// await handleFetchTenants();
+		const tenant = Tenant.fromForm(values);
+		setCreatingTenant(true);
+		await createTenant(tenant);
+		setCreatingTenant(false);
+		setIsAddModalVisible(false);
+		await handleFetchTenants();
+	};
+
+	const handleEditTenant = async (values: any) => {
+		const tenant = Tenant.fromForm(values);
+		console.log("Tenant: ", tenant.toJSON())
+		setUpdatingTenant(true);
+		await updateTenant(tenant);
+		setUpdatingTenant(false);
+		setIsEditModalVisible(false);
+		await handleFetchTenants();
 	};
 
 	const rowSelection = {
 		selectedRowKeys,
 		onChange: (newSelectedRowKeys: React.Key[]) =>
-			setSelectedRowKeys(newSelectedRowKeys)
+			setSelectedRowKeys(newSelectedRowKeys),
+		renderCell: (
+			checked: boolean,
+			record: Tenant,
+			index: number,
+			originNode: React.ReactNode
+		) => <Flex style={{ marginLeft: 15 }}>{originNode}</Flex>
 	};
 
 	const tenantTableFields: ColumnsType<Tenant> = [
@@ -131,17 +174,28 @@ const TenantsPage = () => {
 		{
 			dataIndex: "actions",
 			key: "actions",
-			render: (_, { id }) => (
-				<Popconfirm
-					title={intl.formatMessage({ id: "general.delete.message" })}
-					onConfirm={() => handleDelete(id)}
-					okText={intl.formatMessage({ id: "general.submit" })}
-					cancelText={intl.formatMessage({ id: "general.cancel" })}
-				>
-					<Button type="text" danger>
-						<DeleteOutlined />
+			render: (_, data) => (
+				<>
+					<Popconfirm
+						title={intl.formatMessage({ id: "general.delete.message" })}
+						onConfirm={() => handleDelete(data.id)}
+						okText={intl.formatMessage({ id: "general.submit" })}
+						cancelText={intl.formatMessage({ id: "general.cancel" })}
+					>
+						<Button type="text" danger>
+							<DeleteOutlined />
+						</Button>
+					</Popconfirm>
+					<Button
+						type="text"
+						onClick={() => {
+							setEditingTenant(data);
+							setIsEditModalVisible(true);
+						}}
+					>
+						<EditOutlined />
 					</Button>
-				</Popconfirm>
+				</>
 			)
 		}
 	];
@@ -149,6 +203,11 @@ const TenantsPage = () => {
 	useEffect(() => {
 		handleFetchTenants();
 	}, [searchParams]);
+
+	const orderByOptions = [
+		{ key: "newest", label: "Mais recentes" },
+		{ key: "oldest", label: "Mais antigos" }
+	];
 
 	return (
 		<>
@@ -160,15 +219,14 @@ const TenantsPage = () => {
 							onReloadClick={handleFetchTenants}
 							onSearchChange={handleSearchChange}
 							searchValue={searchParams.get("q") ?? ""}
-							hideActions
-							disabled={false}
+							hideSelect
 						/>
 					}
 					extra={
 						<PageHeaderActions
-							onAddClick={handleOpenAddModal}
-							disableActions={false}
-							disabled={false}
+							onAddClick={() => setIsAddModalVisible(true)}
+							onOrderByChange={handleOrderByChange}
+							orderByOptions={orderByOptions}
 						/>
 					}
 				/>
@@ -182,12 +240,26 @@ const TenantsPage = () => {
 					selectedRowKeys={selectedRowKeys}
 				/>
 			</Flex>
-			{/* <AddTenantModalForm
+			<TenantModalForm
 				visible={isAddModalVisible}
-				onCancel={handleCloseAddModal}
+				onCancel={() => setIsAddModalVisible(false)}
 				onSubmit={handleAddTenant}
 				loadingButton={creatingTenant}
-			/> */}
+				title="Add Tenant Form"
+				formName="add-tenant-form"
+			/>
+			<TenantModalForm
+				visible={isEditModalVisible}
+				onCancel={() => {
+					setEditingTenant(undefined);
+					setIsEditModalVisible(false);
+				}}
+				onSubmit={handleEditTenant}
+				loadingButton={updatingTenant}
+				title="Edit Tenant Form"
+				formName="edit-tenant-form"
+				tenant={editingTenant}
+			/>
 		</>
 	);
 };

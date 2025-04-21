@@ -11,6 +11,22 @@ export function useListTenants() {
     return useContextSelector(TenantCTX, (ctx) => ctx.list);
 }
 
+export function useListTenantByID() {
+    return useContextSelector(TenantCTX, (ctx) => ctx.listByID);
+}
+
+export function useCreateTenant() {
+    return useContextSelector(TenantCTX, (ctx) => ctx.create);
+}
+
+export function useUpdateTenant() {
+    return useContextSelector(TenantCTX, (ctx) => ctx.update);
+}
+
+export function useDeleteTenant() {
+    return useContextSelector(TenantCTX, (ctx) => ctx.deleteTenant);
+}
+
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;
     let shouldLogout: boolean = false;

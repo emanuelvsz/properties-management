@@ -95,15 +95,15 @@ const PropertyPage = () => {
 		setSearchParams(newParams);
 	};
 
-	// const handleOrderChange = (value: string) => {
-	// 	const newParams = new URLSearchParams(searchParams);
-	// 	if (value) {
-	// 		newParams.set("order_by", value);
-	// 	} else {
-	// 		newParams.delete("order_by");
-	// 	}
-	// 	setSearchParams(newParams);
-	// };
+	const handleOrderByChange = (value: string) => {
+		const newParams = new URLSearchParams(searchParams);
+		if (value) {
+			newParams.set("order_by", value);
+		} else {
+			newParams.delete("order_by");
+		}
+		setSearchParams(newParams);
+	};
 
 	useEffect(() => {
 		const orderByParam = searchParams.get("order_by");
@@ -133,8 +133,32 @@ const PropertyPage = () => {
 	}, [id, listByID]);
 
 	useEffect(() => {
-		handleListExpenses();
+		const hasOrderBy = searchParams.get("order_by");
+		const hasPayed = searchParams.get("payed");
+
+		if (hasOrderBy && hasPayed) {
+			handleListExpenses();
+		}
 	}, [searchParams]);
+
+	useEffect(() => {
+		const newParams = new URLSearchParams(searchParams);
+		let updated = false;
+
+		if (!newParams.get("order_by")) {
+			newParams.set("order_by", "newest");
+			updated = true;
+		}
+
+		if (!newParams.get("payed")) {
+			newParams.set("payed", "false");
+			updated = true;
+		}
+
+		if (updated) {
+			setSearchParams(newParams);
+		}
+	}, []);
 
 	if (loading) {
 		return (
@@ -177,6 +201,7 @@ const PropertyPage = () => {
 				onReloadExpenses={handleListExpenses}
 				onSearchChange={handleSearchChange}
 				onSelectChange={handlePayedSelectChange}
+				onOrderByChange={handleOrderByChange}
 				searchValue={searchParams.get("q") ?? ""}
 				selectValue={searchParams.get("payed") ?? ""}
 				hideActions={false}

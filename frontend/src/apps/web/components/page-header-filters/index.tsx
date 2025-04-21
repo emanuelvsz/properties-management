@@ -12,8 +12,9 @@ interface Props {
 	searchPlaceholder?: string;
 	selectPlaceholder?: string;
 	selectValue?: string;
-	disabled: boolean;
-	hideActions: boolean;
+	disabled?: boolean;
+	hideActions?: boolean;
+	hideSelect?: boolean;
 }
 
 const inputHeight = 35;
@@ -52,8 +53,9 @@ const PageHeaderFilters = ({
 	selectValue,
 	searchPlaceholder = "Search something...",
 	selectPlaceholder,
-	disabled,
-	hideActions
+	disabled = false,
+	hideActions = false,
+	hideSelect = false
 }: Props) => {
 	const intl = useIntl();
 
@@ -75,24 +77,26 @@ const PageHeaderFilters = ({
 				css={styles.input}
 				disabled={disabled}
 			/>
-			<Select
-				allowClear
-				placeholder={selectPlaceholder}
-				value={selectValue === "" ? undefined : selectValue}
-				onChange={onSelectChange}
-				options={[
-					{
-						label: intl.formatMessage({ id: "general.yes" }),
-						value: "true"
-					},
-					{
-						label: intl.formatMessage({ id: "general.no" }),
-						value: "false"
-					}
-				]}
-				css={styles.select}
-				disabled={disabled}
-			/>
+			{!hideSelect && (
+				<Select
+					allowClear
+					placeholder={selectPlaceholder}
+					value={selectValue === "" ? undefined : selectValue}
+					onChange={onSelectChange}
+					options={[
+						{
+							label: intl.formatMessage({ id: "general.yes" }),
+							value: "true"
+						},
+						{
+							label: intl.formatMessage({ id: "general.no" }),
+							value: "false"
+						}
+					]}
+					css={styles.select}
+					disabled={disabled}
+				/>
+			)}
 			<Tooltip
 				title={intl.formatMessage({
 					id: "component.page-header-filters.reload"
