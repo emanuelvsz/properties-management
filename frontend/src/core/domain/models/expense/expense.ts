@@ -50,9 +50,6 @@ class Expense extends Model {
 			formData.property,
 			formData.expense_type
 		);
-
-		console.log(data.toJSON())
-
 		return data
 	}
 

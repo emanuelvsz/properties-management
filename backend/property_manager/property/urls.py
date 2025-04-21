@@ -1,6 +1,7 @@
 from property.views import (
     PropertyDetailView,
     PropertyListCreateView,
+    PropertyContractsView,
     PropertyExpensesView,
 )
 
@@ -18,5 +19,10 @@ urlpatterns = [
         "properties/<uuid:id>/expenses",
         PropertyExpensesView.as_view(),
         name="property-expenses",
+    ),
+    path(
+        "properties/<uuid:id>/contracts",
+        PropertyContractsView.as_view(),
+        name="property-contracts",
     ),
 ]

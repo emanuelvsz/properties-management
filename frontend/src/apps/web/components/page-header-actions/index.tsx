@@ -59,7 +59,6 @@ const PageHeaderActions = ({
 
 	const [selectedKey, setSelectedKey] = useState<string>("");
 
-	// Atualiza apenas quando o componente for montado ou quando a lista de opções mudar.
 	useEffect(() => {
 		if (hasOptions && !selectedKey) {
 			setSelectedKey(orderByOptions[0].key);

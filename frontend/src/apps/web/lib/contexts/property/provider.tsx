@@ -71,12 +71,41 @@ const PropertyProvider = ({
 		[message, panic, usecase]
 	);
 
+	const listContracts = useCallback(
+		async (id: string, archived: boolean) => {
+			try {
+				const response = await usecase.listContracts(id, archived);
+				return response;
+			} catch (error) {
+				panic(error);
+				return [];
+			}
+		},
+		[message, panic, usecase]
+	);
+
+	
+	const update = useCallback(
+		async (data: Property) => {
+			try {
+				await usecase.update(data);
+				return;
+			} catch (error) {
+				panic(error);
+				return;
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const values = useMemo(
 		() => ({
 			list,
 			deleteProperty,
 			create,
-			listByID
+			listByID,
+			listContracts,
+			update
 		}),
 		[list]
 	);

@@ -7,6 +7,7 @@ from property.serializers import (
 from property.service import PropertyService
 from property_manager.utils import PROPERTY_TAG_IDENTIFIER
 from expense.serializers import ExpenseSerializer
+from rent_contract.serializers import ListRentContractSerializer
 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -162,6 +163,42 @@ class PropertyExpensesView(APIView):
                 request.user, property_id, date_by, q, payed, order_by
             )
             serializer = ExpenseSerializer(expenses, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class PropertyContractsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_summary="Get property rent contracts",
+        tags=[PROPERTY_TAG_IDENTIFIER],
+    )
+    def get(self, request, id):
+        property_id = id
+        archived = request.query_params.get("archived")
+        if archived is not None:
+            archived = archived.lower()
+            if archived == "true":
+                archived = True
+            elif archived == "false":
+                archived = False
+            elif archived == "undefined":
+                archived = None
+            else:
+                return Response(
+                    {"detail": "archived should be 'true', 'false' or 'undefined'."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        print("Archived: ", archived)
+        try:
+            expenses = PropertyService.get_property_contracts(
+                request.user, property_id, archived
+            )
+            serializer = ListRentContractSerializer(expenses, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(

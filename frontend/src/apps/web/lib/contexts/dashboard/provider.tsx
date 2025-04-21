@@ -17,7 +17,6 @@ const DashboardProvider = ({
 
 	const listReturnSummary = useCallback(async () => {
 		try {
-			console.log("Hey 2");
 			const summary = await usecase.listReturnSummary();
 			return summary;
 		} catch (error) {

@@ -11,8 +11,12 @@ import { Expense } from "@core/domain/models/expense";
 import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 import ChartListRow from "./components/chart-list-row";
 import DetailsRow from "./components/details-row";
-import { ExpenseFiltersOrderBy } from "@core/domain/types/filters/expense-filters";
-import { FormattedMessage, useIntl } from "react-intl";
+import {
+	ExpenseFilters,
+	ExpenseFiltersOrderBy
+} from "@core/domain/types/filters/expense-filters";
+import { FormattedMessage } from "react-intl";
+import ContractListRow from "./components/contract-list-row";
 
 const { Text } = Typography;
 
@@ -38,35 +42,39 @@ const styles = {
 
 const PropertyPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const listByID = useListPropertyByID();
-	const listPropertyExpenses = useListExpenses();
+
 	const [property, setProperty] = useState<Property | null>(null);
 	const [expenses, setExpenses] = useState<Expense[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [loadingExpenses, setLoadingExpenses] = useState(true);
 	const [searchParams, setSearchParams] = useSearchParams();
-	const intl = useIntl();
+
+	const listByID = useListPropertyByID();
+	const listPropertyExpenses = useListExpenses();
 
 	const handleListExpenses = async () => {
-		if (!id) {
-			return;
-		}
+		if (!id) return;
+
 		const q = searchParams.get("q") ?? "";
 		const order_by = searchParams.get("order_by") ?? "newest";
 		const payedParam = searchParams.get("payed");
 		const payed =
 			payedParam === "true" ? true : payedParam === "false" ? false : undefined;
+
+		const filters: ExpenseFilters = {
+			dateBy: "month",
+			orderBy: order_by as ExpenseFiltersOrderBy,
+			payed
+		};
+
+		if (q !== "") {
+			filters.q = q;
+		}
+
 		try {
-			const result = await listPropertyExpenses(id, {
-				dateBy: "month",
-				q: q,
-				orderBy: order_by as ExpenseFiltersOrderBy,
-				payed: payed
-			});
+			const result = await listPropertyExpenses(id, filters);
 			setLoadingExpenses(false);
-			if (!result) {
-				return;
-			}
+			if (!result) return;
 			setExpenses(result);
 		} catch (error) {
 			console.error("Erro ao buscar despesas do imóvel:", error);
@@ -75,7 +83,7 @@ const PropertyPage = () => {
 		}
 	};
 
-	const handleSearchChange = (value: string) => {
+	const handleExpensesSearchChange = (value: string) => {
 		const newParams = new URLSearchParams(searchParams);
 		if (value) {
 			newParams.set("q", value);
@@ -85,7 +93,7 @@ const PropertyPage = () => {
 		setSearchParams(newParams);
 	};
 
-	const handlePayedSelectChange = (value: string) => {
+	const handleExpensesPayedSelectChange = (value: string) => {
 		const newParams = new URLSearchParams(searchParams);
 		if (value) {
 			newParams.set("payed", value);
@@ -95,7 +103,7 @@ const PropertyPage = () => {
 		setSearchParams(newParams);
 	};
 
-	const handleOrderByChange = (value: string) => {
+	const handleExpensesOrderByChange = (value: string) => {
 		const newParams = new URLSearchParams(searchParams);
 		if (value) {
 			newParams.set("order_by", value);
@@ -104,15 +112,6 @@ const PropertyPage = () => {
 		}
 		setSearchParams(newParams);
 	};
-
-	useEffect(() => {
-		const orderByParam = searchParams.get("order_by");
-		if (!orderByParam) {
-			const newParams = new URLSearchParams(searchParams);
-			newParams.set("order_by", "newest");
-			setSearchParams(newParams);
-		}
-	}, []);
 
 	useEffect(() => {
 		if (!id) return;
@@ -133,28 +132,20 @@ const PropertyPage = () => {
 	}, [id, listByID]);
 
 	useEffect(() => {
-		const hasOrderBy = searchParams.get("order_by");
-		const hasPayed = searchParams.get("payed");
-
-		if (hasOrderBy && hasPayed) {
-			handleListExpenses();
-		}
+		handleListExpenses();
 	}, [searchParams]);
 
 	useEffect(() => {
 		const newParams = new URLSearchParams(searchParams);
 		let updated = false;
-
 		if (!newParams.get("order_by")) {
 			newParams.set("order_by", "newest");
 			updated = true;
 		}
-
 		if (!newParams.get("payed")) {
 			newParams.set("payed", "false");
 			updated = true;
 		}
-
 		if (updated) {
 			setSearchParams(newParams);
 		}
@@ -195,20 +186,20 @@ const PropertyPage = () => {
 				]}
 			/>
 			<DetailsRow property={property} />
+			<ContractListRow />
 			<ExpenseListRow
 				expenses={expenses}
 				loading={loadingExpenses}
 				onReloadExpenses={handleListExpenses}
-				onSearchChange={handleSearchChange}
-				onSelectChange={handlePayedSelectChange}
-				onOrderByChange={handleOrderByChange}
+				onSearchChange={handleExpensesSearchChange}
+				onSelectChange={handleExpensesPayedSelectChange}
+				onOrderByChange={handleExpensesOrderByChange}
 				searchValue={searchParams.get("q") ?? ""}
 				selectValue={searchParams.get("payed") ?? ""}
 				hideActions={false}
-				title={intl.formatMessage({
-					id: "page.property.component.expense-list-row.board-page-header.title"
-				})}
+				title="Expenses"
 			/>
+
 			<ChartListRow expenses={expenses} />
 		</Flex>
 	);

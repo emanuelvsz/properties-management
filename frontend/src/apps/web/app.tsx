@@ -12,6 +12,7 @@ import ExpenseProvider from "./lib/contexts/expense/provider";
 import I18nProvider from "./lib/contexts/i18n/provider";
 import DashboardProvider from "./lib/contexts/dashboard/provider";
 import TenantProvider from "./lib/contexts/tenant/provider";
+import RentContractProvider from "./lib/contexts/rent-contract/provider";
 
 const styles = {
 	antAppRoot: css`
@@ -29,7 +30,9 @@ const App = () => (
 							<ExpenseProvider usecase={DIContainer.getExpenseUseCase()}>
 								<DashboardProvider usecase={DIContainer.getDashboardUseCase()}>
 									<TenantProvider usecase={DIContainer.getTenantUseCase()}>
-										<Scaffold />
+										<RentContractProvider usecase={DIContainer.getRentContractUseCase()}>
+											<Scaffold />
+										</RentContractProvider>
 									</TenantProvider>
 								</DashboardProvider>
 							</ExpenseProvider>

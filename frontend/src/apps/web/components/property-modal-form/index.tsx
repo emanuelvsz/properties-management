@@ -1,4 +1,5 @@
 // components/AddPropertyModalForm.tsx
+import { Property } from "@core/domain/models/property";
 import { css } from "@emotion/react";
 import { Modal, Form, Input, InputNumber, Switch, Flex } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -8,6 +9,7 @@ import { useIntl } from "react-intl";
 interface AddPropertyModalFormProps {
 	visible: boolean;
 	loadingButton: boolean;
+	property?: Property;
 	onCancel: () => void;
 	onSubmit: (values: any) => void;
 }
@@ -23,13 +25,31 @@ const styles = {
 	`
 };
 
-const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
+const PropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 	visible,
 	loadingButton,
+	property,
 	onCancel,
 	onSubmit
 }) => {
 	const [form] = useForm();
+	const intl = useIntl();
+
+	useEffect(() => {
+		if (visible && property) {
+			form.setFieldsValue({
+				title: property.title,
+				description: property.description,
+				location: property.location,
+				bedrooms: property.bedrooms,
+				bathrooms: property.bathrooms,
+				surface: property.surface,
+				rent: property.rent,
+				furnished: property.furnished,
+				id: property.id
+			});
+		}
+	}, [visible, property]);
 
 	useEffect(() => {
 		if (!visible) {
@@ -41,7 +61,10 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 		form
 			.validateFields()
 			.then((values) => {
-				onSubmit(values);
+				onSubmit({
+					...values,
+					id: property?.id
+				});
 				form.resetFields();
 			})
 			.catch((info) => {
@@ -49,24 +72,22 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 			});
 	};
 
-	const intl = useIntl();
-
 	return (
 		<Modal
 			title={intl.formatMessage({
 				id: "component.add-property-modal-form.modal.title"
 			})}
-			visible={visible}
+			open={visible}
 			onOk={handleOk}
 			okButtonProps={{
 				style: {
-					height: "36px !important",
+					height: "36px",
 					boxShadow: "none"
 				}
 			}}
 			cancelButtonProps={{
 				style: {
-					height: "36px !important",
+					height: "36px",
 					boxShadow: "none"
 				}
 			}}
@@ -97,6 +118,7 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						})}
 					/>
 				</Form.Item>
+
 				<Form.Item
 					name="description"
 					label={intl.formatMessage({
@@ -113,6 +135,7 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						style={{ height: 120, resize: "none" }}
 					/>
 				</Form.Item>
+
 				<Form.Item
 					name="location"
 					label={intl.formatMessage({
@@ -127,18 +150,14 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						maxLength={100}
 					/>
 				</Form.Item>
+
 				<Flex align="center" justify="center" gap={15}>
 					<Form.Item
 						name="bedrooms"
 						label={intl.formatMessage({
 							id: "component.add-property-modal-form.form.item.bedrooms.label"
 						})}
-						rules={[
-							{
-								required: true,
-								message: ""
-							}
-						]}
+						rules={[{ required: true, message: "" }]}
 					>
 						<InputNumber
 							min={0}
@@ -146,17 +165,13 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 							css={styles.inputNumber}
 						/>
 					</Form.Item>
+
 					<Form.Item
 						name="bathrooms"
 						label={intl.formatMessage({
 							id: "component.add-property-modal-form.form.item.bathrooms.label"
 						})}
-						rules={[
-							{
-								required: true,
-								message: ""
-							}
-						]}
+						rules={[{ required: true, message: "" }]}
 					>
 						<InputNumber
 							min={0}
@@ -164,6 +179,7 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 							css={styles.inputNumber}
 						/>
 					</Form.Item>
+
 					<Form.Item
 						name="surface"
 						label={intl.formatMessage({
@@ -178,19 +194,19 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 						/>
 					</Form.Item>
 				</Flex>
+
 				<Form.Item
 					name="rent"
-					label={intl.formatMessage({
-						id: "component.add-property-modal-form.form.item.rent-price.label"
-					})}
+					label="Rent Value"
 					rules={[{ required: true, message: "" }]}
 				>
 					<InputNumber
 						min={0}
 						placeholder={NUMBER_INPUT_DEFAULT_PLACEHOLDER}
-						css={styles.soloInputNumber}
+						css={styles.inputNumber}
 					/>
 				</Form.Item>
+
 				<Form.Item
 					name="furnished"
 					label={intl.formatMessage({
@@ -205,4 +221,4 @@ const AddPropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 	);
 };
 
-export default AddPropertyModalForm;
+export default PropertyModalForm;

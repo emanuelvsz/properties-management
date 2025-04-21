@@ -1,1 +1,6 @@
-from .views import PropertyListCreateView, PropertyDetailView, PropertyExpensesView
+from .views import (
+    PropertyListCreateView,
+    PropertyDetailView,
+    PropertyContractsView,
+    PropertyExpensesView,
+)

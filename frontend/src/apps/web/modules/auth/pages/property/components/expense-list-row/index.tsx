@@ -21,6 +21,7 @@ import {
 	useUpdateExpense
 } from "@web/lib/contexts/expense/hooks";
 import useCheckOrderByParam from "@web/lib/hooks/params/use-check-order-by-param";
+import EmptySection from "@web/components/empty-section";
 
 interface Props {
 	expenses: Expense[];
@@ -240,45 +241,55 @@ const ExpenseListRow = ({
 										!loadingExpenses &&
 										checkOrderByParam
 									}
-									hideActions={hideActions}
+									hideActions={hideActions || expenses.length < 1}
 								/>
 							}
 							extra={
-								<PageHeaderActions
-									onAddClick={() => setIsAddModalVisible(true)}
-									onOrderByChange={onOrderByChange}
-									disabled={expenses.length === 0 && !loadingExpenses}
-									disableActions={hideActions}
-									orderByOptions={orderByOptions}
-								/>
+								expenses.length >= 1 ? (
+									<PageHeaderActions
+										onAddClick={() => setIsAddModalVisible(true)}
+										onOrderByChange={onOrderByChange}
+										disabled={expenses.length === 0 && !loadingExpenses}
+										disableActions={hideActions}
+										orderByOptions={orderByOptions}
+									/>
+								) : (
+									<EmptySection
+										onSubmit={() => setIsAddModalVisible(true)}
+										okText="Cadastrar uma despesa"
+										descriptionText="Ainda não há despesas cadastradas"
+									/>
+								)
 							}
 						/>
-						<Table
-							columns={expenseColumns}
-							dataSource={expenses}
-							rowKey="id"
-							pagination={{ pageSize: PAGE_SIZE }}
-							scroll={{ x: "max-content" }}
-							loading={
-								loading.create ||
-								loading.update ||
-								loading.delete ||
-								loadingExpenses
-							}
-							size="small"
-							expandable={{
-								expandedRowRender: (record) => (
-									<p css={styles.tableItemExpanded}>
-										{record.description && record.description !== "null"
-											? record.description
-											: "—"}
-									</p>
-								),
-								rowExpandable: (record) =>
-									!!record.description && record.description !== "null"
-							}}
-							bordered
-						/>
+						{expenses.length >= 1 && (
+							<Table
+								columns={expenseColumns}
+								dataSource={expenses}
+								rowKey="id"
+								pagination={{ pageSize: PAGE_SIZE }}
+								scroll={{ x: "max-content" }}
+								loading={
+									loading.create ||
+									loading.update ||
+									loading.delete ||
+									loadingExpenses
+								}
+								size="small"
+								expandable={{
+									expandedRowRender: (record) => (
+										<p css={styles.tableItemExpanded}>
+											{record.description && record.description !== "null"
+												? record.description
+												: "—"}
+										</p>
+									),
+									rowExpandable: (record) =>
+										!!record.description && record.description !== "null"
+								}}
+								bordered
+							/>
+						)}
 					</Flex>
 				</Col>
 			</Row>

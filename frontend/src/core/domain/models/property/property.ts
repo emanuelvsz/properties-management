@@ -41,9 +41,8 @@ class Property extends Model {
 	}
 
 	static fromForm(formData: any): Property {
-		const id = ""
 		return new Property(
-			id,
+			formData.id,
 			formData.title,
 			formData.bedrooms,
 			formData.bathrooms,

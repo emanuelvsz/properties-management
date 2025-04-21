@@ -15,6 +15,7 @@ interface Props {
 	disabled?: boolean;
 	hideActions?: boolean;
 	hideSelect?: boolean;
+	hideSearch?: boolean;
 }
 
 const inputHeight = 35;
@@ -55,7 +56,8 @@ const PageHeaderFilters = ({
 	selectPlaceholder,
 	disabled = false,
 	hideActions = false,
-	hideSelect = false
+	hideSelect = false,
+	hideSearch = false
 }: Props) => {
 	const intl = useIntl();
 

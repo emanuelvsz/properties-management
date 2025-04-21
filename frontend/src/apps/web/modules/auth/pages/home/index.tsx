@@ -117,16 +117,12 @@ const HomePage = () => {
 		const q = searchParams.get("q") ?? "";
 		const order_by = searchParams.get("order_by") ?? "newest";
 		const month = searchParams.get("month") ?? undefined;
-		console.log(month);
 
 		const filters: ExpenseFilters = {
 			q,
 			orderBy: order_by as ExpenseFiltersOrderBy,
 			payed: false
 		} as ExpenseFilters;
-
-		console.log("Fetching expenses with filters:", filters);
-
 		try {
 			const result = await listExpenses(undefined, filters);
 			setLoadingExpenses(false);

@@ -4,33 +4,24 @@ import { useContextSelector } from "use-context-selector";
 
 import AppError from "core/helper/error";
 
-import { PropertyCTX } from ".";
+import { RentContractCTX } from ".";
 import { useLogout } from "../auth/hooks";
 
 export function useListProperties() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.list);
+    return useContextSelector(RentContractCTX, (ctx) => ctx.list);
 }
 
-export function useDeleteProperty() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.deleteProperty);
+export function useDeleteContract() {
+    return useContextSelector(RentContractCTX, (ctx) => ctx.deleteContract);
 }
 
-export function useCreateProperty() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.create);
+export function useCreateContract() {
+    return useContextSelector(RentContractCTX, (ctx) => ctx.create);
 }
 
-export function useListPropertyByID() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.listByID);
+export function useUpdateContract() {
+    return useContextSelector(RentContractCTX, (ctx) => ctx.update);
 }
-
-export function useListContracts() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.listContracts);
-}
-
-export function useUpdateProperty() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.update);
-}
-
 
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;

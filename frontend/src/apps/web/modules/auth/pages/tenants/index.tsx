@@ -127,7 +127,6 @@ const TenantsPage = () => {
 
 	const handleEditTenant = async (values: any) => {
 		const tenant = Tenant.fromForm(values);
-		console.log("Tenant: ", tenant.toJSON())
 		setUpdatingTenant(true);
 		await updateTenant(tenant);
 		setUpdatingTenant(false);

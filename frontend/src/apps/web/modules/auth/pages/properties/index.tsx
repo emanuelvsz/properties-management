@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Flex, Popconfirm, Tag, Tooltip } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { css } from "@emotion/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
@@ -12,11 +12,12 @@ import PageHeaderActions from "../../../../components/page-header-actions";
 import {
 	useCreateProperty,
 	useDeleteProperty,
-	useListProperties
+	useListProperties,
+	useUpdateProperty
 } from "@web/lib/contexts/property/hooks";
 import { Property } from "@core/domain/models/property";
 import { THEME_COLORS } from "@web/config/theme";
-import AddPropertyModalForm from "../../../../components/add-property-modal-form";
+import PropertyModalForm from "../../../../components/property-modal-form";
 
 import Table from "@web/components/table";
 import { useIntl } from "react-intl";
@@ -40,7 +41,7 @@ const styles = {
 		transition: color 0.2s;
 
 		&:hover {
-			color: ${THEME_COLORS.SECONDARY_COLOR}; // ou outro highlight
+			color: ${THEME_COLORS.SECONDARY_COLOR};
 		}
 	`,
 	location: css`
@@ -61,15 +62,19 @@ const PropertiesPage = () => {
 	const [loadingProperties, setLoadingProperties] = useState<boolean>(false);
 	const [creatingProperty, setCreatingProperty] = useState<boolean>(false);
 	const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+	const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+	const [editingProperty, setEditingProperty] = useState<Property | undefined>(
+		undefined
+	);
 
 	const intl = useIntl();
-
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
 
 	const listProperties = useListProperties();
 	const deleteProperty = useDeleteProperty();
 	const createProperty = useCreateProperty();
+	const updateProperty = useUpdateProperty();
 
 	const handleFetchProperties = async () => {
 		setLoadingProperties(true);
@@ -94,6 +99,23 @@ const PropertiesPage = () => {
 		await deleteProperty(id);
 		setLoadingProperties(false);
 		await handleFetchProperties();
+	};
+
+	const handleUpdate = async (values: any) => {
+		const property = Property.fromForm(values);
+		await updateProperty(property);
+		handleCloseEditModal();
+		await handleFetchProperties();
+	};
+
+	const handleOpenEditModal = (property: Property) => {
+		setEditingProperty(property);
+		setIsEditModalVisible(true);
+	};
+
+	const handleCloseEditModal = () => {
+		setEditingProperty(undefined);
+		setIsEditModalVisible(false);
 	};
 
 	const handleOpenAddModal = () => {
@@ -171,7 +193,6 @@ const PropertiesPage = () => {
 
 	const propertyTableFields: ColumnsType<Property> = [
 		{
-			title: intl.formatMessage({ id: "page.properties.table.item.title" }),
 			dataIndex: "title",
 			key: "title",
 			render: (_, data: Property) => (
@@ -205,9 +226,7 @@ const PropertiesPage = () => {
 			dataIndex: "status",
 			key: "status",
 			render: (value: string) => (
-				<Tag>
-					{value.charAt(0).toLocaleUpperCase() + value.replace(value[0], "")}
-				</Tag>
+				<Tag>{value.charAt(0).toLocaleUpperCase() + value.slice(1)}</Tag>
 			)
 		},
 		{
@@ -236,20 +255,25 @@ const PropertiesPage = () => {
 				value ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>
 		},
 		{
-			dataIndex: "delete",
-			key: "delete",
-			render: (_, { id }) => (
-				<Popconfirm
-					title={intl.formatMessage({ id: "general.delete.message" })}
-					onConfirm={() => handleDelete(id)}
-					okText={intl.formatMessage({ id: "general.submit" })}
-					cancelText={intl.formatMessage({ id: "general.cancel" })}
-					placement="left"
-				>
-					<Button type="text" danger>
-						<DeleteOutlined />
-					</Button>
-				</Popconfirm>
+			dataIndex: "actions",
+			key: "actions",
+			render: (_, property: Property) => (
+				<Flex gap={10}>
+					<Popconfirm
+						title={intl.formatMessage({ id: "general.delete.message" })}
+						onConfirm={() => handleDelete(property.id)}
+						okText={intl.formatMessage({ id: "general.submit" })}
+						cancelText={intl.formatMessage({ id: "general.cancel" })}
+						placement="left"
+					>
+						<Button type="text" danger icon={<DeleteOutlined />} />
+					</Popconfirm>
+					<Button
+						type="text"
+						icon={<EditOutlined />}
+						onClick={() => handleOpenEditModal(property)}
+					/>
+				</Flex>
 			)
 		}
 	];
@@ -309,20 +333,30 @@ const PropertiesPage = () => {
 					}
 				/>
 				<Table
-					columns={propertyTableFields}
-					dataSource={properties}
-					rowKey="id"
-					pagination={{ pageSize: PAGE_SIZE }}
-					rowSelection={rowSelection}
 					loading={loadingProperties}
-					selectedRowKeys={selectedRowKeys}
+					rowSelection={rowSelection}
+					dataSource={properties}
+					columns={propertyTableFields}
+					rowKey={(record) => record.id}
+					pagination={{
+						pageSize: PAGE_SIZE
+					}}
 				/>
 			</Flex>
-			<AddPropertyModalForm
+
+			<PropertyModalForm
 				visible={isAddModalVisible}
 				onCancel={handleCloseAddModal}
 				onSubmit={handleAddProperty}
 				loadingButton={creatingProperty}
+			/>
+
+			<PropertyModalForm
+				visible={isEditModalVisible}
+				onCancel={handleCloseEditModal}
+				onSubmit={handleUpdate}
+				property={editingProperty}
+				loadingButton={false}
 			/>
 		</>
 	);

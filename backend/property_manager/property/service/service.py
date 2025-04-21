@@ -154,12 +154,10 @@ class PropertyService:
         :return: A filtered and ordered queryset of expenses.
         """
         queryset = Expense.objects.filter(property_id=property_id, property__user=user)
-
         if q:
             queryset = queryset.filter(
                 Q(name__icontains=q) | Q(description__icontains=q)
             )
-
         if payed is not None:
             if str(payed).lower() == "true":
                 queryset = queryset.filter(payed_at__isnull=False)
@@ -192,5 +190,10 @@ class PropertyService:
             raise ValueError(
                 "Invalid date_by parameter. Use 'week', 'month', or 'year'."
             )
+        return queryset
 
+    def get_property_contracts(user, property_id, archived):
+        queryset = RentContract.objects.filter(
+            user=user, property_id=property_id, archived=archived
+        )
         return queryset

@@ -12,6 +12,8 @@ class RentContract(BaseModel):
     started_at = models.DateTimeField()
     finish_at = models.DateTimeField()
     deposit = models.FloatField()
+    payments_date = models.DateField(null=True, blank=True)
+    archived = models.BooleanField(default=False)
 
     class Meta:
         db_table = "rent_contract"
