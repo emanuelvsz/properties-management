@@ -23,14 +23,17 @@ export function useListPropertyByID() {
     return useContextSelector(PropertyCTX, (ctx) => ctx.listByID);
 }
 
-export function useListContracts() {
-    return useContextSelector(PropertyCTX, (ctx) => ctx.listContracts);
+export function useListPropertyContracts() {
+    return useContextSelector(PropertyCTX, (ctx) => ctx.listPropertyContracts);
 }
 
 export function useUpdateProperty() {
     return useContextSelector(PropertyCTX, (ctx) => ctx.update);
 }
 
+export function useListPropertyExpenses() {
+    return useContextSelector(PropertyCTX, (ctx) => ctx.listPropertyExpenses);
+}
 
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
     let msg: string | undefined;

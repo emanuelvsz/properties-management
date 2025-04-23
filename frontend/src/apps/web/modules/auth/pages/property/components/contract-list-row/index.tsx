@@ -18,11 +18,8 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 
 import Table from "@web/components/table";
-import PageHeaderFilters from "@web/components/page-header-filters";
-import PageHeaderActions from "@web/components/page-header-actions";
 import BoardPageHeader from "../../../home/components/finance-bar-panel";
 
-import useCheckOrderByParam from "@web/lib/hooks/params/use-check-order-by-param";
 import { RentContract } from "@core/domain/models/rent-contract";
 import {
 	useCreateContract,
@@ -31,11 +28,12 @@ import {
 } from "@web/lib/contexts/rent-contract/hooks";
 import TableHeader from "./components/table-header";
 import { THEME_COLORS } from "@web/config/theme";
-import { useListContracts } from "@web/lib/contexts/property/hooks";
+import { useListPropertyContracts } from "@web/lib/contexts/property/hooks";
 import { useListTenants } from "@web/lib/contexts/tenant/hooks";
 import RentContractModalForm from "@web/components/rent-contract-modal-form";
 import { Tenant } from "@core/domain/models/tenant";
 import EmptySection from "@web/components/empty-section";
+import { Pagination } from "@core/domain/models/pagination";
 
 const PAGE_SIZE = 5;
 
@@ -64,17 +62,21 @@ const styles = {
 const ContractListRow = () => {
 	const intl = useIntl();
 	const { id: propertyId } = useParams<{ id: string }>();
+	const [currentPage, setCurrentPage] = useState(1);
+
 	if (!propertyId) {
 		return <>Property not found</>;
 	}
 
-	const listContracts = useListContracts();
+	const listContracts = useListPropertyContracts();
 	const deleteContract = useDeleteContract();
 	const createContract = useCreateContract();
 	const updateContract = useUpdateContract();
 	const listTenants = useListTenants();
 
-	const [contracts, setContracts] = useState<RentContract[]>([]);
+	const [paginationContract, setPaginationContract] = useState<
+		Pagination<RentContract>
+	>(Pagination.empty<RentContract>());
 	const [createModalVisible, setCreateModalVisible] = useState(false);
 	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [editingContract, setEditingContract] = useState<
@@ -91,13 +93,14 @@ const ContractListRow = () => {
 		list: false
 	});
 
-	const handleList = async (archived: boolean) => {
+	const handleList = async (archived: boolean, page?: number) => {
 		setArchivedSwitchValue(archived);
 		if (!propertyId) return;
+		const currentPage = page || 1;
 		setLoading((prev) => ({ ...prev, list: true }));
-		const response = await listContracts(propertyId, archived);
+		const response = await listContracts(propertyId, archived, currentPage);
 		setLoading((prev) => ({ ...prev, list: false }));
-		setContracts(response);
+		setPaginationContract(response);
 	};
 
 	const handleDelete = async (id: string) => {
@@ -264,11 +267,11 @@ const ContractListRow = () => {
 								<TableHeader
 									onSelectCheckboxOption={handleList}
 									initialValue={archivedSwitchValue}
-									hideActions={contracts.length < 1}
+									hideActions={paginationContract.total < 1}
 								/>
 							}
 							extra={
-								contracts.length >= 1 ? (
+								paginationContract.total >= 1 ? (
 									<Tooltip
 										title={intl.formatMessage({
 											id: "component.page-header-actions.tooltip.add"
@@ -290,12 +293,20 @@ const ContractListRow = () => {
 								)
 							}
 						/>
-						{contracts.length >= 1 && (
+						{paginationContract?.total >= 1 ? (
 							<Table
 								columns={contractColumns}
-								dataSource={contracts}
+								dataSource={paginationContract.items}
 								rowKey="id"
-								pagination={{ pageSize: PAGE_SIZE }}
+								pagination={{
+									current: currentPage,
+									pageSize: paginationContract.pageSize,
+									total: paginationContract.count,
+									onChange: (page) => {
+										setCurrentPage(page);
+										handleList(archivedSwitchValue, page);
+									}
+								}}
 								scroll={{ x: "max-content" }}
 								loading={
 									loading.create ||
@@ -306,7 +317,7 @@ const ContractListRow = () => {
 								size="small"
 								bordered
 							/>
-						)}
+						) : null}
 					</Flex>
 				</Col>
 			</Row>

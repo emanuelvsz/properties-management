@@ -66,5 +66,5 @@ class CompleteUpdatePropertySerializer(serializers.Serializer):
     surface = serializers.FloatField(required=True)
     rent = serializers.FloatField(required=True)
     furnished = serializers.BooleanField(required=True)
-    description = serializers.CharField(required=True)
+    description = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     location = serializers.CharField(required=True)

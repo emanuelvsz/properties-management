@@ -7,6 +7,7 @@ import { ExpenseCTX } from ".";
 import ExpenseUseCase from "@core/interfaces/usecase/expense.use-case";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 import { Expense } from "@core/domain/models/expense";
+import { Pagination } from "@core/domain/models/pagination";
 
 interface ExpenseProviderProps {
 	usecase: ExpenseUseCase;
@@ -20,13 +21,13 @@ const ExpenseProvider = ({
 	const { message } = App.useApp();
 
 	const list = useCallback(
-		async (propertyId?: string, filters?: ExpenseFilters) => {
+		async (filters?: ExpenseFilters) => {
 			try {
-				const expenses = await usecase.list(propertyId, filters);
+				const expenses = await usecase.list(filters);
 				return expenses;
 			} catch (error) {
 				panic(error);
-				return [];
+				return Pagination.empty<Expense>();
 			}
 		},
 		[message, panic, usecase]

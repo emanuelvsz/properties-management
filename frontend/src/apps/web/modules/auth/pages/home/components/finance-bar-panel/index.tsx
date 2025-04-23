@@ -65,7 +65,6 @@ const BoardPageHeader = ({ title, prefix, extra, id }: Props) => {
 							]
 				}
 			/>
-
 			<Flex css={styles.container} gap={15}>
 				<Flex css={styles.filterPanel} justify="space-between">
 					{prefix}

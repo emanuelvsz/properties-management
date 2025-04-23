@@ -6,10 +6,11 @@ import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 import { useIntl } from "react-intl";
 
-interface AddPropertyModalFormProps {
+interface Props {
 	visible: boolean;
 	loadingButton: boolean;
 	property?: Property;
+	title: string;
 	onCancel: () => void;
 	onSubmit: (values: any) => void;
 }
@@ -25,10 +26,11 @@ const styles = {
 	`
 };
 
-const PropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
+const PropertyModalForm: React.FC<Props> = ({
 	visible,
 	loadingButton,
 	property,
+	title,
 	onCancel,
 	onSubmit
 }) => {
@@ -74,9 +76,7 @@ const PropertyModalForm: React.FC<AddPropertyModalFormProps> = ({
 
 	return (
 		<Modal
-			title={intl.formatMessage({
-				id: "component.add-property-modal-form.modal.title"
-			})}
+			title={title}
 			open={visible}
 			onOk={handleOk}
 			okButtonProps={{

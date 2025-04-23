@@ -18,13 +18,14 @@ import { useListDashboardReturnSummary } from "@web/lib/contexts/dashboard/hooks
 import { useEffect, useState } from "react";
 import { ReturnsSummary } from "@core/domain/models/returns-summary";
 import ExpenseListRow from "../property/components/expense-list-row";
-import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 import { Expense } from "@core/domain/models/expense";
 import {
 	ExpenseFilters,
 	ExpenseFiltersOrderBy
 } from "@core/domain/types/filters/expense-filters";
 import { useSearchParams } from "react-router-dom";
+import { Pagination } from "@core/domain/models/pagination";
+import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 
 const styles = {
 	container: css`
@@ -70,7 +71,9 @@ const HomePage = () => {
 	const [loadingReturnSummary, setLoadingReturnSummary] =
 		useState<boolean>(false);
 	const [loadingExpenses, setLoadingExpenses] = useState<boolean>(false);
-	const [expenses, setExpenses] = useState<Expense[]>([]);
+	const [expensePagination, setExpensePagination] = useState<
+		Pagination<Expense>
+	>(Pagination.empty<Expense>());
 	const [searchParams, setSearchParams] = useSearchParams();
 	const listReturnSummary = useListDashboardReturnSummary();
 	const listExpenses = useListExpenses();
@@ -114,20 +117,17 @@ const HomePage = () => {
 	};
 
 	const handleFetchExpenses = async () => {
-		const q = searchParams.get("q") ?? "";
-		const order_by = searchParams.get("order_by") ?? "newest";
-		const month = searchParams.get("month") ?? undefined;
-
+		const dateBy = searchParams.get("month") ?? undefined;
 		const filters: ExpenseFilters = {
-			q,
-			orderBy: order_by as ExpenseFiltersOrderBy,
-			payed: false
+			payed: false,
+			dateBy: dateBy
 		} as ExpenseFilters;
 		try {
-			const result = await listExpenses(undefined, filters);
+			const response = await listExpenses(filters);
+			handleFetchReturnSummary();
 			setLoadingExpenses(false);
-			if (!result) return;
-			setExpenses(result);
+			if (!response) return;
+			setExpensePagination(response);
 		} catch (error) {
 			console.error("Erro ao buscar despesas do imóvel:", error);
 		} finally {
@@ -191,11 +191,11 @@ const HomePage = () => {
 				))}
 			</Flex>
 			<ExpenseListRow
-				expenses={expenses}
+				pagination={expensePagination}
 				loading={loadingExpenses}
 				hideActions={true}
 				title="Pending Expenses"
-				onReloadExpenses={handleFetchExpenses}
+				onReload={handleFetchExpenses}
 			/>
 			{/* <Flex gap={10} css={styles.cardList}>
 				<FinanceBarChartCard />

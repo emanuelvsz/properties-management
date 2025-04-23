@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.pagination import PageNumberPagination
 
 
 class PropertyListCreateView(APIView):
@@ -55,7 +56,7 @@ class PropertyListCreateView(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-        properties = PropertyService.list_properties(
+        queryset, count, total = PropertyService.list_properties(
             user=user,
             q=q,
             bedrooms=bedrooms,
@@ -64,8 +65,28 @@ class PropertyListCreateView(APIView):
             order_by=order_by,
             furnished=furnished,
         )
-        serializer = ListPropertySerializer(properties, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        print(queryset)
+        paginator = PageNumberPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        if not paginated_queryset and paginator.page.number > 1:
+            return Response(
+                {"detail": "Página fora do intervalo."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = ListPropertySerializer(paginated_queryset, many=True)
+        current_page = paginator.page.number
+        page_size = paginator.get_page_size(request)
+        return Response(
+            {
+                "data": serializer.data,
+                "page": current_page,
+                "page_size": page_size,
+                "count": count,
+                "total": total,
+            },
+            status=status.HTTP_200_OK,
+        )
 
     @swagger_auto_schema(
         operation_summary="Create a new property",
@@ -159,11 +180,29 @@ class PropertyExpensesView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
-            expenses = PropertyService.get_property_expenses(
+            queryset, count, total = PropertyService.get_property_expenses(
                 request.user, property_id, date_by, q, payed, order_by
             )
-            serializer = ExpenseSerializer(expenses, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            paginator = PageNumberPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            if paginated_queryset is None:
+                return Response(
+                    {"detail": "Página fora do intervalo."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            serializer = ExpenseSerializer(paginated_queryset, many=True)
+            current_page = paginator.page.number
+            page_size = paginator.get_page_size(request)
+            return Response(
+                {
+                    "data": serializer.data,
+                    "page": current_page,
+                    "page_size": page_size,
+                    "count": count,
+                    "total": total,
+                },
+                status=status.HTTP_200_OK,
+            )
         except Exception as e:
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -180,6 +219,9 @@ class PropertyContractsView(APIView):
     def get(self, request, id):
         property_id = id
         archived = request.query_params.get("archived")
+        q = request.query_params.get("q")
+        order_by = request.query_params.get("order_by", "newest")
+
         if archived is not None:
             archived = archived.lower()
             if archived == "true":
@@ -193,13 +235,31 @@ class PropertyContractsView(APIView):
                     {"detail": "archived should be 'true', 'false' or 'undefined'."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-        print("Archived: ", archived)
+
         try:
-            expenses = PropertyService.get_property_contracts(
-                request.user, property_id, archived
+            queryset, count, total = PropertyService.get_property_contracts(
+                request.user, property_id, archived, q, order_by
             )
-            serializer = ListRentContractSerializer(expenses, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            paginator = PageNumberPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            if paginated_queryset is None:
+                return Response(
+                    {"detail": "Página fora do intervalo."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            serializer = ListRentContractSerializer(paginated_queryset, many=True)
+            current_page = paginator.page.number
+            page_size = paginator.get_page_size(request)
+            return Response(
+                {
+                    "data": serializer.data,
+                    "page": current_page,
+                    "page_size": page_size,
+                    "count": count,
+                    "total": total,
+                },
+                status=status.HTTP_200_OK,
+            )
         except Exception as e:
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR

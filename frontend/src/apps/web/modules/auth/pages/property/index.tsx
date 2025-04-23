@@ -4,11 +4,13 @@ import { css } from "@emotion/react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import { THEME_COLORS } from "@web/config/theme";
-import { useListPropertyByID } from "@web/lib/contexts/property/hooks";
+import {
+	useListPropertyExpenses,
+	useListPropertyByID
+} from "@web/lib/contexts/property/hooks";
 import { Property } from "@core/domain/models/property";
 import ExpenseListRow from "./components/expense-list-row";
 import { Expense } from "@core/domain/models/expense";
-import { useListExpenses } from "@web/lib/contexts/expense/hooks";
 import ChartListRow from "./components/chart-list-row";
 import DetailsRow from "./components/details-row";
 import {
@@ -17,6 +19,7 @@ import {
 } from "@core/domain/types/filters/expense-filters";
 import { FormattedMessage } from "react-intl";
 import ContractListRow from "./components/contract-list-row";
+import { Pagination } from "@core/domain/models/pagination";
 
 const { Text } = Typography;
 
@@ -44,15 +47,17 @@ const PropertyPage = () => {
 	const { id } = useParams<{ id: string }>();
 
 	const [property, setProperty] = useState<Property | null>(null);
-	const [expenses, setExpenses] = useState<Expense[]>([]);
+	const [expensePagination, setExpensePagination] = useState<
+		Pagination<Expense>
+	>(new Pagination<Expense>(1, 10, 0, 0, []));
 	const [loading, setLoading] = useState(true);
 	const [loadingExpenses, setLoadingExpenses] = useState(true);
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const listByID = useListPropertyByID();
-	const listPropertyExpenses = useListExpenses();
+	const listPropertyExpenses = useListPropertyExpenses();
 
-	const handleListExpenses = async () => {
+	const handleListExpenses = async (page?: number) => {
 		if (!id) return;
 
 		const q = searchParams.get("q") ?? "";
@@ -70,12 +75,12 @@ const PropertyPage = () => {
 		if (q !== "") {
 			filters.q = q;
 		}
-
+		const pageParam = page || 1;
 		try {
-			const result = await listPropertyExpenses(id, filters);
+			const result = await listPropertyExpenses(id, pageParam, filters);
 			setLoadingExpenses(false);
 			if (!result) return;
-			setExpenses(result);
+			setExpensePagination(result);
 		} catch (error) {
 			console.error("Erro ao buscar despesas do imóvel:", error);
 		} finally {
@@ -138,17 +143,21 @@ const PropertyPage = () => {
 	useEffect(() => {
 		const newParams = new URLSearchParams(searchParams);
 		let updated = false;
-		if (!newParams.get("order_by")) {
+
+		if (!searchParams.has("order_by")) {
 			newParams.set("order_by", "newest");
 			updated = true;
 		}
-		if (!newParams.get("payed")) {
+		if (!searchParams.has("payed")) {
 			newParams.set("payed", "false");
 			updated = true;
 		}
+
 		if (updated) {
-			setSearchParams(newParams);
+			// Atualiza apenas se necessário
+			setSearchParams(newParams, { replace: true });
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (loading) {
@@ -188,9 +197,9 @@ const PropertyPage = () => {
 			<DetailsRow property={property} />
 			<ContractListRow />
 			<ExpenseListRow
-				expenses={expenses}
+				pagination={expensePagination}
 				loading={loadingExpenses}
-				onReloadExpenses={handleListExpenses}
+				onReload={handleListExpenses}
 				onSearchChange={handleExpensesSearchChange}
 				onSelectChange={handleExpensesPayedSelectChange}
 				onOrderByChange={handleExpensesOrderByChange}
@@ -200,7 +209,7 @@ const PropertyPage = () => {
 				title="Expenses"
 			/>
 
-			<ChartListRow expenses={expenses} />
+			<ChartListRow expenses={expensePagination?.items} />
 		</Flex>
 	);
 };

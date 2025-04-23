@@ -6,6 +6,7 @@ from expense.serializers import ExpenseSerializer
 from property_manager.utils import EXPENSE_TAG_IDENTIFIER
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 
 class ExpenseListCreateView(APIView):
@@ -18,20 +19,35 @@ class ExpenseListCreateView(APIView):
     )
     def get(self, request):
         date_by = request.query_params.get("date_by", "month")
-        q = request.query_params.get("q")
         payed = request.query_params.get("payed", None)
-        order_by = request.query_params.get("order_by", "newest")
         if date_by not in ["week", "month", "year"]:
             return Response(
                 {"detail": "date_by must be 'week', 'month', or 'year'."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
-            expenses = ExpenseService.get_expenses(
-                request.user, date_by, q, payed, order_by
+            queryset, count, total = ExpenseService.get_expenses(
+                request.user, date_by, payed
             )
-            serializer = ExpenseSerializer(expenses, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            paginator = PageNumberPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            if paginated_queryset is None:
+                return Response(
+                    {"detail": "Página fora do intervalo."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            serializer = ExpenseSerializer(paginated_queryset, many=True)
+            current_page = paginator.page.number
+            page_size = paginator.get_page_size(request)
+            return Response(
+                {
+                    "data": serializer.data,
+                    "page": current_page,
+                    "page_size": page_size,
+                    "count": count,
+                    "total": total,
+                }
+            )
         except Exception as e:
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR

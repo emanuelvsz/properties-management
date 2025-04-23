@@ -2,12 +2,13 @@ import ExpenseUseCase from "@core/interfaces/usecase/expense.use-case";
 import ExpenseRepository from "@core/interfaces/repository/expense.repository";
 import { Expense } from "@core/domain/models/expense";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
+import { Pagination } from "@core/domain/models/pagination";
 
 class ExpenseService implements ExpenseUseCase {
 	constructor(protected readonly adapter: ExpenseRepository) {}
 
-	async list(propertyId?: string, filters?: ExpenseFilters): Promise<Expense[]> {
-		 return await this.adapter.list(propertyId, filters)
+	async list(filters?: ExpenseFilters): Promise<Pagination<Expense>> {
+		 return await this.adapter.list(filters)
 	}
 
 	async create(data: Expense): Promise<void> {

@@ -4,30 +4,18 @@ import { BackendClient } from "../clients";
 import { DTO } from "@core/domain/types";
 import { Expense } from "@core/domain/models/expense";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
+import { Pagination } from "@core/domain/models/pagination";
 
 class ExpenseAPI implements ExpenseRepository {
 	mapper = new ExpenseMapper();
 
-	async list(
-		propertyId?: string,
-		filters?: ExpenseFilters
-	): Promise<Expense[]> {
-		if (propertyId) {
-			const response = await BackendClient.get<DTO[]>(
-				`/properties/${propertyId}/expenses`,
-				{
-					params: filters
-				}
-			);
-			const expensesDTOs = response.data;
-			return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
-		} else {
-			const response = await BackendClient.get<DTO[]>("/expenses", {
-				params: filters
-			});
-			const expensesDTOs = response.data;
-			return expensesDTOs.map((dto) => this.mapper.deserialize(dto));
-		}
+	async list(filters?: ExpenseFilters): Promise<Pagination<Expense>> {
+		const response = await BackendClient.get("/expenses", {
+			params: filters
+		});
+		const { data, page, page_size, count, total } = response.data;
+		const expenses = data.map((dto: DTO) => this.mapper.deserialize(dto));
+		return new Pagination<Expense>(page, page_size, count, total, expenses);
 	}
 
 	async create(data: Expense): Promise<void> {

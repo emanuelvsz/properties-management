@@ -5,11 +5,15 @@ import { PIE_CHART_COLORS } from "../../../home/components/finance-pie-chart-car
 import { useIntl } from "react-intl";
 
 interface Props {
-	expenses: Expense[];
+	expenses?: Expense[];
 }
 
 const ChartListRow = ({ expenses }: Props) => {
 	const intl = useIntl();
+
+	if (!expenses) {
+		return null;
+	}
 
 	return (
 		<Row gutter={24}>

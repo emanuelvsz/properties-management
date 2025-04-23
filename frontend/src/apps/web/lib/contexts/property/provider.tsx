@@ -7,6 +7,10 @@ import { usePanic } from "./hooks";
 import PropertyUseCase from "@core/interfaces/usecase/property.use-case";
 import { Property } from "@core/domain/models/property";
 import { PropertyFilters } from "@core/domain/types/filters/property-filters";
+import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
+import { Expense } from "@core/domain/models/expense";
+import { Pagination } from "@core/domain/models/pagination";
+import { RentContract } from "@core/domain/models/rent-contract";
 
 interface PropertyProviderProps {
 	usecase: PropertyUseCase;
@@ -22,11 +26,11 @@ const PropertyProvider = ({
 	const list = useCallback(
 		async (filters?: PropertyFilters) => {
 			try {
-				const properties = await usecase.list(filters);
-				return properties;
+				const pagination = await usecase.list(filters);
+				return pagination;
 			} catch (error) {
 				panic(error);
-				return [];
+				return null;
 			}
 		},
 		[message, panic, usecase]
@@ -71,20 +75,20 @@ const PropertyProvider = ({
 		[message, panic, usecase]
 	);
 
-	const listContracts = useCallback(
-		async (id: string, archived: boolean) => {
+	const listPropertyContracts = useCallback(
+		async (id: string, archived: boolean, page: number) => {
 			try {
-				const response = await usecase.listContracts(id, archived);
+				const response = await usecase.listPropertyContracts(id, archived, page);
 				return response;
 			} catch (error) {
 				panic(error);
-				return [];
+				const pagination = new Pagination<RentContract>(1, 10, 0, 0, []);
+				return pagination;
 			}
 		},
 		[message, panic, usecase]
 	);
 
-	
 	const update = useCallback(
 		async (data: Property) => {
 			try {
@@ -98,14 +102,29 @@ const PropertyProvider = ({
 		[message, panic, usecase]
 	);
 
+	const listPropertyExpenses = useCallback(
+		async (id: string, page: number, filters?: ExpenseFilters) => {
+			try {
+				const response = await usecase.listPropertyExpenses(id, page, filters);
+				return response;
+			} catch (error) {
+				panic(error);
+				const pagination = new Pagination<Expense>(1, 10, 0, 0, []);
+				return pagination;
+			}
+		},
+		[message, panic, usecase]
+	);
+
 	const values = useMemo(
 		() => ({
 			list,
 			deleteProperty,
 			create,
 			listByID,
-			listContracts,
-			update
+			listPropertyContracts,
+			update,
+			listPropertyExpenses
 		}),
 		[list]
 	);

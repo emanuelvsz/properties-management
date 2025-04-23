@@ -3,11 +3,14 @@ import { Property } from "@core/domain/models/property";
 import PropertyRepository from "@core/interfaces/repository/property.repository";
 import { PropertyFilters } from "@core/domain/types/filters/property-filters";
 import { RentContract } from "@core/domain/models/rent-contract";
+import { Pagination } from "@core/domain/models/pagination";
+import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
+import { Expense } from "@core/domain/models/expense";
 
 class PropertyService implements PropertyUseCase {
 	constructor(protected readonly adapter: PropertyRepository) {}
 
-	async list(filters?: PropertyFilters): Promise<Property[]> {
+	async list(filters?: PropertyFilters): Promise<Pagination<Property>> {
 		return await this.adapter.list(filters);;
 	}
 
@@ -27,8 +30,12 @@ class PropertyService implements PropertyUseCase {
 		return await this.adapter.listByID(id);
 	}
 
-	async listContracts(id: string, archived: boolean): Promise<RentContract[]> {
-		return await this.adapter.listContracts(id, archived);
+	async listPropertyContracts(id: string, archived: boolean, page: number): Promise<Pagination<RentContract>> {
+		return await this.adapter.listPropertyContracts(id, archived, page);
+	}
+
+	async listPropertyExpenses(id: string, page: number, filters?: ExpenseFilters): Promise<Pagination<Expense>> {
+		return await this.adapter.listPropertyExpenses(id, page, filters);
 	}
 }
 

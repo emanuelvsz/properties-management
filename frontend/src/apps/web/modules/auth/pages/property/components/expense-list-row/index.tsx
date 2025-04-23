@@ -22,11 +22,12 @@ import {
 } from "@web/lib/contexts/expense/hooks";
 import useCheckOrderByParam from "@web/lib/hooks/params/use-check-order-by-param";
 import EmptySection from "@web/components/empty-section";
+import { Pagination } from "@core/domain/models/pagination";
 
 interface Props {
-	expenses: Expense[];
+	pagination: Pagination<Expense>;
 	loading?: boolean;
-	onReloadExpenses?: () => void;
+	onReload?: (page: number) => void;
 	onSelectChange?: (value: string) => void;
 	onSearchChange?: (value: string) => void;
 	onOrderByChange?: (value: string) => void;
@@ -35,8 +36,6 @@ interface Props {
 	hideActions: boolean;
 	title: string;
 }
-
-const PAGE_SIZE = 5;
 
 const styles = {
 	container: css`
@@ -48,9 +47,9 @@ const styles = {
 };
 
 const ExpenseListRow = ({
-	expenses,
+	pagination,
 	loading: loadingExpenses,
-	onReloadExpenses,
+	onReload,
 	onSelectChange,
 	onSearchChange,
 	onOrderByChange,
@@ -87,8 +86,8 @@ const ExpenseListRow = ({
 		setLoading((prev) => ({ ...prev, delete: true }));
 		await deleteExpense(id);
 		setLoading((prev) => ({ ...prev, delete: false }));
-		if (onReloadExpenses) {
-			onReloadExpenses();
+		if (onReload) {
+			onReload(1);
 		}
 	};
 
@@ -98,8 +97,8 @@ const ExpenseListRow = ({
 		await createExpense(expense);
 		setLoading((prev) => ({ ...prev, create: false }));
 		setIsAddModalVisible(false);
-		if (onReloadExpenses) {
-			onReloadExpenses();
+		if (onReload) {
+			onReload(1);
 		}
 	};
 
@@ -108,8 +107,8 @@ const ExpenseListRow = ({
 		const expense = Expense.fromForm(values);
 		setLoading((prev) => ({ ...prev, update: true }));
 		await updateExpense(expense, editingExpense.id);
-		if (onReloadExpenses) {
-			onReloadExpenses();
+		if (onReload) {
+			onReload(1);
 		}
 		setLoading((prev) => ({ ...prev, update: false }));
 		setIsEditModalVisible(false);
@@ -225,7 +224,7 @@ const ExpenseListRow = ({
 							title={title}
 							prefix={
 								<PageHeaderFilters
-									onReloadClick={onReloadExpenses}
+									onReloadClick={() => onReload && onReload(1)}
 									onSearchChange={onSearchChange}
 									onSelectChange={onSelectChange}
 									searchValue={searchValue}
@@ -237,19 +236,19 @@ const ExpenseListRow = ({
 										id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
 									})}
 									disabled={
-										expenses.length === 0 &&
+										pagination.total === 0 &&
 										!loadingExpenses &&
 										checkOrderByParam
 									}
-									hideActions={hideActions || expenses.length < 1}
+									hideActions={hideActions || pagination.total === 0}
 								/>
 							}
 							extra={
-								expenses.length >= 1 ? (
+								pagination.total >= 1 ? (
 									<PageHeaderActions
 										onAddClick={() => setIsAddModalVisible(true)}
 										onOrderByChange={onOrderByChange}
-										disabled={expenses.length === 0 && !loadingExpenses}
+										disabled={pagination.items.length === 0 && !loadingExpenses}
 										disableActions={hideActions}
 										orderByOptions={orderByOptions}
 									/>
@@ -262,12 +261,19 @@ const ExpenseListRow = ({
 								)
 							}
 						/>
-						{expenses.length >= 1 && (
+						{pagination.total >= 1 ? (
 							<Table
 								columns={expenseColumns}
-								dataSource={expenses}
+								dataSource={pagination.items}
 								rowKey="id"
-								pagination={{ pageSize: PAGE_SIZE }}
+								pagination={{
+									current: pagination.page,
+									pageSize: pagination.pageSize,
+									total: pagination.count,
+									onChange: (page) => {
+										onReload && onReload(page);
+									}
+								}}
 								scroll={{ x: "max-content" }}
 								loading={
 									loading.create ||
@@ -289,7 +295,7 @@ const ExpenseListRow = ({
 								}}
 								bordered
 							/>
-						)}
+						) : null}
 					</Flex>
 				</Col>
 			</Row>

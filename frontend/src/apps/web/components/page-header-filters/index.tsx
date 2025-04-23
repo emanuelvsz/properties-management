@@ -1,8 +1,10 @@
 import { css } from "@emotion/react";
 import { Input, Button, Flex, Tooltip, Select } from "antd";
 import { SearchOutlined, ReloadOutlined } from "@ant-design/icons";
-import { useIntl } from "react-intl"; // Importando o hook useIntl
+import { useIntl } from "react-intl";
 import { THEME_COLORS } from "@web/config/theme";
+import { useMemo, useState } from "react";
+import debounce from "lodash.debounce";
 
 interface Props {
 	onSearchChange?: (value: string) => void;
@@ -60,6 +62,22 @@ const PageHeaderFilters = ({
 	hideSearch = false
 }: Props) => {
 	const intl = useIntl();
+	const [localSearchValue, setLocalSearchValue] = useState(searchValue ?? "");
+
+	// Debounce para evitar chamadas a cada digitação
+	const debouncedSearch = useMemo(
+		() =>
+			debounce((val: string) => {
+				onSearchChange?.(val);
+			}, 500),
+		[onSearchChange]
+	);
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const val = e.target.value;
+		setLocalSearchValue(val);
+		debouncedSearch(val);
+	};
 
 	if (hideActions) {
 		return null;
@@ -70,11 +88,8 @@ const PageHeaderFilters = ({
 			<Input
 				allowClear
 				prefix={<SearchOutlined color={THEME_COLORS.PRIMARY_COLOR} />}
-				value={searchValue}
-				onChange={(e) => {
-					e.preventDefault();
-					onSearchChange?.(e.target.value);
-				}}
+				value={localSearchValue}
+				onChange={handleInputChange}
 				placeholder={searchPlaceholder}
 				css={styles.input}
 				disabled={disabled}

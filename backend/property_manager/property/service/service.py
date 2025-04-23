@@ -10,7 +10,6 @@ from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 
 
 class PropertyService:
-
     @staticmethod
     def list_properties(
         user,
@@ -21,13 +20,14 @@ class PropertyService:
         order_by=None,
         furnished=None,
     ):
+        total = Property.objects.filter(user=user).count()
         queryset = Property.objects.filter(user=user)
-
         if q:
             queryset = queryset.filter(
                 Q(title__icontains=q)
                 | Q(description__icontains=q)
                 | Q(code__icontains=q)
+                | Q(location__icontains=q)
             )
         if bedrooms is not None:
             queryset = queryset.filter(bedrooms=bedrooms)
@@ -37,7 +37,7 @@ class PropertyService:
             queryset = queryset.filter(surface=surface)
         if furnished is not None:
             queryset = queryset.filter(furnished=furnished)
-
+        count = queryset.count()
         if order_by:
             if order_by == "newest":
                 queryset = queryset.order_by("-created_at")
@@ -57,9 +57,9 @@ class PropertyService:
                 queryset = queryset.order_by("bathrooms")
         else:
             queryset = queryset.order_by("-id")
-
         now = timezone.now()
-        for prop in queryset:
+        props = list(queryset)
+        for prop in props:
             contract = (
                 RentContract.objects.filter(
                     property=prop, started_at__lte=now, finish_at__gte=now
@@ -69,7 +69,7 @@ class PropertyService:
             )
             setattr(prop, "current_tenant", contract.tenant if contract else None)
 
-        return queryset
+        return props, count, total
 
     @staticmethod
     def get_property_by_id(property_id):
@@ -154,6 +154,7 @@ class PropertyService:
         :return: A filtered and ordered queryset of expenses.
         """
         queryset = Expense.objects.filter(property_id=property_id, property__user=user)
+        total = queryset.count()
         if q:
             queryset = queryset.filter(
                 Q(name__icontains=q) | Q(description__icontains=q)
@@ -190,10 +191,46 @@ class PropertyService:
             raise ValueError(
                 "Invalid date_by parameter. Use 'week', 'month', or 'year'."
             )
-        return queryset
+        count = queryset.count()
+        return queryset, count, total
 
-    def get_property_contracts(user, property_id, archived):
-        queryset = RentContract.objects.filter(
-            user=user, property_id=property_id, archived=archived
-        )
-        return queryset
+    @staticmethod
+    def get_property_contracts(user, property_id, archived=None, q=None, order_by=None):
+        """
+        Get property rent contracts, with optional filtering, ordering and period grouping.
+
+        :param user: The authenticated user.
+        :param property_id: The unique identifier of the property.
+        :param archived: Optional boolean to filter archived status.
+        :param q: Optional search query for filtering contracts by tenant name or description.
+        :param order_by: Optional ordering ('newest', 'oldest', 'highest_rent', 'lowest_rent', 'end_soon', 'end_late').
+        :return: A filtered and ordered queryset of rent contracts, count, and total.
+        """
+        queryset = RentContract.objects.filter(user=user, property_id=property_id)
+        total = queryset.count()
+
+        if archived is not None:
+            queryset = queryset.filter(archived=archived)
+
+        if q:
+            queryset = queryset.filter(
+                Q(tenant_name__icontains=q) | Q(description__icontains=q)
+            )
+
+        if order_by:
+            if order_by == "newest":
+                queryset = queryset.order_by("-created_at")
+            elif order_by == "oldest":
+                queryset = queryset.order_by("created_at")
+            elif order_by == "highest_rent":
+                queryset = queryset.order_by("-rent_value")
+            elif order_by == "lowest_rent":
+                queryset = queryset.order_by("rent_value")
+            elif order_by == "end_soon":
+                queryset = queryset.order_by("end_date")
+            elif order_by == "end_late":
+                queryset = queryset.order_by("-end_date")
+        else:
+            queryset = queryset.order_by("-id")
+        count = queryset.count()
+        return queryset, count, total

@@ -8,7 +8,6 @@ import { ColumnsType } from "antd/es/table";
 import BoardPageHeader from "../home/components/finance-bar-panel";
 import PageHeaderFilters from "../../../../components/page-header-filters";
 import PageHeaderActions from "../../../../components/page-header-actions";
-
 import {
 	useCreateProperty,
 	useDeleteProperty,
@@ -18,9 +17,9 @@ import {
 import { Property } from "@core/domain/models/property";
 import { THEME_COLORS } from "@web/config/theme";
 import PropertyModalForm from "../../../../components/property-modal-form";
-
 import Table from "@web/components/table";
 import { useIntl } from "react-intl";
+import { Pagination } from "@core/domain/models/pagination";
 
 const styles = {
 	container: css`
@@ -54,11 +53,10 @@ const styles = {
 	`
 };
 
-const PAGE_SIZE = 6;
+const INITIAL_TABLE_PAGE = 1;
 
 const PropertiesPage = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-	const [properties, setProperties] = useState<Property[]>([]);
 	const [loadingProperties, setLoadingProperties] = useState<boolean>(false);
 	const [creatingProperty, setCreatingProperty] = useState<boolean>(false);
 	const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
@@ -66,6 +64,10 @@ const PropertiesPage = () => {
 	const [editingProperty, setEditingProperty] = useState<Property | undefined>(
 		undefined
 	);
+
+	const [propertyPagination, setPropertyPagination] = useState<
+		Pagination<Property>
+	>(Pagination.empty<Property>());
 
 	const intl = useIntl();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -76,21 +78,53 @@ const PropertiesPage = () => {
 	const createProperty = useCreateProperty();
 	const updateProperty = useUpdateProperty();
 
-	const handleFetchProperties = async () => {
+	const getValidPage = () => {
+		const pageParam = searchParams.get("page");
+		const parsedPage = Number(pageParam);
+		return isNaN(parsedPage) || parsedPage < INITIAL_TABLE_PAGE
+			? INITIAL_TABLE_PAGE
+			: parsedPage;
+	};
+	const handleFetchProperties = async (page?: number) => {
 		setLoadingProperties(true);
-		const q = searchParams.get("q") ?? "";
+
+		const rawQuery = searchParams.get("q");
+		const q = rawQuery && rawQuery.trim() !== "" ? rawQuery.trim() : undefined;
 		const order_by = searchParams.get("order_by") ?? "newest";
 		const furnishedParam = searchParams.get("furnished");
+
 		const furnished =
 			furnishedParam === "true"
 				? true
 				: furnishedParam === "false"
 					? false
 					: undefined;
-		const response = await listProperties({ q, order_by, furnished });
-		setLoadingProperties(false);
+
+		const shouldResetPage = Boolean(furnished) || Boolean(q);
+		const currentPage = shouldResetPage ? 1 : (page ?? getValidPage());
+
+		const response = await listProperties({
+			q,
+			order_by,
+			furnished,
+			page: currentPage
+		});
+
 		if (response) {
-			setProperties(response);
+			const totalPages = Math.ceil(response.count / response.pageSize);
+
+			if (currentPage > totalPages) {
+				setSearchParams({ ...searchParams, page: "1" });
+			}
+
+			setPropertyPagination(response);
+			setLoadingProperties(false);
+
+			const newParams = new URLSearchParams(searchParams);
+			newParams.set("page", String(currentPage));
+			setSearchParams(newParams);
+		} else {
+			setLoadingProperties(false);
 		}
 	};
 
@@ -98,14 +132,14 @@ const PropertiesPage = () => {
 		setLoadingProperties(true);
 		await deleteProperty(id);
 		setLoadingProperties(false);
-		await handleFetchProperties();
+		await handleFetchProperties(1);
 	};
 
 	const handleUpdate = async (values: any) => {
 		const property = Property.fromForm(values);
 		await updateProperty(property);
 		handleCloseEditModal();
-		await handleFetchProperties();
+		await handleFetchProperties(1);
 	};
 
 	const handleOpenEditModal = (property: Property) => {
@@ -132,7 +166,7 @@ const PropertiesPage = () => {
 		await createProperty(property);
 		setCreatingProperty(false);
 		handleCloseAddModal();
-		await handleFetchProperties();
+		await handleFetchProperties(1);
 	};
 
 	const handleSearchChange = (value: string) => {
@@ -282,15 +316,6 @@ const PropertiesPage = () => {
 		handleFetchProperties();
 	}, [searchParams]);
 
-	useEffect(() => {
-		const orderByParam = searchParams.get("order_by");
-		if (!orderByParam) {
-			const newParams = new URLSearchParams(searchParams);
-			newParams.set("order_by", "newest");
-			setSearchParams(newParams);
-		}
-	}, []);
-
 	const orderByOptions = [
 		{ key: "newest", label: "Mais recentes" },
 		{ key: "oldest", label: "Mais antigos" },
@@ -311,7 +336,7 @@ const PropertiesPage = () => {
 					})}
 					prefix={
 						<PageHeaderFilters
-							onReloadClick={handleFetchProperties}
+							onReloadClick={() => handleFetchProperties(1)}
 							onSearchChange={handleSearchChange}
 							onSelectChange={handleFurnishedChange}
 							searchValue={searchParams.get("q") ?? ""}
@@ -335,20 +360,25 @@ const PropertiesPage = () => {
 				<Table
 					loading={loadingProperties}
 					rowSelection={rowSelection}
-					dataSource={properties}
+					dataSource={propertyPagination?.items}
 					columns={propertyTableFields}
 					rowKey={(record) => record.id}
 					pagination={{
-						pageSize: PAGE_SIZE
+						current: propertyPagination.page,
+						pageSize: propertyPagination.pageSize,
+						total: propertyPagination.count,
+						onChange: (page) => {
+							handleFetchProperties(page);
+						}
 					}}
 				/>
 			</Flex>
-
 			<PropertyModalForm
 				visible={isAddModalVisible}
 				onCancel={handleCloseAddModal}
 				onSubmit={handleAddProperty}
 				loadingButton={creatingProperty}
+				title="Add new property"
 			/>
 
 			<PropertyModalForm
@@ -357,6 +387,7 @@ const PropertiesPage = () => {
 				onSubmit={handleUpdate}
 				property={editingProperty}
 				loadingButton={false}
+				title="Edit the property"
 			/>
 		</>
 	);

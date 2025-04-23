@@ -10,7 +10,7 @@ from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 
 class ExpenseService:
     @staticmethod
-    def get_expenses(user, date_by, q=None, payed=None, order_by=None):
+    def get_expenses(user, date_by, payed=None):
         """
         Get property expenses and classify them by type, summing expense values.
 
@@ -20,37 +20,16 @@ class ExpenseService:
         :param q: Optional search query for filtering expenses by name or description.
         :param payed: Optional boolean to filter by payment status.
         :param order_by: Optional ordering ('newest', 'oldest', 'highest_value', 'lowest_value', 'due_soon', 'due_late').
-        :return: A filtered and ordered queryset of expenses.
+        :return: A paginated, filtered and ordered queryset of expenses.
         """
         queryset = Expense.objects.filter(property__user=user)
-
-        if q:
-            queryset = queryset.filter(
-                Q(name__icontains=q) | Q(description__icontains=q)
-            )
-
+        total = queryset.count()
         if payed is not None:
             if str(payed).lower() == "true":
                 queryset = queryset.filter(payed_at__isnull=False)
             elif str(payed).lower() == "false":
                 queryset = queryset.filter(payed_at__isnull=True)
-
-        if order_by:
-            if order_by == "newest":
-                queryset = queryset.order_by("-created_at")
-            elif order_by == "oldest":
-                queryset = queryset.order_by("created_at")
-            elif order_by == "highest_value":
-                queryset = queryset.order_by("-expense_value")
-            elif order_by == "lowest_value":
-                queryset = queryset.order_by("expense_value")
-            elif order_by == "due_soon":
-                queryset = queryset.order_by("due_date")
-            elif order_by == "due_late":
-                queryset = queryset.order_by("-due_date")
-        else:
-            queryset = queryset.order_by("-id")
-
+        queryset = queryset.order_by("-id")
         if date_by == "week":
             queryset = queryset.annotate(period=TruncWeek("created_at"))
         elif date_by == "month":
@@ -61,8 +40,8 @@ class ExpenseService:
             raise ValueError(
                 "Invalid date_by parameter. Use 'week', 'month', or 'year'."
             )
-
-        return queryset
+        count = queryset.count()
+        return queryset, count, total
 
     @staticmethod
     def get_expense_by_id(expense_id):
