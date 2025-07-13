@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Popconfirm, Tag, Select, DatePicker } from "antd";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Flex, Popconfirm, Tag } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { css } from "@emotion/react";
 import { useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
@@ -13,7 +13,6 @@ import { THEME_COLORS } from "@web/config/theme";
 import Table from "@web/components/table";
 import { RentPayment } from "@core/domain/models/rent-payment";
 
-const { Option } = Select;
 
 const styles = {
 	container: css`

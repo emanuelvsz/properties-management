@@ -7,21 +7,21 @@ import { Model } from "../model";
 
 class Account extends Model {
 	#id: string;
-	#name: string;
+	#username: string;
 	#email: string;
 	#roles: AccountRole[];
 	#createdAt: string;
 
 	constructor(
 		id: string,
-		name: string,
+		username: string,
 		email: string,
 		roles: AccountRole[],
 		createdAt: string
 	) {
 		super();
 		this.#id = id;
-		this.#name = name;
+		this.#username = username;
 		this.#email = email;
 		this.#roles = roles;
 		this.#createdAt = createdAt;
@@ -31,8 +31,8 @@ class Account extends Model {
 		return this.#id;
 	}
 
-	get name() {
-		return this.#name;
+	get username() {
+		return this.#username;
 	}
 
 	get email() {
@@ -58,10 +58,10 @@ class Account extends Model {
 	}
 
 	get formattedName() {
-		if (!this.name) {
+		if (!this.username) {
 			return "";
 		}
-		const splittedName = this.name.split(" ");
+		const splittedName = this.username.split(" ");
 		if (splittedName.length === 1) {
 			return splittedName[0];
 		}
@@ -69,7 +69,7 @@ class Account extends Model {
 	}
 
 	get firstName() {
-		return this.name?.split(" ")[0] ?? "Not Informed.";
+		return this.username?.split(" ")[0] ?? "Not Informed.";
 	}
 
 	get isAdmin() {

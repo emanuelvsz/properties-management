@@ -180,6 +180,14 @@ const SideMenu = ({ account }: Props) => {
 			icon: backpackIconWhite,
 			activeIcon: backpackIcon,
 			url: "/inventory"
+		},
+		{
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.profile"
+			}),
+			icon: userIconWhite,
+			activeIcon: userIcon,
+			url: "/profile"
 		}
 	];
 

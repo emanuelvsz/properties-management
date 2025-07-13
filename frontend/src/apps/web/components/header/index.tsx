@@ -60,7 +60,8 @@ const styles = {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 8px 16px;
+		padding: 4px 16px;
+		height: 25px;
 	`,
 	dropdownIcon: css`
 		height: 16px;
@@ -115,6 +116,7 @@ const Header = ({ account }: Props) => {
 	};
 
 	const handleProfileClick = () => {
+		navigate("/profile");
 	};
 
 	const isActive = (path: string) => {

@@ -56,6 +56,8 @@ def profile_view(request):
         'last_name': user.last_name,
         'is_active': user.is_active,
         'date_joined': user.date_joined.isoformat() if user.date_joined else None,
+        'roles': [{'code': 'ADMIN' if user.is_superuser else 'USER', 'name': 'Administrator' if user.is_superuser else 'User'}],
+        'createdAt': user.date_joined.isoformat() if user.date_joined else None,
     })
 
 @api_view(['POST'])

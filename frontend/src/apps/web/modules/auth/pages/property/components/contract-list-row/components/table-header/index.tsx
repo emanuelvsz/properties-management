@@ -1,14 +1,6 @@
-import { css } from "@emotion/react";
 import { Form, Switch } from "antd";
 import { useIntl } from "react-intl";
 import { useState } from "react";
-
-const styles = {
-	container: css`
-		justify-content: space-between;
-		align-items: center;
-	`
-};
 
 interface Props {
 	onSelectCheckboxOption: (value: boolean) => void;

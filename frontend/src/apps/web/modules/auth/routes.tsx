@@ -6,6 +6,7 @@ import PropertyPage from "./pages/property";
 import TenantsPage from "./pages/tenants";
 import InventoryPage from "./pages/inventory";
 import PaymentsPage from "./pages/payments";
+import ProfilePage from "./pages/profile";
 
 const getAuthRoutes = (): Route[] => [
 	{
@@ -49,6 +50,13 @@ const getAuthRoutes = (): Route[] => [
 		path: "/payments",
 		page: PaymentsPage,
 		hidden: false
+	},
+	{
+		key: 9,
+		title: "Perfil",
+		path: ProfilePage.route,
+		page: ProfilePage,
+		hidden: true
 	}
 ];
 

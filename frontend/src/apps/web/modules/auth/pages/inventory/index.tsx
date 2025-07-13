@@ -351,7 +351,7 @@ const InventoryPage = () => {
 			title: intl.formatMessage({ id: "page.inventory.table.value" }),
 			dataIndex: "purchasePrice",
 			key: "purchasePrice",
-			render: (price: number, record: InventoryItem) => {
+			render: (record: InventoryItem) => {
 				const priceValue = record.purchasePrice;
 				return (
 					<Text>

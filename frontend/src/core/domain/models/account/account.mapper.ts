@@ -8,18 +8,18 @@ class AccountMapper extends Mapper<Account> {
 
 	deserialize(data: DTO): Account {
 		const id = String(data.id);
-		const name = String(data.name);
+		const username = String(data.username || data.name || '');
 		const email = String(data.email);
 		const rolesDTO = (data.roles as DTO[]) ?? [];
 		const roles = rolesDTO.map((role) => this.#roleMapper.deserialize(role));
-		const createdAt = String(data.createdAt);
-		return new Account(id, name, email, roles, createdAt);
+		const createdAt = String(data.date_joined || data.createdAt || '');
+		return new Account(id, username, email, roles, createdAt);
 	}
 
 	serialize(data: Account): DTO {
 		return {
 			id: data.id,
-			name: data.name,
+			name: data.username,
 			email: data.email,
 			roles: data.roles.map((role) => this.#roleMapper.serialize(role)),
 			createdAt: data.createdAt
