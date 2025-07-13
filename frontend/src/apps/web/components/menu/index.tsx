@@ -12,7 +12,10 @@ import homeIconWhite from "@web/assets/icons/fi-rs-home-white.svg";
 import userIconWhite from "@web/assets/icons/user-white.svg";
 import userIcon from "@web/assets/icons/user.svg";
 import moneyIcon from "@web/assets/icons/fi-rs-money.svg";
-import moneyIconWhite from "@web/assets/icons/fi-rs-money.svg";
+import moneyIconWhite from "@web/assets/icons/fi-rs-money-white.svg";
+
+import backpackIcon from "@web/assets/icons/fi-rs-backpack.svg";
+import backpackIconWhite from "@web/assets/icons/fi-rs-backpack-white.svg";
 
 import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
@@ -174,8 +177,8 @@ const SideMenu = ({ account }: Props) => {
 			text: intl.formatMessage({
 				id: "component.side-menu.section.pages.item.inventory"
 			}),
-			icon: homeIconWhite,
-			activeIcon: homeIcon,
+			icon: backpackIconWhite,
+			activeIcon: backpackIcon,
 			url: "/inventory"
 		}
 	];
