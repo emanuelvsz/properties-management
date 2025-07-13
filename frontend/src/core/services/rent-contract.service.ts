@@ -7,7 +7,7 @@ class RentContractService implements RentContractUseCase {
 	constructor(protected readonly adapter: RentContractRepository) {}
 
 	async list(filters?: DefaultFilters): Promise<RentContract[]> {
-		return await this.adapter.list(filters);;
+		return await this.adapter.list(filters);
 	}
 
 	async delete(id: string): Promise<void> {
@@ -18,7 +18,7 @@ class RentContractService implements RentContractUseCase {
 		return await this.adapter.create(data);
 	}
 
-    async update(data: RentContract): Promise<void> {
+	async update(data: RentContract): Promise<void> {
 		return await this.adapter.update(data);
 	}
 }

@@ -1,9 +1,7 @@
 import { css } from "@emotion/react";
-import { Button, Card, DatePicker, DatePickerProps, Flex } from "antd";
+import { Button, DatePicker, DatePickerProps, Flex, Spin } from "antd";
 
 import FinanceCard, { FinanceCardProps } from "./components/finance-card";
-import FinanceBarChartCard from "./components/finance-bar-chart-card";
-import FinancePieChartCard from "./components/finance-pie-chart-card";
 import BoardPageHeader from "./components/finance-bar-panel";
 
 import arrowDownIcon from "@web/assets/icons/fi-rs-chat-arrow-down.svg";
@@ -15,14 +13,11 @@ import downloadIcon from "@web/assets/icons/fi-rs-download.svg";
 import { THEME_COLORS } from "@web/config/theme";
 import { useIntl } from "react-intl";
 import { useListDashboardReturnSummary } from "@web/lib/contexts/dashboard/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ReturnsSummary } from "@core/domain/models/returns-summary";
 import ExpenseListRow from "../property/components/expense-list-row";
 import { Expense } from "@core/domain/models/expense";
-import {
-	ExpenseFilters,
-	ExpenseFiltersOrderBy
-} from "@core/domain/types/filters/expense-filters";
+import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 import { useSearchParams } from "react-router-dom";
 import { Pagination } from "@core/domain/models/pagination";
 import { useListExpenses } from "@web/lib/contexts/expense/hooks";
@@ -68,33 +63,31 @@ const HomePage = () => {
 	const [returnSummary, setReturnSummary] = useState<ReturnsSummary | null>(
 		null
 	);
-	const [loadingReturnSummary, setLoadingReturnSummary] =
-		useState<boolean>(false);
-	const [loadingExpenses, setLoadingExpenses] = useState<boolean>(false);
 	const [expensePagination, setExpensePagination] = useState<
 		Pagination<Expense>
 	>(Pagination.empty<Expense>());
+	const [loadingPage, setLoadingPage] = useState<boolean>(true);
 	const [searchParams, setSearchParams] = useSearchParams();
 	const listReturnSummary = useListDashboardReturnSummary();
 	const listExpenses = useListExpenses();
 
 	const financeCardItems: FinanceCardProps[] = [
 		{
-			title: "Gross Return",
+			title: intl.formatMessage({ id: "dashboard.card.gross-return" }),
 			extraColor: "green",
 			extraValue: 0,
 			value: returnSummary?.gross || 0,
 			icon: <img src={moneyIcon} css={styles.cardIcon} />
 		},
 		{
-			title: "Expenses",
+			title: intl.formatMessage({ id: "dashboard.card.expenses" }),
 			extraColor: "red",
 			extraValue: 0,
 			value: returnSummary?.expenses || 0,
 			icon: <img src={arrowDownIcon} css={styles.cardIcon} />
 		},
 		{
-			title: "Liquid Return",
+			title: intl.formatMessage({ id: "dashboard.card.liquid-return" }),
 			extraColor: "green",
 			extraValue: 0,
 			value: returnSummary?.liquid || 0,
@@ -102,43 +95,37 @@ const HomePage = () => {
 		}
 	];
 
-	const handleDateChange: DatePickerProps["onChange"] = (date, dateString) => {
+	const handleDateChange: DatePickerProps["onChange"] = (date) => {
 		if (!date) return;
 		const newParams = new URLSearchParams(searchParams);
 		newParams.set("month", date.format("YYYY-MM"));
 		setSearchParams(newParams);
 	};
 
-	const handleFetchReturnSummary = async () => {
-		setLoadingReturnSummary(true);
-		const data = await listReturnSummary();
-		setLoadingReturnSummary(false);
-		setReturnSummary(data);
-	};
-
-	const handleFetchExpenses = async () => {
-		const dateBy = searchParams.get("month") ?? undefined;
-		const filters: ExpenseFilters = {
-			payed: false,
-			dateBy: dateBy
-		} as ExpenseFilters;
-		try {
-			const response = await listExpenses(filters);
-			handleFetchReturnSummary();
-			setLoadingExpenses(false);
-			if (!response) return;
-			setExpensePagination(response);
-		} catch (error) {
-			console.error("Erro ao buscar despesas do imóvel:", error);
-		} finally {
-			setLoadingExpenses(false);
+	const fetchAllData = useCallback(async () => {
+		if (returnSummary && expensePagination) {
+			return;
 		}
-	};
+		setLoadingPage(true);
+		try {
+			const [summary, expenses] = await Promise.all([
+				listReturnSummary(),
+				listExpenses({
+					payed: false,
+					dateBy: searchParams.get("month") ?? undefined
+				} as ExpenseFilters)
+			]);
+			setReturnSummary(summary);
+			setExpensePagination(expenses);
+		} catch (error) {
+		} finally {
+			setLoadingPage(false);
+		}
+	}, [searchParams]);
 
 	useEffect(() => {
-		handleFetchReturnSummary();
-		handleFetchExpenses();
-	}, [listReturnSummary, listExpenses]);
+		fetchAllData();
+	}, [fetchAllData]);
 
 	useEffect(() => {
 		const orderByParam = searchParams.get("order_by");
@@ -149,9 +136,18 @@ const HomePage = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		handleFetchExpenses();
-	}, [searchParams]);
+	if (loadingPage) {
+		return (
+			<Flex
+				css={styles.container}
+				justify="center"
+				align="center"
+				style={{ minHeight: 400 }}
+			>
+				<Spin size="large" />
+			</Flex>
+		);
+	}
 
 	return (
 		<Flex css={styles.container} vertical gap={10} flex={1}>
@@ -186,16 +182,16 @@ const HomePage = () => {
 						extraValue={item.extraValue}
 						value={item.value}
 						icon={item.icon}
-						loading={loadingReturnSummary}
+						loading={loadingPage}
 					/>
 				))}
 			</Flex>
 			<ExpenseListRow
 				pagination={expensePagination}
-				loading={loadingExpenses}
+				loading={loadingPage}
 				hideActions={true}
-				title="Pending Expenses"
-				onReload={handleFetchExpenses}
+				title={intl.formatMessage({ id: "dashboard.pending-expenses" })}
+				onReload={fetchAllData}
 			/>
 			{/* <Flex gap={10} css={styles.cardList}>
 				<FinanceBarChartCard />

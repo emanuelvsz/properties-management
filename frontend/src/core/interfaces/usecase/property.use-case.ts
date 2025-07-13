@@ -10,9 +10,17 @@ abstract class PropertyUseCase {
 	abstract delete(id: string): Promise<void>;
 	abstract create(data: Property): Promise<void>;
 	abstract update(data: Property): Promise<void>;
-	abstract listByID(id: string): Promise<Property>
-	abstract listPropertyContracts(id: string, archived: boolean, page: number): Promise<Pagination<RentContract>>
-	abstract listPropertyExpenses(id: string, page: number, filters?: ExpenseFilters): Promise<Pagination<Expense>>;
+	abstract listByID(id: string): Promise<Property>;
+	abstract listPropertyContracts(
+		id: string,
+		archived: boolean,
+		page: number
+	): Promise<Pagination<RentContract>>;
+	abstract listPropertyExpenses(
+		id: string,
+		page: number,
+		filters?: ExpenseFilters
+	): Promise<Pagination<Expense>>;
 }
 
 export default PropertyUseCase;

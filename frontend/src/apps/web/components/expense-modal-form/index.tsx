@@ -114,18 +114,22 @@ const ExpenseModalForm = ({
 			<Form form={form} layout="vertical" name={formName} onFinish={handleOk}>
 				<Form.Item
 					name="name"
-					label="Name"
+					label={intl.formatMessage({
+						id: "component.expense-modal-form.form.name.label"
+					})}
 					rules={[
 						{
 							required: true,
 							message: intl.formatMessage({
-								id: "component.add-property-modal-form.form.item.title.required-rule.message"
+								id: "component.expense-modal-form.form.name.required"
 							})
 						}
 					]}
 				>
 					<Input
-						placeholder="Water"
+						placeholder={intl.formatMessage({
+							id: "component.expense-modal-form.form.name.placeholder"
+						})}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
 								e.preventDefault();
@@ -136,9 +140,16 @@ const ExpenseModalForm = ({
 						maxLength={40}
 					/>
 				</Form.Item>
-				<Form.Item name="description" label="Description">
+				<Form.Item
+					name="description"
+					label={intl.formatMessage({
+						id: "component.expense-modal-form.form.description.label"
+					})}
+				>
 					<Input.TextArea
-						placeholder="Property monthly bills of water"
+						placeholder={intl.formatMessage({
+							id: "component.expense-modal-form.form.description.placeholder"
+						})}
 						showCount
 						maxLength={200}
 						draggable={false}
@@ -153,13 +164,22 @@ const ExpenseModalForm = ({
 				</Form.Item>
 				<Form.Item
 					name="expense_value"
-					label="Expense Value"
+					label={intl.formatMessage({
+						id: "component.expense-modal-form.form.expense-value.label"
+					})}
 					rules={[
-						{ required: true, message: "Please enter the expense value" }
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "component.expense-modal-form.form.expense-value.required"
+							})
+						}
 					]}
 				>
 					<InputNumber
-						placeholder="0"
+						placeholder={intl.formatMessage({
+							id: "component.expense-modal-form.form.expense-value.placeholder"
+						})}
 						css={styles.inputNumber}
 						min={0}
 						onKeyDown={(e) => {
@@ -173,14 +193,29 @@ const ExpenseModalForm = ({
 				<Flex gap={16}>
 					<Form.Item
 						name="due_date"
-						label="Due Date"
+						label={intl.formatMessage({
+							id: "component.expense-modal-form.form.due-date.label"
+						})}
 						style={{ flex: 1 }}
-						rules={[{ required: true, message: "Please select a due date" }]}
+						rules={[
+							{
+								required: true,
+								message: intl.formatMessage({
+									id: "component.expense-modal-form.form.due-date.required"
+								})
+							}
+						]}
 					>
 						<DatePicker style={{ width: "100%" }} />
 					</Form.Item>
 					<Flex gap={5}>
-						<Form.Item label="Payed" name="payed" valuePropName="checked">
+						<Form.Item
+							label={intl.formatMessage({
+								id: "component.expense-modal-form.form.payed.label"
+							})}
+							name="payed"
+							valuePropName="checked"
+						>
 							<Switch
 								onChange={(checked) => {
 									setIsPayed(checked);
@@ -195,8 +230,14 @@ const ExpenseModalForm = ({
 						<Form.Item
 							label={
 								<Flex gap={8} justify="center" align="center">
-									Payment Date{" "}
-									<Tooltip title="Only fill this if the bill has already been paid.">
+									{intl.formatMessage({
+										id: "component.expense-modal-form.form.payment-date.label"
+									})}{" "}
+									<Tooltip
+										title={intl.formatMessage({
+											id: "component.expense-modal-form.form.payment-date.tooltip"
+										})}
+									>
 										<InfoCircleOutlined
 											style={{ color: "#999", fontSize: "14px" }}
 										/>
@@ -215,9 +256,16 @@ const ExpenseModalForm = ({
 				</Flex>
 				<Form.Item
 					name="expense_type"
-					label="Expense Type"
+					label={intl.formatMessage({
+						id: "component.expense-modal-form.form.expense-type.label"
+					})}
 					rules={[
-						{ required: true, message: "Please select the expense type" }
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "component.expense-modal-form.form.expense-type.required"
+							})
+						}
 					]}
 				>
 					<ExpenseTypeSelect types={types} />

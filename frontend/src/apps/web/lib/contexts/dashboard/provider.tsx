@@ -1,7 +1,7 @@
 import DashboardUseCase from "@core/interfaces/usecase/dashboard.use-case";
 import { PropsWithChildren, useCallback, useMemo } from "react";
 import { usePanic } from "./hooks";
-import { App } from "antd";
+// import { App } from "antd";
 import { DashboardCTX } from ".";
 
 interface DashboardProviderProps {
@@ -13,7 +13,6 @@ const DashboardProvider = ({
 	usecase
 }: PropsWithChildren<DashboardProviderProps>): JSX.Element => {
 	const panic = usePanic();
-	const { message } = App.useApp();
 
 	const listReturnSummary = useCallback(async () => {
 		try {
@@ -23,7 +22,7 @@ const DashboardProvider = ({
 			panic(error);
 			return null;
 		}
-	}, [message, panic, usecase]);
+	}, [usecase, panic]);
 
 	const values = useMemo(
 		() => ({

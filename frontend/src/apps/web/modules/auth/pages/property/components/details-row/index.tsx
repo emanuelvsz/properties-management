@@ -22,10 +22,6 @@ const DetailsRow = ({ property }: Props) => {
 			<Col span={24}>
 				<Flex vertical gap={16}>
 					<PropertyCharacteristics property={property} />
-					{/* <Row gutter={16}>
-						<PropertyImages property={property} />
-						<PropertyMetrics property={property} />
-					</Row> */}
 					<Flex vertical gap={16}>
 						<Text>{property.description}</Text>
 					</Flex>

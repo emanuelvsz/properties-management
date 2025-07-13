@@ -48,5 +48,4 @@ class PropertyMapper extends Mapper<Property> {
 	}
 }
 
-
 export { PropertyMapper };

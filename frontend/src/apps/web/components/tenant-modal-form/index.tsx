@@ -72,13 +72,20 @@ const TenantModalForm = ({
 			<Form form={form} layout="vertical" name={formName} onFinish={handleOk}>
 				<Form.Item
 					name="name"
-					label="Name"
+					label={intl.formatMessage({ id: "page.tenants.form.name.label" })}
 					rules={[
-						{ required: true, message: "Please enter the tenant's name" }
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "page.tenants.form.name.required"
+							})
+						}
 					]}
 				>
 					<Input
-						placeholder="Tenant's full name"
+						placeholder={intl.formatMessage({
+							id: "page.tenants.form.name.placeholder"
+						})}
 						showCount
 						maxLength={60}
 						onKeyDown={(e) => {
@@ -91,17 +98,21 @@ const TenantModalForm = ({
 				</Form.Item>
 				<Form.Item
 					name="email"
-					label="Email"
+					label={intl.formatMessage({ id: "page.tenants.form.email.label" })}
 					rules={[
 						{
 							type: "email",
 							required: true,
-							message: "Please enter a valid email"
+							message: intl.formatMessage({
+								id: "page.tenants.form.email.required"
+							})
 						}
 					]}
 				>
 					<Input
-						placeholder="tenant@email.com"
+						placeholder={intl.formatMessage({
+							id: "page.tenants.form.email.placeholder"
+						})}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
 								e.preventDefault();
@@ -112,11 +123,20 @@ const TenantModalForm = ({
 				</Form.Item>
 				<Form.Item
 					name="phone"
-					label="Phone"
-					rules={[{ required: true, message: "Please enter a phone number" }]}
+					label={intl.formatMessage({ id: "page.tenants.form.phone.label" })}
+					rules={[
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "page.tenants.form.phone.required"
+							})
+						}
+					]}
 				>
 					<Input
-						placeholder="+1 (555) 123-4567"
+						placeholder={intl.formatMessage({
+							id: "page.tenants.form.phone.placeholder"
+						})}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
 								e.preventDefault();
@@ -127,8 +147,17 @@ const TenantModalForm = ({
 				</Form.Item>
 				<Form.Item
 					name="birthDate"
-					label="Birth Date"
-					rules={[{ required: true, message: "Please select a birth date" }]}
+					label={intl.formatMessage({
+						id: "page.tenants.form.birth-date.label"
+					})}
+					rules={[
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "page.tenants.form.birth-date.required"
+							})
+						}
+					]}
 				>
 					<DatePicker css={styles.fullWidth} format="DD/MM/YYYY" />
 				</Form.Item>

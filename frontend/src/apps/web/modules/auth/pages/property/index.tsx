@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Breadcrumb, Flex, Spin, Typography } from "antd";
+import { useEffect, useState, useRef } from "react";
+import { Breadcrumb, Flex, Spin, Typography, Tabs } from "antd";
 import { css } from "@emotion/react";
 import { useParams, useSearchParams } from "react-router-dom";
 
@@ -17,9 +17,11 @@ import {
 	ExpenseFilters,
 	ExpenseFiltersOrderBy
 } from "@core/domain/types/filters/expense-filters";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import ContractListRow from "./components/contract-list-row";
+import InventoryListRow from "./components/inventory-list-row";
 import { Pagination } from "@core/domain/models/pagination";
+import { InventoryItem } from "@core/domain/models/inventory/inventory-item";
 
 const { Text } = Typography;
 
@@ -46,13 +48,20 @@ const styles = {
 const PropertyPage = () => {
 	const { id } = useParams<{ id: string }>();
 
+	const intl = useIntl();
 	const [property, setProperty] = useState<Property | null>(null);
 	const [expensePagination, setExpensePagination] = useState<
 		Pagination<Expense>
 	>(new Pagination<Expense>(1, 10, 0, 0, []));
+	const [inventoryPagination, setInventoryPagination] = useState<
+		Pagination<InventoryItem>
+	>(new Pagination<InventoryItem>(1, 10, 0, 0, []));
 	const [loading, setLoading] = useState(true);
 	const [loadingExpenses, setLoadingExpenses] = useState(true);
+	const [loadingInventory, setLoadingInventory] = useState(true);
 	const [searchParams, setSearchParams] = useSearchParams();
+	const [inventorySearchParams, setInventorySearchParams] = useSearchParams();
+	const didMountRef = useRef(false);
 
 	const listByID = useListPropertyByID();
 	const listPropertyExpenses = useListPropertyExpenses();
@@ -82,9 +91,75 @@ const PropertyPage = () => {
 			if (!result) return;
 			setExpensePagination(result);
 		} catch (error) {
-			console.error("Erro ao buscar despesas do imóvel:", error);
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleListInventory = async (page?: number) => {
+		if (!id) return;
+
+		const q = inventorySearchParams.get("q") ?? "";
+		const categoryId = inventorySearchParams.get("category") ?? "";
+		const condition = inventorySearchParams.get("condition") ?? "";
+
+		const pageParam = page || 1;
+		try {
+			setLoadingInventory(true);
+
+			const searchParams = new URLSearchParams();
+			if (categoryId) searchParams.append("category_id", categoryId);
+			if (q) searchParams.append("q", q);
+			if (condition) searchParams.append("condition", condition);
+			if (pageParam) searchParams.append("page", pageParam.toString());
+
+			const response = await fetch(
+				`${import.meta.env.VITE_WEB_API_URL}/properties/${id}/inventory/?${searchParams.toString()}`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+						"Content-Type": "application/json"
+					}
+				}
+			);
+
+			if (response.ok) {
+				const data = await response.json();
+				const pagination = new Pagination<InventoryItem>(
+					data.page,
+					data.page_size,
+					data.count,
+					data.total,
+					data.data.map((item: any) => ({
+						id: item.id,
+						property: item.property,
+						propertyTitle: item.property_title,
+						propertyCode: item.property_code,
+						category: {
+							id: item.category.id,
+							name: item.category.name,
+							description: item.category.description
+						},
+						name: item.name,
+						description: item.description,
+						quantity: item.quantity,
+						condition: item.condition,
+						brand: item.brand,
+						model: item.model,
+						serialNumber: item.serial_number,
+						purchaseDate: item.purchase_date,
+						purchasePrice: item.purchase_price,
+						notes: item.notes
+					}))
+				);
+				setInventoryPagination(pagination);
+			} else {
+				console.error("Erro na API:", response.status);
+			}
+		} catch (error) {
+			console.error("Erro ao buscar inventário do imóvel:", error);
+		} finally {
+			setLoadingInventory(false);
 		}
 	};
 
@@ -118,6 +193,36 @@ const PropertyPage = () => {
 		setSearchParams(newParams);
 	};
 
+	const handleInventorySearchChange = (value: string) => {
+		const newParams = new URLSearchParams(inventorySearchParams);
+		if (value) {
+			newParams.set("q", value);
+		} else {
+			newParams.delete("q");
+		}
+		setInventorySearchParams(newParams);
+	};
+
+	const handleInventoryCategoryChange = (value: string) => {
+		const newParams = new URLSearchParams(inventorySearchParams);
+		if (value) {
+			newParams.set("category", value);
+		} else {
+			newParams.delete("category");
+		}
+		setInventorySearchParams(newParams);
+	};
+
+	const handleInventoryConditionChange = (value: string) => {
+		const newParams = new URLSearchParams(inventorySearchParams);
+		if (value) {
+			newParams.set("condition", value);
+		} else {
+			newParams.delete("condition");
+		}
+		setInventorySearchParams(newParams);
+	};
+
 	useEffect(() => {
 		if (!id) return;
 
@@ -127,7 +232,6 @@ const PropertyPage = () => {
 				const result = await listByID(id);
 				setProperty(result);
 			} catch (error) {
-				console.error("Erro ao buscar imóvel:", error);
 			} finally {
 				setLoading(false);
 			}
@@ -137,8 +241,22 @@ const PropertyPage = () => {
 	}, [id, listByID]);
 
 	useEffect(() => {
+		if (!didMountRef.current) {
+			didMountRef.current = true;
+			handleListExpenses();
+			return;
+		}
 		handleListExpenses();
 	}, [searchParams]);
+
+	useEffect(() => {
+		if (!didMountRef.current) {
+			didMountRef.current = true;
+			handleListInventory();
+			return;
+		}
+		handleListInventory();
+	}, [inventorySearchParams]);
 
 	useEffect(() => {
 		const newParams = new URLSearchParams(searchParams);
@@ -154,7 +272,6 @@ const PropertyPage = () => {
 		}
 
 		if (updated) {
-			// Atualiza apenas se necessário
 			setSearchParams(newParams, { replace: true });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -195,21 +312,58 @@ const PropertyPage = () => {
 				]}
 			/>
 			<DetailsRow property={property} />
-			<ContractListRow />
-			<ExpenseListRow
-				pagination={expensePagination}
-				loading={loadingExpenses}
-				onReload={handleListExpenses}
-				onSearchChange={handleExpensesSearchChange}
-				onSelectChange={handleExpensesPayedSelectChange}
-				onOrderByChange={handleExpensesOrderByChange}
-				searchValue={searchParams.get("q") ?? ""}
-				selectValue={searchParams.get("payed") ?? ""}
-				hideActions={false}
-				title="Expenses"
-			/>
 
-			<ChartListRow expenses={expensePagination?.items} />
+			<Tabs
+				defaultActiveKey="contracts"
+				items={[
+					{
+						key: "contracts",
+						label: intl.formatMessage({ id: "page.property.tab.contracts" }),
+						children: <ContractListRow />
+					},
+					{
+						key: "expenses",
+						label: intl.formatMessage({ id: "page.property.tab.expenses" }),
+						children: (
+							<>
+								<ExpenseListRow
+									pagination={expensePagination}
+									loading={loadingExpenses}
+									onReload={handleListExpenses}
+									onSearchChange={handleExpensesSearchChange}
+									onSelectChange={handleExpensesPayedSelectChange}
+									onOrderByChange={handleExpensesOrderByChange}
+									searchValue={searchParams.get("q") ?? ""}
+									selectValue={searchParams.get("payed") ?? ""}
+									hideActions={false}
+									title={intl.formatMessage({
+										id: "page.property.expenses.title"
+									})}
+								/>
+								<ChartListRow expenses={expensePagination?.items} />
+							</>
+						)
+					},
+					{
+						key: "inventory",
+						label: intl.formatMessage({ id: "page.inventory.tab.title" }),
+						children: (
+							<InventoryListRow
+								pagination={inventoryPagination}
+								loading={loadingInventory}
+								onReload={handleListInventory}
+								onSearchChange={handleInventorySearchChange}
+								onCategoryChange={handleInventoryCategoryChange}
+								onConditionChange={handleInventoryConditionChange}
+								searchValue={inventorySearchParams.get("q") ?? ""}
+								categoryValue={inventorySearchParams.get("category") ?? ""}
+								conditionValue={inventorySearchParams.get("condition") ?? ""}
+								hideActions={false}
+							/>
+						)
+					}
+				]}
+			/>
 		</Flex>
 	);
 };

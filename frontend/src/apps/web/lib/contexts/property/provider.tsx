@@ -1,5 +1,3 @@
-import { App } from "antd";
-
 import { PropsWithChildren, useCallback, useMemo } from "react";
 
 import { PropertyCTX } from ".";
@@ -21,7 +19,6 @@ const PropertyProvider = ({
 	usecase
 }: PropsWithChildren<PropertyProviderProps>): JSX.Element => {
 	const panic = usePanic();
-	const { message } = App.useApp();
 
 	const list = useCallback(
 		async (filters?: PropertyFilters) => {
@@ -30,10 +27,10 @@ const PropertyProvider = ({
 				return pagination;
 			} catch (error) {
 				panic(error);
-				return null;
+				return Pagination.empty<Property>();
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const deleteProperty = useCallback(
@@ -46,7 +43,7 @@ const PropertyProvider = ({
 				return;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const create = useCallback(
@@ -59,7 +56,7 @@ const PropertyProvider = ({
 				return;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const listByID = useCallback(
@@ -72,13 +69,17 @@ const PropertyProvider = ({
 				return null;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const listPropertyContracts = useCallback(
 		async (id: string, archived: boolean, page: number) => {
 			try {
-				const response = await usecase.listPropertyContracts(id, archived, page);
+				const response = await usecase.listPropertyContracts(
+					id,
+					archived,
+					page
+				);
 				return response;
 			} catch (error) {
 				panic(error);
@@ -86,7 +87,7 @@ const PropertyProvider = ({
 				return pagination;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const update = useCallback(
@@ -99,7 +100,7 @@ const PropertyProvider = ({
 				return;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const listPropertyExpenses = useCallback(
@@ -113,7 +114,7 @@ const PropertyProvider = ({
 				return pagination;
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const values = useMemo(
@@ -126,7 +127,15 @@ const PropertyProvider = ({
 			update,
 			listPropertyExpenses
 		}),
-		[list]
+		[
+			list,
+			deleteProperty,
+			create,
+			listByID,
+			listPropertyContracts,
+			update,
+			listPropertyExpenses
+		]
 	);
 
 	return <PropertyCTX.Provider value={values}>{children}</PropertyCTX.Provider>;

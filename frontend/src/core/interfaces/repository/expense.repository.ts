@@ -3,7 +3,6 @@ import { Mapper } from "@core/domain/models/mapper";
 import { Pagination } from "@core/domain/models/pagination";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 
-
 interface ExpenseRepository {
 	mapper: Mapper<Expense>;
 
@@ -11,7 +10,7 @@ interface ExpenseRepository {
 	create(data: Expense): Promise<void>;
 	update(data: Expense, propertyId: string): Promise<void>;
 	delete(id: string): Promise<void>;
-	listExpenseTypes(): Promise<string[]>
+	listExpenseTypes(): Promise<string[]>;
 }
 
 export default ExpenseRepository;

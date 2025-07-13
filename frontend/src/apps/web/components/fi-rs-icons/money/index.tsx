@@ -20,11 +20,7 @@ export const FiRsMoney = ({
 		</g>
 		<defs>
 			<clipPath id="clip0_541_3706">
-				<rect
-					width={width}
-					height={height}
-					fill={color}
-				/>
+				<rect width={width} height={height} fill={color} />
 			</clipPath>
 		</defs>
 	</svg>

@@ -12,7 +12,13 @@ class Pagination<T extends Model> {
 	#total: number;
 	#items: T[];
 
-	constructor(page: number, pageSize: number, count: number, total: number, items: T[]) {
+	constructor(
+		page: number,
+		pageSize: number,
+		count: number,
+		total: number,
+		items: T[]
+	) {
 		this.#page = page;
 		this.#pageSize = pageSize;
 		this.#count = count;

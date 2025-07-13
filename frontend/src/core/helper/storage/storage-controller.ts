@@ -1,10 +1,6 @@
 export type StorageKeys = "account" | "token" | "refresh" | "language";
 
-const ACCOUNT_RELATED_KEYS: StorageKeys[] = [
-	"account",
-	"token",
-	"refresh"
-];
+const ACCOUNT_RELATED_KEYS: StorageKeys[] = ["account", "token", "refresh"];
 
 class StorageController {
 	private static readonly keys: Record<StorageKeys, string> = {

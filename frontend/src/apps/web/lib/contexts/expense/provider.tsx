@@ -1,5 +1,3 @@
-import { App } from "antd";
-
 import { PropsWithChildren, useCallback, useMemo } from "react";
 
 import { usePanic } from "./hooks";
@@ -18,7 +16,6 @@ const ExpenseProvider = ({
 	usecase
 }: PropsWithChildren<ExpenseProviderProps>): JSX.Element => {
 	const panic = usePanic();
-	const { message } = App.useApp();
 
 	const list = useCallback(
 		async (filters?: ExpenseFilters) => {
@@ -30,7 +27,7 @@ const ExpenseProvider = ({
 				return Pagination.empty<Expense>();
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const create = useCallback(
@@ -41,7 +38,7 @@ const ExpenseProvider = ({
 				panic(error);
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const deleteExpense = useCallback(
@@ -52,7 +49,7 @@ const ExpenseProvider = ({
 				panic(error);
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const listExpenseTypes = useCallback(async () => {
@@ -62,7 +59,7 @@ const ExpenseProvider = ({
 			panic(error);
 			return [];
 		}
-	}, [message, panic, usecase]);
+	}, [usecase, panic]);
 
 	const update = useCallback(
 		async (data: Expense, propertyId: string) => {
@@ -72,7 +69,7 @@ const ExpenseProvider = ({
 				panic(error);
 			}
 		},
-		[message, panic, usecase]
+		[usecase, panic]
 	);
 
 	const values = useMemo(
@@ -83,7 +80,7 @@ const ExpenseProvider = ({
 			listExpenseTypes,
 			update
 		}),
-		[list]
+		[list, create, deleteExpense, listExpenseTypes, update]
 	);
 
 	return <ExpenseCTX.Provider value={values}>{children}</ExpenseCTX.Provider>;

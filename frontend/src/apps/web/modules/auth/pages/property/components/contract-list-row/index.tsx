@@ -6,7 +6,6 @@ import {
 	Button,
 	Card,
 	Col,
-	Empty,
 	Flex,
 	Popconfirm,
 	Row,
@@ -34,8 +33,6 @@ import RentContractModalForm from "@web/components/rent-contract-modal-form";
 import { Tenant } from "@core/domain/models/tenant";
 import EmptySection from "@web/components/empty-section";
 import { Pagination } from "@core/domain/models/pagination";
-
-const PAGE_SIZE = 5;
 
 const styles = {
 	container: css`
@@ -65,7 +62,7 @@ const ContractListRow = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	if (!propertyId) {
-		return <>Property not found</>;
+		return <>{intl.formatMessage({ id: "page.property.not-found" })}</>;
 	}
 
 	const listContracts = useListPropertyContracts();
@@ -146,7 +143,7 @@ const ContractListRow = () => {
 
 	const contractColumns: ColumnsType<RentContract> = [
 		{
-			title: "Tenant",
+			title: intl.formatMessage({ id: "page.property.contracts.table.tenant" }),
 			dataIndex: "tenant",
 			key: "tenant",
 			width: 150,
@@ -156,20 +153,28 @@ const ContractListRow = () => {
 			}
 		},
 		{
-			title: "Status",
+			title: intl.formatMessage({ id: "page.property.contracts.table.status" }),
 			dataIndex: "archived",
 			key: "archived",
 			width: 150,
 			render: (_, contract) => {
 				return (
 					<Tag color={contract.archived ? "warning" : "green"}>
-						{contract.archived ? "Archived" : "In Progress"}
+						{contract.archived
+							? intl.formatMessage({
+									id: "page.property.contracts.status.archived"
+								})
+							: intl.formatMessage({
+									id: "page.property.contracts.status.in-progress"
+								})}
 					</Tag>
 				);
 			}
 		},
 		{
-			title: "Start Date",
+			title: intl.formatMessage({
+				id: "page.property.contracts.table.start-date"
+			}),
 			dataIndex: "startDate",
 			key: "startDate",
 			width: 150,
@@ -178,7 +183,9 @@ const ContractListRow = () => {
 			)
 		},
 		{
-			title: "End Date",
+			title: intl.formatMessage({
+				id: "page.property.contracts.table.end-date"
+			}),
 			dataIndex: "endDate",
 			key: "endDate",
 			width: 150,
@@ -187,7 +194,9 @@ const ContractListRow = () => {
 			)
 		},
 		{
-			title: "First Deposit",
+			title: intl.formatMessage({
+				id: "page.property.contracts.table.deposit"
+			}),
 			dataIndex: "deposit",
 			key: "deposit",
 			width: 150,
@@ -198,7 +207,9 @@ const ContractListRow = () => {
 				}).format(contract.deposit)
 		},
 		{
-			title: "Payments Date",
+			title: intl.formatMessage({
+				id: "page.property.contracts.table.payments-date"
+			}),
 			dataIndex: "payments_date",
 			key: "payments_date",
 			width: 150,
@@ -223,7 +234,10 @@ const ContractListRow = () => {
 				};
 
 				const suffix = getDaySuffix(day);
-				return `Every ${day}${suffix}`;
+				return intl.formatMessage(
+					{ id: "page.property.contracts.payments-date.format" },
+					{ day: `${day}${suffix}` }
+				);
 			}
 		},
 		{
@@ -233,10 +247,12 @@ const ContractListRow = () => {
 			render: (_, contract) => (
 				<Flex justify="center" align="center" gap={10}>
 					<Popconfirm
-						title="Are you sure to delete this contract?"
+						title={intl.formatMessage({
+							id: "page.property.contracts.delete.confirm"
+						})}
 						onConfirm={() => handleDelete(contract.id)}
-						okText="Submit"
-						cancelText="Cancel"
+						okText={intl.formatMessage({ id: "general.submit" })}
+						cancelText={intl.formatMessage({ id: "general.cancel" })}
 						placement="left"
 					>
 						<Button type="text" danger icon={<DeleteOutlined />} />
@@ -262,7 +278,9 @@ const ContractListRow = () => {
 				<Col span={24}>
 					<Flex css={styles.container} vertical gap={10}>
 						<BoardPageHeader
-							title="Contracts"
+							title={intl.formatMessage({
+								id: "page.property.contracts.title"
+							})}
 							prefix={
 								<TableHeader
 									onSelectCheckboxOption={handleList}
@@ -286,9 +304,13 @@ const ContractListRow = () => {
 									</Tooltip>
 								) : (
 									<EmptySection
-										onSubmit={openCreateModal}
-										okText="Cadastrar um contrato"
-										descriptionText="Ainda não há contratos cadastrados"
+										onSubmit={() => setCreateModalVisible(true)}
+										okText={intl.formatMessage({
+											id: "page.property.contracts.empty.register"
+										})}
+										descriptionText={intl.formatMessage({
+											id: "page.property.contracts.empty.description"
+										})}
 									/>
 								)
 							}
@@ -328,7 +350,9 @@ const ContractListRow = () => {
 				onCancel={() => setCreateModalVisible(false)}
 				onSubmit={handleAdd}
 				tenants={tenants}
-				title="Create Rent Contract"
+				title={intl.formatMessage({
+					id: "page.property.contracts.modal.create.title"
+				})}
 				formName="rent_contract_create_form"
 				loading={
 					loading.create || loading.update || loading.delete || loading.list
@@ -339,13 +363,15 @@ const ContractListRow = () => {
 				visible={editModalVisible}
 				loadingButton={loading.update}
 				onCancel={() => {
-					setEditModalVisible(false);
 					setEditingContract(undefined);
+					setEditModalVisible(false);
 				}}
 				onSubmit={handleUpdate}
-				tenants={tenants}
 				contract={editingContract}
-				title="Edit Rent Contract"
+				tenants={tenants}
+				title={intl.formatMessage({
+					id: "page.property.contracts.modal.edit.title"
+				})}
 				formName="rent_contract_edit_form"
 				loading={
 					loading.create || loading.update || loading.delete || loading.list

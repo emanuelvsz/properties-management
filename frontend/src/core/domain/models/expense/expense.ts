@@ -50,7 +50,7 @@ class Expense extends Model {
 			formData.property,
 			formData.expense_type
 		);
-		return data
+		return data;
 	}
 
 	public toJSON() {
@@ -64,9 +64,9 @@ class Expense extends Model {
 			due_date: this.#dueDate,
 			payed_at: this.#payedAt,
 			property: this.#property,
-			expense_type: this.#expenseType,
+			expense_type: this.#expenseType
 		};
-		return data
+		return data;
 	}
 
 	get id() {

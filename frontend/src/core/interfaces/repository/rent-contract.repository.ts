@@ -2,7 +2,6 @@ import { Mapper } from "@core/domain/models/mapper";
 import { RentContract } from "@core/domain/models/rent-contract";
 import { DefaultFilters } from "@core/domain/types/filters/default-filters";
 
-
 interface RentContractRepository {
 	mapper: Mapper<RentContract>;
 

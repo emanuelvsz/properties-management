@@ -17,13 +17,24 @@ class PropertyAPI implements PropertyRepository {
 	expenseMapper = new ExpenseMapper();
 
 	async list(filters?: PropertyFilters): Promise<Pagination<Property>> {
-		const response = await BackendClient.get("/properties", {
-			params: { ...filters }
-		});
-		console.log("Response data", response.data);
-		const { data, page, pageSize, count, total } = response.data;
-		const properties = data.map((dto: DTO) => this.mapper.deserialize(dto));
-		return new Pagination<Property>(page, pageSize, count, total, properties);
+		try {
+			const response = await BackendClient.get<{
+				data: DTO[];
+				page: number;
+				pageSize: number;
+				count: number;
+				total: number;
+			}>("/properties", {
+				params: filters
+			});
+
+			const { data, page, pageSize, count, total } = response.data;
+			const properties = data.map((dto: DTO) => this.mapper.deserialize(dto));
+
+			return new Pagination<Property>(page, pageSize, count, total, properties);
+		} catch (error) {
+			return Pagination.empty<Property>();
+		}
 	}
 
 	async listByID(id: string): Promise<Property> {

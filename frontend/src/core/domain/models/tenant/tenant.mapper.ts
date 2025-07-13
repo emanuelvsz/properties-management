@@ -19,7 +19,7 @@ class TenantMapper extends Mapper<Tenant> {
 			name: data.name,
 			birthDate: data.birthDate,
 			email: data.email,
-			phone: data.phone,
+			phone: data.phone
 		};
 	}
 }

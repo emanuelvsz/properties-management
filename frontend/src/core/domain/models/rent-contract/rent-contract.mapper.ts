@@ -27,7 +27,7 @@ class RentContractMapper extends Mapper<RentContract> {
 			finish_at: data.finishAt,
 			deposit: data.deposit,
 			archived: data.archived,
-			payments_date: data.paymentsDate,
+			payments_date: data.paymentsDate
 		};
 	}
 }

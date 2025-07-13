@@ -1,5 +1,4 @@
 import { Model } from "../model";
-import { Tenant } from "../tenant";
 
 class RentContract extends Model {
 	#id: string;

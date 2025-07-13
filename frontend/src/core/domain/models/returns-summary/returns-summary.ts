@@ -5,11 +5,7 @@ class ReturnsSummary extends Model {
 	#expenses: number;
 	#liquid: number;
 
-	constructor(
-		gross: number,
-		expenses: number,
-		liquid: number
-	) {
+	constructor(gross: number, expenses: number, liquid: number) {
 		super();
 		this.#gross = gross;
 		this.#expenses = expenses;
@@ -28,7 +24,7 @@ class ReturnsSummary extends Model {
 		return {
 			gross: this.#gross,
 			expenses: this.#expenses,
-			liquid: this.#liquid,
+			liquid: this.#liquid
 		};
 	}
 
@@ -42,7 +38,7 @@ class ReturnsSummary extends Model {
 
 	get liquid() {
 		return this.#liquid;
-	}	
+	}
 }
 
 export { ReturnsSummary };

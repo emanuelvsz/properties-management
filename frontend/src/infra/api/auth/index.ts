@@ -5,30 +5,50 @@ import AuthRepository from "@core/interfaces/repository/auth.repository";
 
 import { BackendClient } from "../clients";
 
-interface AuthResponse {
-	access: string;
-}
 
 class AuthAPI implements AuthRepository {
 	mapper = new AccountMapper();
 
 	async login(username: string, password: string): Promise<boolean> {
-		const response = await BackendClient.post<{ access: string; refresh: string }>("/auth/login", {
-		  username,
-		  password
+		const response = await BackendClient.post<{
+			access: string;
+			refresh: string;
+			refresh_token: string;
+			refresh_token_expires_at: string;
+		}>("/auth/login", {
+			username,
+			password
 		});
-		const { access, refresh } = response.data;
+		const { access, refresh, refresh_token, refresh_token_expires_at } =
+			response.data;
 		StorageController.set("token", access);
 		StorageController.set("refresh", refresh);
+		localStorage.setItem("refresh_token", refresh_token);
+		localStorage.setItem("refresh_token_expires_at", refresh_token_expires_at);
 		this.saveAuthorization(access);
 		return true;
-	  }
+	}
 
-	  async logout(): Promise<void> {
-		await BackendClient.post("/auth/logout", {refresh: StorageController.get("refresh")});
-		StorageController.clear();
-		this.clearAuthorization();
-	  }
+	async logout(): Promise<void> {
+		try {
+			const token = StorageController.get("token") as string;
+			const refreshToken = StorageController.get("refresh") as string;
+
+			if (token && typeof token === "string") {
+				this.saveAuthorization(token);
+			}
+
+			if (refreshToken && typeof refreshToken === "string") {
+				await BackendClient.post("/auth/logout", {
+					refresh: refreshToken
+				});
+			}
+		} catch (error) {
+		} finally {
+			StorageController.clear();
+			this.clearAuthorization();
+		}
+	}
 
 	async findProfile(): Promise<Account> {
 		const response = await BackendClient.get<DTO>("/profile");
@@ -37,11 +57,39 @@ class AuthAPI implements AuthRepository {
 		return this.mapper.deserialize(profileDTO);
 	}
 
-	async refreshToken(): Promise<void> {
-		const response = await BackendClient.post<AuthResponse>("/auth/refresh");
-		const newToken = response.data.access;
-		StorageController.set("token", newToken);
-		this.saveAuthorization(newToken);
+	async refreshToken(
+		refreshToken: string
+	): Promise<{
+		access: string;
+		refresh_token: string;
+		refresh_token_expires_at: string;
+	} | null> {
+		try {
+			const response = await BackendClient.post<{
+				access: string;
+				refresh_token: string;
+				refresh_token_expires_at: string;
+			}>("/auth/refresh-token", {
+				refresh_token: refreshToken
+			});
+
+			const { access, refresh_token, refresh_token_expires_at } = response.data;
+			StorageController.set("token", access);
+			localStorage.setItem("refresh_token", refresh_token);
+			localStorage.setItem(
+				"refresh_token_expires_at",
+				refresh_token_expires_at
+			);
+			this.saveAuthorization(access);
+
+			return {
+				access,
+				refresh_token,
+				refresh_token_expires_at
+			};
+		} catch (error) {
+			return null;
+		}
 	}
 
 	forgotPassword(_email: string): Promise<boolean> {

@@ -4,22 +4,25 @@ import ExpenseService from "@core/services/expense.service";
 import PropertyService from "@core/services/property.service";
 import RentContractService from "@core/services/rent-contract.service";
 import TenantService from "@core/services/tenant.service";
+import { InventoryService } from "@core/services/inventory.service";
 import AuthAPI from "@infra/api/auth";
 import DashboardAPI from "@infra/api/dashboard";
 import ExpenseAPI from "@infra/api/expense";
 import PropertyAPI from "@infra/api/property";
 import RentContractAPI from "@infra/api/rent-contract";
 import TenantAPI from "@infra/api/tenant";
+import { inventoryApi } from "@infra/api/inventory";
 
 export type ServiceKeys = "auth";
 
 const DIContainer = {
 	getAuthUseCase: () => new AuthService(new AuthAPI()),
 	getPropertyUseCase: () => new PropertyService(new PropertyAPI()),
-	getExpenseUseCase: () => new ExpenseService(new ExpenseAPI),
-	getDashboardUseCase: () => new DashboardService(new DashboardAPI),
-	getTenantUseCase: () => new TenantService(new TenantAPI),
-	getRentContractUseCase: () => new RentContractService(new RentContractAPI),
+	getExpenseUseCase: () => new ExpenseService(new ExpenseAPI()),
+	getDashboardUseCase: () => new DashboardService(new DashboardAPI()),
+	getTenantUseCase: () => new TenantService(new TenantAPI()),
+	getRentContractUseCase: () => new RentContractService(new RentContractAPI()),
+	getInventoryUseCase: () => new InventoryService(inventoryApi)
 };
 
 export default DIContainer;

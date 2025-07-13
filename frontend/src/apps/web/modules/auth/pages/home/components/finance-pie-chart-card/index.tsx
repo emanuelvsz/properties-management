@@ -1,8 +1,9 @@
 import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 import { Card } from "antd";
 import { css } from "@emotion/react";
+import { useIntl } from "react-intl";
 
-import { PIE_CHART_COLORS, pieChartData } from "./data";
+import { PIE_CHART_COLORS, usePieChartData } from "./data";
 
 const styles = {
 	cardList: css`
@@ -34,10 +35,12 @@ const styles = {
 };
 
 const FinancePieChartCard = () => {
+	const intl = useIntl();
+	const pieChartData = usePieChartData();
 	return (
 		<Card
 			css={styles.chartCard}
-			title="Rents by status"
+			title={intl.formatMessage({ id: "dashboard.pie-chart.title" })}
 			headStyle={{ borderBottom: "none" }}
 		>
 			<ResponsiveContainer width="100%" height={300}>

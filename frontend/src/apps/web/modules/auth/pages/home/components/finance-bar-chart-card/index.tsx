@@ -12,7 +12,8 @@ import {
 	Tooltip,
 	Legend
 } from "recharts";
-import { barChartData } from "./data";
+import { useBarChartData } from "./data";
+import { useIntl } from "react-intl";
 
 const styles = {
 	cardList: css`
@@ -48,10 +49,16 @@ const styles = {
 };
 
 const FinanceBarChartCard = () => {
+	const intl = useIntl();
+	const barChartData = useBarChartData();
 	return (
 		<Card
 			css={styles.chartCard}
-			title={<p css={styles.title}>Return by months</p>}
+			title={
+				<p css={styles.title}>
+					{intl.formatMessage({ id: "dashboard.bar-chart.title" })}
+				</p>
+			}
 			headStyle={{ borderBottom: "none" }}
 		>
 			<ResponsiveContainer width="100%" height={300}>

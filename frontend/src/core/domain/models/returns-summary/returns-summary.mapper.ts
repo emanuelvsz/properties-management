@@ -8,12 +8,7 @@ class ReturnsSummaryMapper extends Mapper<ReturnsSummary> {
 		const expenses = Number(data.expenses);
 		const liquid = Number(data.liquid);
 
-		return new ReturnsSummary(
-			gross,
-			expenses,
-			liquid,
-
-		);
+		return new ReturnsSummary(gross, expenses, liquid);
 	}
 
 	serialize(data: ReturnsSummary): DTO {
@@ -24,6 +19,5 @@ class ReturnsSummaryMapper extends Mapper<ReturnsSummary> {
 		};
 	}
 }
-
 
 export { ReturnsSummaryMapper };

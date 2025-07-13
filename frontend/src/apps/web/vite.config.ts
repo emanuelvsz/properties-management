@@ -45,8 +45,9 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 			port: DEFAULT_WEB_PORT,
 			proxy: {
 				"/api": {
-					target: `${finalEnv.WEB_API_URL}/api`,
-					changeOrigin: true
+					target: "http://localhost:8000",
+					changeOrigin: true,
+					rewrite: (path: string) => path.replace(/^\/api/, "")
 				}
 			}
 		},

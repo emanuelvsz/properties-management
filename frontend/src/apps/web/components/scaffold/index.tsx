@@ -44,7 +44,7 @@ const Scaffold = () => {
 							<Header account={account} />
 							<div css={styles.contentArea}>
 								<Router />
-								<Footer account={account}/>
+								<Footer account={account} />
 							</div>
 						</Layout>
 					</Layout>

@@ -8,7 +8,7 @@ class ExpenseService implements ExpenseUseCase {
 	constructor(protected readonly adapter: ExpenseRepository) {}
 
 	async list(filters?: ExpenseFilters): Promise<Pagination<Expense>> {
-		 return await this.adapter.list(filters)
+		return await this.adapter.list(filters);
 	}
 
 	async create(data: Expense): Promise<void> {
@@ -16,14 +16,14 @@ class ExpenseService implements ExpenseUseCase {
 	}
 
 	async update(data: Expense, propertyId: string): Promise<void> {
-		return await this.adapter.update(data, propertyId)
+		return await this.adapter.update(data, propertyId);
 	}
 
 	async delete(id: string): Promise<void> {
 		return await this.adapter.delete(id);
 	}
 
-	async listExpenseTypes(): Promise<string[]>{
+	async listExpenseTypes(): Promise<string[]> {
 		return await this.adapter.listExpenseTypes();
 	}
 }

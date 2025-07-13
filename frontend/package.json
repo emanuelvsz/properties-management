@@ -14,7 +14,9 @@
 		"preview": "vite --config src/apps/web/vite.config.ts preview",
 		"test:unit": "jest --verbose --testMatch \"**/unit.spec.(ts|tsx)\" --maxWorkers=1 --passWithNoTests",
 		"test:web:e2e": "playwright test --pass-with-no-tests",
-		"fix:lint": "tsc --noEmit && yarn eslint . --fix"
+		"fix:lint": "tsc --noEmit && yarn eslint . --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check ."
 	},
 	"dependencies": {
 		"@ant-design/colors": "^7.0.2",

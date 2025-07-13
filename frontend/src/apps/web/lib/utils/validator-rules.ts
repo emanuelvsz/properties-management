@@ -145,7 +145,9 @@ export function confirmPasswordRule(passwordFieldName: string): Rule {
 			if (!value || getFieldValue(passwordFieldName) === value) {
 				return Promise.resolve();
 			}
-			return Promise.reject(new Error("The passwords provided are not the same!"));
+			return Promise.reject(
+				new Error("The passwords provided are not the same!")
+			);
 		}
 	});
 }
@@ -158,9 +160,7 @@ export function pastDateRule(): Rule {
 				return Promise.reject(new Error("Invalid date!"));
 			}
 			if (date >= new Date()) {
-				return Promise.reject(
-					new Error("You need to provide a past date!")
-				);
+				return Promise.reject(new Error("You need to provide a past date!"));
 			}
 			return Promise.resolve();
 		}

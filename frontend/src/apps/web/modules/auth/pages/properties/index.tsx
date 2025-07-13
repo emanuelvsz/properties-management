@@ -110,22 +110,20 @@ const PropertiesPage = () => {
 			page: currentPage
 		});
 
-		if (response) {
-			const totalPages = Math.ceil(response.count / response.pageSize);
+		const totalPages = Math.ceil(
+			(response?.count || 0) / (response?.pageSize || 1)
+		);
 
-			if (currentPage > totalPages) {
-				setSearchParams({ ...searchParams, page: "1" });
-			}
-
-			setPropertyPagination(response);
-			setLoadingProperties(false);
-
-			const newParams = new URLSearchParams(searchParams);
-			newParams.set("page", String(currentPage));
-			setSearchParams(newParams);
-		} else {
-			setLoadingProperties(false);
+		if (currentPage > totalPages && totalPages > 0) {
+			setSearchParams({ ...searchParams, page: "1" });
 		}
+
+		setPropertyPagination(response || Pagination.empty<Property>());
+		setLoadingProperties(false);
+
+		const newParams = new URLSearchParams(searchParams);
+		newParams.set("page", String(currentPage));
+		setSearchParams(newParams);
 	};
 
 	const handleDelete = async (id: string) => {
@@ -205,9 +203,6 @@ const PropertiesPage = () => {
 			setSelectedRowKeys(newSelectedRowKeys);
 		},
 		renderCell: (
-			checked: boolean,
-			record: Property,
-			index: number,
 			originNode: React.ReactNode
 		) => (
 			<Flex
@@ -218,8 +213,15 @@ const PropertiesPage = () => {
 				gap={5}
 			>
 				{originNode}
-				<Tooltip title="Property Code" placement="bottom">
-					<p style={{ fontSize: "14px", margin: 0 }}>{record.formattedCode}</p>
+				<Tooltip
+					title={intl.formatMessage({
+						id: "page.properties.tooltip.property-code"
+					})}
+					placement="bottom"
+				>
+					<p style={{ fontSize: "14px", margin: 0 }}>
+						{/* record.formattedCode */}
+					</p>
 				</Tooltip>
 			</Flex>
 		)
@@ -259,9 +261,24 @@ const PropertiesPage = () => {
 			title: intl.formatMessage({ id: "page.properties.table.item.status" }),
 			dataIndex: "status",
 			key: "status",
-			render: (value: string) => (
-				<Tag>{value.charAt(0).toLocaleUpperCase() + value.slice(1)}</Tag>
-			)
+			render: (value: string) => {
+				const statusConfig = {
+					free: { color: "green", text: "page.properties.status.free" },
+					rented: { color: "blue", text: "page.properties.status.rented" },
+					maintance: { color: "orange", text: "page.properties.status.maintance" },
+					reforbish: { color: "purple", text: "page.properties.status.reforbish" },
+				};
+				
+				const config = statusConfig[value as keyof typeof statusConfig];
+				
+				return (
+					<Tag color={config?.color || "default"}>
+						{intl.formatMessage({ 
+							id: config?.text || `page.properties.status.${value.toLowerCase()}` 
+						})}
+					</Tag>
+				);
+			}
 		},
 		{
 			title: intl.formatMessage({ id: "page.properties.table.item.surface" }),
@@ -286,7 +303,11 @@ const PropertiesPage = () => {
 			dataIndex: "furnished",
 			key: "furnished",
 			render: (value: boolean) =>
-				value ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>
+				value ? (
+					<Tag color="green">{intl.formatMessage({ id: "general.yes" })}</Tag>
+				) : (
+					<Tag color="red">{intl.formatMessage({ id: "general.no" })}</Tag>
+				)
 		},
 		{
 			dataIndex: "actions",
@@ -317,14 +338,54 @@ const PropertiesPage = () => {
 	}, [searchParams]);
 
 	const orderByOptions = [
-		{ key: "newest", label: "Mais recentes" },
-		{ key: "oldest", label: "Mais antigos" },
-		{ key: "price_high", label: "Maior preço" },
-		{ key: "price_low", label: "Menor preço" },
-		{ key: "most_bedrooms", label: "Mais quartos" },
-		{ key: "less_bedrooms", label: "Menos quartos" },
-		{ key: "most_bathrooms", label: "Mais banheiros" },
-		{ key: "less_bathrooms", label: "Menos banheiros" }
+		{
+			key: "newest",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.newest"
+			})
+		},
+		{
+			key: "oldest",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.oldest"
+			})
+		},
+		{
+			key: "price_high",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.price_high"
+			})
+		},
+		{
+			key: "price_low",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.price_low"
+			})
+		},
+		{
+			key: "most_bedrooms",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.most_bedrooms"
+			})
+		},
+		{
+			key: "most_bathrooms",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.most_bathrooms"
+			})
+		},
+		{
+			key: "less_bedrooms",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.less_bedrooms"
+			})
+		},
+		{
+			key: "less_bathrooms",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.less_bathrooms"
+			})
+		}
 	];
 
 	return (
@@ -378,7 +439,7 @@ const PropertiesPage = () => {
 				onCancel={handleCloseAddModal}
 				onSubmit={handleAddProperty}
 				loadingButton={creatingProperty}
-				title="Add new property"
+				title={intl.formatMessage({ id: "page.properties.modal.add.title" })}
 			/>
 
 			<PropertyModalForm
@@ -387,7 +448,7 @@ const PropertiesPage = () => {
 				onSubmit={handleUpdate}
 				property={editingProperty}
 				loadingButton={false}
-				title="Edit the property"
+				title={intl.formatMessage({ id: "page.properties.modal.edit.title" })}
 			/>
 		</>
 	);

@@ -11,7 +11,7 @@ class DashboardAPI implements DashboardRepository {
 
 	async listReturnSummary(): Promise<ReturnsSummary> {
 		const response = await BackendClient.get<DTO>("/dashboard/returns/summary");
-        const data = this.mapper.deserialize(response.data)
+		const data = this.mapper.deserialize(response.data);
 		return data;
 	}
 }

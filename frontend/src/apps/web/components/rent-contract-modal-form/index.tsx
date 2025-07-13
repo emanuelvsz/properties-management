@@ -119,38 +119,67 @@ const RentContractModalForm = ({
 		>
 			{!contract && (
 				<Tag color="warning">
-					Creating a new contract for a property you archive the last one
+					{intl.formatMessage({
+						id: "component.rent-contract-modal-form.warning.new-contract"
+					})}
 				</Tag>
 			)}
 			<Form form={form} layout="vertical" name={formName} onFinish={handleOk}>
 				<Form.Item
 					name="tenant"
-					label="Tenant"
-					rules={[{ required: true, message: "Please select a tenant" }]}
+					label={intl.formatMessage({
+						id: "component.rent-contract-modal-form.form.tenant.label"
+					})}
+					rules={[
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "component.rent-contract-modal-form.form.tenant.required"
+							})
+						}
+					]}
 				>
 					<Select
 						options={tenants.map((tenant) => ({
 							label: tenant.name,
 							value: tenant.id
 						}))}
-						placeholder="Select tenant"
+						placeholder={intl.formatMessage({
+							id: "component.rent-contract-modal-form.form.tenant.placeholder"
+						})}
 					/>
 				</Form.Item>
 				<Flex gap={16}>
 					<Form.Item
 						name="started_at"
-						label="Start Date"
+						label={intl.formatMessage({
+							id: "component.rent-contract-modal-form.form.start-date.label"
+						})}
 						rules={[
-							{ required: true, message: "Please select the start date" }
+							{
+								required: true,
+								message: intl.formatMessage({
+									id: "component.rent-contract-modal-form.form.start-date.required"
+								})
+							}
 						]}
 					>
 						<DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
 					</Form.Item>
 					<Form.Item
 						name="finish_at"
-						label="End Date"
+						label={intl.formatMessage({
+							id: "component.rent-contract-modal-form.form.end-date.label"
+						})}
 						style={{ flex: 1 }}
-						rules={[{ required: true, message: "Please select an end date" }]}
+						rules={[
+							{
+								required: true,
+								message: intl.formatMessage({
+									id: "component.rent-contract-modal-form.form.end-date.required"
+								})
+							}
+						]}
 					>
 						<DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
 					</Form.Item>
@@ -158,9 +187,16 @@ const RentContractModalForm = ({
 
 				<Form.Item
 					name="deposit"
-					label="Deposit"
+					label={intl.formatMessage({
+						id: "component.rent-contract-modal-form.form.deposit.label"
+					})}
 					rules={[
-						{ required: true, message: "Please enter the deposit value" }
+						{
+							required: true,
+							message: intl.formatMessage({
+								id: "component.rent-contract-modal-form.form.deposit.required"
+							})
+						}
 					]}
 				>
 					<InputNumber css={styles.inputNumber} min={0} />
@@ -170,8 +206,14 @@ const RentContractModalForm = ({
 					name="payments_date"
 					label={
 						<Flex gap={8} justify="start" align="center">
-							Payment Due Day
-							<Tooltip title="Optional: The day of the month when payments are expected.">
+							{intl.formatMessage({
+								id: "component.rent-contract-modal-form.form.payment-due-day.label"
+							})}
+							<Tooltip
+								title={intl.formatMessage({
+									id: "component.rent-contract-modal-form.form.payment-due-day.tooltip"
+								})}
+							>
 								<InfoCircleOutlined
 									style={{ color: "#999", fontSize: "14px" }}
 								/>
@@ -182,7 +224,12 @@ const RentContractModalForm = ({
 					<DatePicker style={{ width: "100%" }} format="DD" picker="date" />
 				</Form.Item>
 				{contract && (
-					<Form.Item name="archived" label="Archived">
+					<Form.Item
+						name="archived"
+						label={intl.formatMessage({
+							id: "component.rent-contract-modal-form.form.archived.label"
+						})}
+					>
 						<Switch />
 					</Form.Item>
 				)}

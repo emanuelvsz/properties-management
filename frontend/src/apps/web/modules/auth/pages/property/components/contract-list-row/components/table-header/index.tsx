@@ -1,5 +1,7 @@
 import { css } from "@emotion/react";
-import { Flex, Form, Switch } from "antd";
+import { Form, Switch } from "antd";
+import { useIntl } from "react-intl";
+import { useState } from "react";
 
 const styles = {
 	container: css`
@@ -17,10 +19,15 @@ interface Props {
 const TableHeader = ({
 	onSelectCheckboxOption,
 	initialValue,
-	hideActions = false
+	hideActions
 }: Props) => {
-	const handleOnChange = (value: boolean) => {
-		onSelectCheckboxOption(value);
+	const intl = useIntl();
+	const [archivedSwitchValue, setArchivedSwitchValue] =
+		useState<boolean>(initialValue);
+
+	const handleSwitchChange = (checked: boolean) => {
+		setArchivedSwitchValue(checked);
+		onSelectCheckboxOption(checked);
 	};
 
 	if (hideActions) {
@@ -28,19 +35,19 @@ const TableHeader = ({
 	}
 
 	return (
-		<Flex css={styles.container}>
-			<Form layout="inline" initialValues={{ archived: initialValue }}>
-				<Form.Item label="Archived">
-					<Switch
-						style={{ width: 50 }}
-						onChange={(value) => {
-							handleOnChange(value);
-						}}
-						value={initialValue}
-					/>
-				</Form.Item>
-			</Form>
-		</Flex>
+		<Form layout="inline" initialValues={{ archived: initialValue }}>
+			<Form.Item
+				label={intl.formatMessage({
+					id: "page.property.contracts.table-header.archived"
+				})}
+			>
+				<Switch
+					checked={archivedSwitchValue}
+					onChange={handleSwitchChange}
+					disabled={hideActions}
+				/>
+			</Form.Item>
+		</Form>
 	);
 };
 

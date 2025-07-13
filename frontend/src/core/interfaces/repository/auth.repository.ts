@@ -1,9 +1,12 @@
 import { Account } from "@core/domain/models/account";
 import { Mapper } from "@core/domain/models/mapper";
 
-/**
- * Propose the responsability to act as an Adapter for Authorization operations.
- */
+interface RefreshTokenResponse {
+	access: string;
+	refresh_token: string;
+	refresh_token_expires_at: string;
+}
+
 interface AuthRepository {
 	mapper: Mapper<Account>;
 
@@ -11,6 +14,7 @@ interface AuthRepository {
 	findProfile(): Promise<Account>;
 	forgotPassword(email: string): Promise<boolean>;
 	resetPassword(token: string, newPassword: string): Promise<boolean>;
+	refreshToken(refreshToken: string): Promise<RefreshTokenResponse | null>;
 	logout(): Promise<void>;
 	saveAuthorization(_: string): void;
 	clearAuthorization(): void;

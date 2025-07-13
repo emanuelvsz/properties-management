@@ -2,7 +2,13 @@ import { App } from "antd";
 
 import { AxiosError } from "axios";
 
-import { PropsWithChildren, useCallback, useMemo, useState } from "react";
+import {
+	PropsWithChildren,
+	useCallback,
+	useMemo,
+	useState,
+	useEffect
+} from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -92,6 +98,43 @@ const AuthProvider = <Account extends BaseAccount = BaseAccount>({
 		setData(undefined);
 		navigate("/login");
 	}, [navigate, usecase]);
+
+	useEffect(() => {
+		const refreshToken = localStorage.getItem("refresh_token");
+		const refreshTokenExpiresAt = localStorage.getItem(
+			"refresh_token_expires_at"
+		);
+
+		if (!refreshToken || !refreshTokenExpiresAt) {
+			return;
+		}
+
+		const expiresAt = new Date(refreshTokenExpiresAt);
+		if (expiresAt <= new Date()) {
+			logout();
+			return;
+		}
+
+		const refreshInterval = setInterval(
+			async () => {
+				try {
+					const newTokens = await usecase.refreshToken(refreshToken);
+					if (newTokens) {
+						localStorage.setItem("refresh_token", newTokens.refresh_token);
+						localStorage.setItem(
+							"refresh_token_expires_at",
+							newTokens.refresh_token_expires_at
+						);
+					}
+				} catch (error) {
+					logout();
+				}
+			},
+			14 * 60 * 1000
+		);
+
+		return () => clearInterval(refreshInterval);
+	}, [usecase, logout]);
 
 	const values = useMemo(
 		() => ({

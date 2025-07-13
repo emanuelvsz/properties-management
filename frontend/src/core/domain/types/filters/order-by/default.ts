@@ -1,3 +1,1 @@
-export type DefaultOrderBy =
-	| "newest"
-	| "oldest"
+export type DefaultOrderBy = "newest" | "oldest";

@@ -26,9 +26,9 @@ export const useRedirectionWatcher = () => {
 
 	const watch = useCallback(() => {
 		const activeRoute = routes
-		.map((route) => route.children ?? route)
-		.flat()
-		.find((route) => matchPath(route.path, location.pathname));
+			.map((route) => route.children ?? route)
+			.flat()
+			.find((route) => matchPath(route.path, location.pathname));
 		if (isNil(activeRoute)) {
 			redirectToFirstModuleRoute();
 			return;

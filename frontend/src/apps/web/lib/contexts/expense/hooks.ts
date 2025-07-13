@@ -8,83 +8,83 @@ import { useLogout } from "../auth/hooks";
 import { ExpenseCTX } from ".";
 
 export function useListExpenses() {
-    return useContextSelector(ExpenseCTX, (ctx) => ctx.list);
+	return useContextSelector(ExpenseCTX, (ctx) => ctx.list);
 }
 
 export function useCreateExpense() {
-    return useContextSelector(ExpenseCTX, (ctx) => ctx.create);
+	return useContextSelector(ExpenseCTX, (ctx) => ctx.create);
 }
 
 export function useUpdateExpense() {
-    return useContextSelector(ExpenseCTX, (ctx) => ctx.update);
+	return useContextSelector(ExpenseCTX, (ctx) => ctx.update);
 }
 
 export function useDeleteExpense() {
-    return useContextSelector(ExpenseCTX, (ctx) => ctx.deleteExpense);
+	return useContextSelector(ExpenseCTX, (ctx) => ctx.deleteExpense);
 }
 
 export function useListExpenseTypes() {
-    return useContextSelector(ExpenseCTX, (ctx) => ctx.listExpenseTypes);
+	return useContextSelector(ExpenseCTX, (ctx) => ctx.listExpenseTypes);
 }
 
 const treatAxiosError = (error: AxiosError): [string, boolean] => {
-    let msg: string | undefined;
-    let shouldLogout: boolean = false;
-    switch (error.response?.status) {
-        case 401:
-            shouldLogout = true;
-            msg = "A sua sessão expirou. Por favor, realize login novamente.";
-            break;
-        case 403:
-            shouldLogout = true;
-            msg =
-                "Oops! Alguma funcionalidade que você não tem permissão foi ativada. Por favor, realize login novamente.";
-            break;
-        default:
-            msg = AppError.messages.UNEXPECTED;
-            break;
-    }
-    return [msg, shouldLogout];
+	let msg: string | undefined;
+	let shouldLogout: boolean = false;
+	switch (error.response?.status) {
+		case 401:
+			shouldLogout = true;
+			msg = "A sua sessão expirou. Por favor, realize login novamente.";
+			break;
+		case 403:
+			shouldLogout = true;
+			msg =
+				"Oops! Alguma funcionalidade que você não tem permissão foi ativada. Por favor, realize login novamente.";
+			break;
+		default:
+			msg = AppError.messages.UNEXPECTED;
+			break;
+	}
+	return [msg, shouldLogout];
 };
 
 const treatError = (error: unknown): [string, boolean] => {
-    if (!error) {
-        return [AppError.messages.UNEXPECTED, false];
-    }
-    let msg: string | undefined;
-    let shouldLogout: boolean = false;
-    if (error instanceof AxiosError) {
-        return treatAxiosError(error);
-    }
-    if (error instanceof AppError) {
-        msg = error.message;
-        if (error.isUnauthorized) {
-            shouldLogout = true;
-        }
-    } else if (error instanceof Error && error.message) {
-        msg = error.message;
-    } else {
-        msg = AppError.messages.UNEXPECTED;
-    }
-    return [msg, shouldLogout];
+	if (!error) {
+		return [AppError.messages.UNEXPECTED, false];
+	}
+	let msg: string | undefined;
+	let shouldLogout: boolean = false;
+	if (error instanceof AxiosError) {
+		return treatAxiosError(error);
+	}
+	if (error instanceof AppError) {
+		msg = error.message;
+		if (error.isUnauthorized) {
+			shouldLogout = true;
+		}
+	} else if (error instanceof Error && error.message) {
+		msg = error.message;
+	} else {
+		msg = AppError.messages.UNEXPECTED;
+	}
+	return [msg, shouldLogout];
 };
 
 export function usePanic() {
-    const { message } = App.useApp();
-    const logout = useLogout();
+	const { message } = App.useApp();
+	const logout = useLogout();
 
-    const panic = (error: unknown): boolean => {
-        const [feedback, shouldLogout] = treatError(error);
-        if (import.meta.env.DEV) {
-            // eslint-disable-next-line no-console
-            console.error("ERROR:", error);
-        }
-        message.error(feedback);
-        if (shouldLogout) {
-            logout();
-        }
-        return shouldLogout;
-    };
+	const panic = (error: unknown): boolean => {
+		const [feedback, shouldLogout] = treatError(error);
+		if (import.meta.env.DEV) {
+			// eslint-disable-next-line no-console
+			console.error("ERROR:", error);
+		}
+		message.error(feedback);
+		if (shouldLogout) {
+			logout();
+		}
+		return shouldLogout;
+	};
 
-    return panic;
+	return panic;
 }

@@ -22,6 +22,15 @@ class AuthInMemory implements AuthRepository {
 	resetPassword(_token: string, _newPassword: string): Promise<boolean> {
 		return Promise.resolve(true);
 	}
+	refreshToken(
+		_refreshToken: string
+	): Promise<{
+		access: string;
+		refresh_token: string;
+		refresh_token_expires_at: string;
+	} | null> {
+		return Promise.resolve(null);
+	}
 	saveAuthorization(_token: string): void {}
 	clearAuthorization(): void {}
 }

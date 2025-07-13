@@ -8,3 +8,6 @@ psycopg2-binary==2.9.10
 environ==1.0
 python-dotenv==1.0.0
 pytest==8.3.5
+black==24.2.0
+isort==5.13.2
+flake8==7.0.0

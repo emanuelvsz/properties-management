@@ -11,7 +11,7 @@ class PropertyService implements PropertyUseCase {
 	constructor(protected readonly adapter: PropertyRepository) {}
 
 	async list(filters?: PropertyFilters): Promise<Pagination<Property>> {
-		return await this.adapter.list(filters);;
+		return await this.adapter.list(filters);
 	}
 
 	async delete(id: string): Promise<void> {
@@ -30,11 +30,19 @@ class PropertyService implements PropertyUseCase {
 		return await this.adapter.listByID(id);
 	}
 
-	async listPropertyContracts(id: string, archived: boolean, page: number): Promise<Pagination<RentContract>> {
+	async listPropertyContracts(
+		id: string,
+		archived: boolean,
+		page: number
+	): Promise<Pagination<RentContract>> {
 		return await this.adapter.listPropertyContracts(id, archived, page);
 	}
 
-	async listPropertyExpenses(id: string, page: number, filters?: ExpenseFilters): Promise<Pagination<Expense>> {
+	async listPropertyExpenses(
+		id: string,
+		page: number,
+		filters?: ExpenseFilters
+	): Promise<Pagination<Expense>> {
 		return await this.adapter.listPropertyExpenses(id, page, filters);
 	}
 }

@@ -6,8 +6,8 @@ class DashboardService implements DashboardUseCase {
 	constructor(protected readonly adapter: DashboardRepository) {}
 
 	async listReturnSummary(): Promise<ReturnsSummary> {
-        return await this.adapter.listReturnSummary()
-    }
+		return await this.adapter.listReturnSummary();
+	}
 }
 
 export default DashboardService;

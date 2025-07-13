@@ -1,12 +1,52 @@
 {
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.formatOnType": false,
 	"prettier.useTabs": true,
 	"prettier.tabWidth": 2,
+	"prettier.singleQuote": false,
+	"prettier.trailingComma": "none",
+	"prettier.semi": true,
+	"prettier.printWidth": 80,
 	"formatFiles.runOrganizeImports": true,
 	"eslint.enable": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll": "always"
+		"source.fixAll": "always",
+		"source.organizeImports": "always"
 	},
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.formatOnSaveMode": "file",
+	"prettier.requireConfig": false,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.python"
+	}
 }

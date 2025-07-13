@@ -1,4 +1,3 @@
-import { App } from "antd";
 import { PropsWithChildren, useCallback, useMemo } from "react";
 import { usePanic } from "./hooks";
 import TenantUseCase from "@core/interfaces/usecase/tenant.use-case";
@@ -15,7 +14,6 @@ const TenantProvider = ({
 	usecase
 }: PropsWithChildren<TenantProviderProps>): JSX.Element => {
 	const panic = usePanic();
-	const { message } = App.useApp();
 
 	const list = useCallback(
 		async (filters?: DefaultFilters) => {

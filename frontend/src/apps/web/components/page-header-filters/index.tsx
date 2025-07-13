@@ -14,6 +14,7 @@ interface Props {
 	searchPlaceholder?: string;
 	selectPlaceholder?: string;
 	selectValue?: string;
+	selectOptions?: { label: string; value: string }[];
 	disabled?: boolean;
 	hideActions?: boolean;
 	hideSelect?: boolean;
@@ -56,15 +57,14 @@ const PageHeaderFilters = ({
 	selectValue,
 	searchPlaceholder = "Search something...",
 	selectPlaceholder,
+	selectOptions,
 	disabled = false,
 	hideActions = false,
-	hideSelect = false,
-	hideSearch = false
+	hideSelect = false
 }: Props) => {
 	const intl = useIntl();
 	const [localSearchValue, setLocalSearchValue] = useState(searchValue ?? "");
 
-	// Debounce para evitar chamadas a cada digitação
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((val: string) => {
@@ -100,16 +100,18 @@ const PageHeaderFilters = ({
 					placeholder={selectPlaceholder}
 					value={selectValue === "" ? undefined : selectValue}
 					onChange={onSelectChange}
-					options={[
-						{
-							label: intl.formatMessage({ id: "general.yes" }),
-							value: "true"
-						},
-						{
-							label: intl.formatMessage({ id: "general.no" }),
-							value: "false"
-						}
-					]}
+					options={
+						selectOptions || [
+							{
+								label: intl.formatMessage({ id: "general.yes" }),
+								value: "true"
+							},
+							{
+								label: intl.formatMessage({ id: "general.no" }),
+								value: "false"
+							}
+						]
+					}
 					css={styles.select}
 					disabled={disabled}
 				/>

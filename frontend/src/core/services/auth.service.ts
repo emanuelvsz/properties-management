@@ -31,8 +31,28 @@ class AuthService implements AuthUseCase {
 		return this.adapter.resetPassword(token, newPassword);
 	}
 
+	async refreshToken(
+		refreshToken: string
+	): Promise<{
+		access: string;
+		refresh_token: string;
+		refresh_token_expires_at: string;
+	} | null> {
+		try {
+			const response = await this.adapter.refreshToken(refreshToken);
+			if (response) {
+				this.adapter.saveAuthorization(response.access);
+				return response;
+			}
+			return null;
+		} catch (error) {
+			console.error("Error refreshing token:", error);
+			return null;
+		}
+	}
+
 	logout(): Promise<void> {
-		this.clearCachedAccount()
+		this.clearCachedAccount();
 		return this.adapter.logout();
 	}
 

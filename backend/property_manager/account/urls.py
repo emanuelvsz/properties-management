@@ -1,16 +1,14 @@
 from django.urls import path
 from .views import (
-    RegisterView,
-    CustomTokenObtainPairView,
-    CustomTokenRefreshView,
-    ProfileView,
-    LogoutView,
+    login_view,
+    logout_view,
+    refresh_token_view,
+    profile_view,
 )
 
 urlpatterns = [
-    path("account/register", RegisterView.as_view(), name="register"),
-    path("auth/login", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("profile", ProfileView.as_view(), name="profile"),
-    path("auth/refresh", CustomTokenRefreshView.as_view(), name="token_refresh"),
-    path("auth/logout", LogoutView.as_view(), name="logout"),
+    path("auth/login", login_view, name="login"),
+    path("auth/logout", logout_view, name="logout"),
+    path("auth/refresh-token", refresh_token_view, name="refresh_token"),
+    path("profile", profile_view, name="profile"),
 ]

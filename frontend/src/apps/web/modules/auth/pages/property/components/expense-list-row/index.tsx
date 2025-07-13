@@ -207,12 +207,12 @@ const ExpenseListRow = ({
 	}, [listExpenseTypes]);
 
 	const orderByOptions = [
-		{ key: "newest", label: "Mais recentes" },
-		{ key: "oldest", label: "Mais antigos" },
-		{ key: "highest_value", label: "Maior valor" },
-		{ key: "lowest_value", label: "Menor valor" },
-		{ key: "due_soon", label: "Vencimento mais próximo" },
-		{ key: "due_late", label: "Vencimento mais distante" }
+		{ key: "newest", label: "Newest" },
+		{ key: "oldest", label: "Oldest" },
+		{ key: "highest_value", label: "Highest value" },
+		{ key: "lowest_value", label: "Lowest value" },
+		{ key: "due_soon", label: "Due soon" },
+		{ key: "due_late", label: "Due later" }
 	];
 
 	return (
@@ -255,8 +255,12 @@ const ExpenseListRow = ({
 								) : (
 									<EmptySection
 										onSubmit={() => setIsAddModalVisible(true)}
-										okText="Cadastrar uma despesa"
-										descriptionText="Ainda não há despesas cadastradas"
+										okText={intl.formatMessage({
+											id: "page.property.expenses.empty.register"
+										})}
+										descriptionText={intl.formatMessage({
+											id: "page.property.expenses.empty.description"
+										})}
 									/>
 								)
 							}
@@ -305,7 +309,9 @@ const ExpenseListRow = ({
 				loadingButton={loading.create}
 				onCancel={() => setIsAddModalVisible(false)}
 				onSubmit={handleAddExpense}
-				title="Add Property Expense"
+				title={intl.formatMessage({
+					id: "page.property.expenses.modal.add.title"
+				})}
 				types={expenseTypes}
 				loading={loading.types}
 				formName="add_expense_form"
@@ -314,10 +320,15 @@ const ExpenseListRow = ({
 			<ExpenseModalForm
 				visible={isEditModalVisible}
 				loadingButton={loading.update}
-				onCancel={() => setIsEditModalVisible(false)}
+				onCancel={() => {
+					setIsEditModalVisible(false);
+					setEditingExpense(undefined);
+				}}
 				onSubmit={handleUpdateExpense}
-				title="Update Property Expense"
 				expense={editingExpense}
+				title={intl.formatMessage({
+					id: "page.property.expenses.modal.edit.title"
+				})}
 				types={expenseTypes}
 				loading={loading.types}
 				formName="edit_expense_form"

@@ -26,7 +26,7 @@ class RentContractAPI implements RentContractRepository {
 		await BackendClient.post<DTO>("/rent-contract", data.toJSON());
 	}
 
-    async update(data: RentContract): Promise<void> {
+	async update(data: RentContract): Promise<void> {
 		await BackendClient.put<DTO>(`/rent-contract/${data.id}`, data.toJSON());
 	}
 }

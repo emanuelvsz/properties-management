@@ -7,6 +7,7 @@ import {
 	RiPieChart2Line,
 	RiTimeLine
 } from "react-icons/ri";
+import { useIntl } from "react-intl";
 
 const { Title, Text } = Typography;
 
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const PropertyMetrics = ({ property }: Props) => {
+	const intl = useIntl();
 	const yearlyGains = property.rent * 12;
 	const totalGains = 82000;
 	const occupancyRate = 95;
@@ -50,9 +52,16 @@ const PropertyMetrics = ({ property }: Props) => {
 			<Row>
 				<Col span={12}>
 					<Card bordered={false} css={styles.card}>
-						<Tooltip title="Valor estimado de lucro anual com o aluguel.">
+						<Tooltip
+							title={intl.formatMessage({
+								id: "page.property.metrics.yearly-gains.tooltip"
+							})}
+						>
 							<Text css={styles.title}>
-								<RiMoneyDollarCircleLine /> Yearly Gains
+								<RiMoneyDollarCircleLine />{" "}
+								{intl.formatMessage({
+									id: "page.property.metrics.yearly-gains.title"
+								})}
 							</Text>
 						</Tooltip>
 						<Title level={5} css={styles.clearWhitespaces}>
@@ -62,9 +71,16 @@ const PropertyMetrics = ({ property }: Props) => {
 				</Col>
 				<Col span={12}>
 					<Card bordered={false} css={styles.card}>
-						<Tooltip title="Ganho total estimado ao longo do tempo.">
+						<Tooltip
+							title={intl.formatMessage({
+								id: "page.property.metrics.total-gains.tooltip"
+							})}
+						>
 							<Text css={styles.title}>
-								<RiMoneyDollarCircleLine /> Total Gains
+								<RiMoneyDollarCircleLine />{" "}
+								{intl.formatMessage({
+									id: "page.property.metrics.total-gains.title"
+								})}
 							</Text>
 						</Tooltip>
 						<Title level={5} css={styles.clearWhitespaces}>
@@ -74,9 +90,16 @@ const PropertyMetrics = ({ property }: Props) => {
 				</Col>
 				<Col span={12}>
 					<Card bordered={false} css={styles.card}>
-						<Tooltip title="Retorno sobre investimento mensal.">
+						<Tooltip
+							title={intl.formatMessage({
+								id: "page.property.metrics.monthly-roi.tooltip"
+							})}
+						>
 							<Text css={styles.title}>
-								<AiOutlinePercentage /> Monthly ROI
+								<AiOutlinePercentage />{" "}
+								{intl.formatMessage({
+									id: "page.property.metrics.monthly-roi.title"
+								})}
 							</Text>
 						</Tooltip>
 						<Title level={5} css={styles.clearWhitespaces}>
@@ -86,9 +109,16 @@ const PropertyMetrics = ({ property }: Props) => {
 				</Col>
 				<Col span={12}>
 					<Card bordered={false} css={styles.card}>
-						<Tooltip title="Taxa de ocupação média estimada.">
+						<Tooltip
+							title={intl.formatMessage({
+								id: "page.property.metrics.occupancy-rate.tooltip"
+							})}
+						>
 							<Text css={styles.title}>
-								<RiPieChart2Line /> Occupancy Rate
+								<RiPieChart2Line />{" "}
+								{intl.formatMessage({
+									id: "page.property.metrics.occupancy-rate.title"
+								})}
 							</Text>
 						</Tooltip>
 						<Title level={5} css={styles.clearWhitespaces}>
@@ -98,13 +128,23 @@ const PropertyMetrics = ({ property }: Props) => {
 				</Col>
 				<Col span={24}>
 					<Card bordered={false} css={styles.card}>
-						<Tooltip title="Tempo estimado para recuperar o valor investido.">
+						<Tooltip
+							title={intl.formatMessage({
+								id: "page.property.metrics.payback-period.tooltip"
+							})}
+						>
 							<Text css={styles.title}>
-								<RiTimeLine /> Payback Period
+								<RiTimeLine />{" "}
+								{intl.formatMessage({
+									id: "page.property.metrics.payback-period.title"
+								})}
 							</Text>
 						</Tooltip>
 						<Title level={5} css={styles.clearWhitespaces}>
-							{paybackPeriod} years
+							{paybackPeriod}{" "}
+							{intl.formatMessage({
+								id: "page.property.metrics.payback-period.unit"
+							})}
 						</Title>
 					</Card>
 				</Col>

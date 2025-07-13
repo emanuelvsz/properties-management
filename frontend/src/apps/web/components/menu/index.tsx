@@ -11,6 +11,8 @@ import chartHistogramIconWhite from "@web/assets/icons/fi-rs-chart-histogram-whi
 import homeIconWhite from "@web/assets/icons/fi-rs-home-white.svg";
 import userIconWhite from "@web/assets/icons/user-white.svg";
 import userIcon from "@web/assets/icons/user.svg";
+import moneyIcon from "@web/assets/icons/fi-rs-money.svg";
+import moneyIconWhite from "@web/assets/icons/fi-rs-money.svg";
 
 import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
@@ -159,6 +161,22 @@ const SideMenu = ({ account }: Props) => {
 			icon: userIconWhite,
 			activeIcon: userIcon,
 			url: "/tenants"
+		},
+		{
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.payments"
+			}),
+			icon: moneyIconWhite,
+			activeIcon: moneyIcon,
+			url: "/payments"
+		},
+		{
+			text: intl.formatMessage({
+				id: "component.side-menu.section.pages.item.inventory"
+			}),
+			icon: homeIconWhite,
+			activeIcon: homeIcon,
+			url: "/inventory"
 		}
 	];
 

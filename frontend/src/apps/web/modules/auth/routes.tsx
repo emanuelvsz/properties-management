@@ -4,6 +4,8 @@ import HomePage from "../auth/pages/home";
 import PropertiesPage from "./pages/properties";
 import PropertyPage from "./pages/property";
 import TenantsPage from "./pages/tenants";
+import InventoryPage from "./pages/inventory";
+import PaymentsPage from "./pages/payments";
 
 const getAuthRoutes = (): Route[] => [
 	{
@@ -28,12 +30,26 @@ const getAuthRoutes = (): Route[] => [
 		hidden: true
 	},
 	{
-		key: 3,
+		key: 4,
 		title: "Tenants",
 		path: TenantsPage.route,
 		page: TenantsPage,
 		hidden: true
 	},
+	{
+		key: 5,
+		title: "Inventário",
+		path: "/inventory",
+		page: InventoryPage,
+		hidden: false
+	},
+	{
+		key: 8,
+		title: "Pagamentos",
+		path: "/payments",
+		page: PaymentsPage,
+		hidden: false
+	}
 ];
 
 export default getAuthRoutes;

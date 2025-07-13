@@ -139,16 +139,16 @@ const TenantsPage = () => {
 		onChange: (newSelectedRowKeys: React.Key[]) =>
 			setSelectedRowKeys(newSelectedRowKeys),
 		renderCell: (
-			checked: boolean,
-			record: Tenant,
-			index: number,
+			// checked: boolean,
+			// record: Tenant,
+			// index: number,
 			originNode: React.ReactNode
 		) => <Flex style={{ marginLeft: 15 }}>{originNode}</Flex>
 	};
 
 	const tenantTableFields: ColumnsType<Tenant> = [
 		{
-			title: "Name",
+			title: intl.formatMessage({ id: "page.tenants.table.name" }),
 			dataIndex: "name",
 			key: "name",
 			render: (_, tenant) => (
@@ -160,14 +160,18 @@ const TenantsPage = () => {
 			)
 		},
 		{
-			title: "Status",
+			title: intl.formatMessage({ id: "page.tenants.table.status" }),
 			dataIndex: "status",
 			key: "status",
 			render: (status: string) =>
 				status === "active" ? (
-					<Tag color="green">Active</Tag>
+					<Tag color="green">
+						{intl.formatMessage({ id: "page.tenants.status.active" })}
+					</Tag>
 				) : (
-					<Tag color="red">Inactive</Tag>
+					<Tag color="red">
+						{intl.formatMessage({ id: "page.tenants.status.inactive" })}
+					</Tag>
 				)
 		},
 		{
@@ -204,15 +208,25 @@ const TenantsPage = () => {
 	}, [searchParams]);
 
 	const orderByOptions = [
-		{ key: "newest", label: "Mais recentes" },
-		{ key: "oldest", label: "Mais antigos" }
+		{
+			key: "newest",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.newest"
+			})
+		},
+		{
+			key: "oldest",
+			label: intl.formatMessage({
+				id: "component.page-header-actions.sort.oldest"
+			})
+		}
 	];
 
 	return (
 		<>
 			<Flex css={styles.container} vertical gap={10} flex={1}>
 				<BoardPageHeader
-					title="Tenants"
+					title={intl.formatMessage({ id: "page.tenants.title" })}
 					prefix={
 						<PageHeaderFilters
 							onReloadClick={handleFetchTenants}
@@ -244,7 +258,7 @@ const TenantsPage = () => {
 				onCancel={() => setIsAddModalVisible(false)}
 				onSubmit={handleAddTenant}
 				loadingButton={creatingTenant}
-				title="Add Tenant Form"
+				title={intl.formatMessage({ id: "page.tenants.modal.add.title" })}
 				formName="add-tenant-form"
 			/>
 			<TenantModalForm
@@ -255,7 +269,7 @@ const TenantsPage = () => {
 				}}
 				onSubmit={handleEditTenant}
 				loadingButton={updatingTenant}
-				title="Edit Tenant Form"
+				title={intl.formatMessage({ id: "page.tenants.modal.edit.title" })}
 				formName="edit-tenant-form"
 				tenant={editingTenant}
 			/>

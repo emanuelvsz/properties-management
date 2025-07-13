@@ -8,4 +8,7 @@ import AuthRoutes from "./auth/routes";
 export const getModuleRoutesByAccount = (account?: Account): Route[] =>
 	account ? AuthRoutes() : UnauthRoutes();
 
-export const getAllModulesRoutes = (): Route[] => [...UnauthRoutes(), ...AuthRoutes()];
+export const getAllModulesRoutes = (): Route[] => [
+	...UnauthRoutes(),
+	...AuthRoutes()
+];

@@ -1,4 +1,5 @@
 import { Card, Flex, Skeleton } from "antd";
+import { useIntl } from "react-intl";
 import { ReactNode } from "react";
 import { css } from "@emotion/react";
 
@@ -86,41 +87,53 @@ const FinanceCard = ({
 	value,
 	icon,
 	loading = false
-}: Props) => (
-	<Card css={[styles.card, loading && styles.paddinglessCard]} bordered>
-		{loading ? (
-			<Skeleton active title={false} paragraph={{ rows: 3 }} />
-		) : (
-			<>
-				<Flex css={styles.titleWrapper}>
-					<h3 css={styles.cardTitle}>{title}</h3>
-					{icon}
-				</Flex>
-				<Flex css={styles.valueWrapper}>
-					<p css={styles.valueText}>
-						{new Intl.NumberFormat("en-US", {
-							style: "currency",
-							currency: "USD"
-						}).format(value)}
-						<span css={styles.currency}>USD</span>
-					</p>
-					<p
-						css={styles.percentageChange}
-						style={{
-							color:
-								extraColor === "green"
-									? THEME_COLORS.LIGHT_GREEN_COLOR
-									: THEME_COLORS.LIGHT_RED_COLOR
-						}}
-					>
-						{extraValue > 0 ? "↑" : extraValue === 0 ? "-" : "↓"}{" "}
-						{Math.abs(extraValue)}%
-					</p>
-				</Flex>
-			</>
-		)}
-	</Card>
-);
+}: Props) => {
+	const intl = useIntl();
+	let translatedTitle = title;
+	if (title === "Gross Return")
+		translatedTitle = intl.formatMessage({ id: "dashboard.card.gross-return" });
+	if (title === "Expenses")
+		translatedTitle = intl.formatMessage({ id: "dashboard.card.expenses" });
+	if (title === "Liquid Return")
+		translatedTitle = intl.formatMessage({
+			id: "dashboard.card.liquid-return"
+		});
+	return (
+		<Card css={[styles.card, loading && styles.paddinglessCard]} bordered>
+			{loading ? (
+				<Skeleton active title={false} paragraph={{ rows: 3 }} />
+			) : (
+				<>
+					<Flex css={styles.titleWrapper}>
+						<h3 css={styles.cardTitle}>{translatedTitle}</h3>
+						{icon}
+					</Flex>
+					<Flex css={styles.valueWrapper}>
+						<p css={styles.valueText}>
+							{new Intl.NumberFormat("en-US", {
+								style: "currency",
+								currency: "USD"
+							}).format(value)}
+							<span css={styles.currency}>USD</span>
+						</p>
+						<p
+							css={styles.percentageChange}
+							style={{
+								color:
+									extraColor === "green"
+										? THEME_COLORS.LIGHT_GREEN_COLOR
+										: THEME_COLORS.LIGHT_RED_COLOR
+							}}
+						>
+							{extraValue > 0 ? "↑" : extraValue === 0 ? "-" : "↓"}{" "}
+							{Math.abs(extraValue)}%
+						</p>
+					</Flex>
+				</>
+			)}
+		</Card>
+	);
+};
 
 export type FinanceCardProps = Props;
 

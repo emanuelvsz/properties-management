@@ -13,7 +13,7 @@ interface Props {
 	property: Property;
 }
 
-const PropertyImages = ({ property }: Props) => {
+const PropertyImages = ({ property: _property }: Props) => {
 	return (
 		<Col>
 			<Image

@@ -11,19 +11,19 @@ class TenantService implements TenantUseCase {
 	}
 
 	async listByID(id: string): Promise<Tenant> {
-		return await this.adapter.listByID(id)
+		return await this.adapter.listByID(id);
 	}
 
 	async create(data: Tenant): Promise<void> {
-		return await this.adapter.create(data)
+		return await this.adapter.create(data);
 	}
 
 	async delete(id: string): Promise<void> {
-		return await this.adapter.delete(id)
+		return await this.adapter.delete(id);
 	}
 
 	async update(data: Tenant): Promise<void> {
-		return await this.adapter.update(data)
+		return await this.adapter.update(data);
 	}
 }
 

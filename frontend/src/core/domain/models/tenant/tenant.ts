@@ -38,7 +38,7 @@ class Tenant extends Model {
 			name: this.#name,
 			birthDate: this.#birthDate,
 			email: this.#email,
-			phone: this.#phone,
+			phone: this.#phone
 		};
 	}
 

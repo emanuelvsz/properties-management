@@ -1,93 +1,125 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from drf_yasg.utils import swagger_auto_schema
-from .serializers import AccountSerializer, LogoutSerializer
-from .service import AccountService
-from property_manager.utils import ACCOUNT_TAG_IDENTIFIER
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.serializers import (
-    TokenObtainPairSerializer,
-    TokenRefreshSerializer,
-)
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from .models import CustomUser, RefreshToken as RefreshTokenModel
+from .serializers import LoginSerializer, RefreshTokenSerializer
+from datetime import datetime, timedelta
+import jwt
+from django.conf import settings
 
-
-class RegisterView(APIView):
-
-    @swagger_auto_schema(
-        operation_summary="Create a new user account",
-        request_body=AccountSerializer,
-        responses={201: AccountSerializer()},
-        tags=[ACCOUNT_TAG_IDENTIFIER],
-    )
-    def post(self, request):
-        print("Password: request.data", request.data)
-        user = AccountService.create_user(request.data)
-        serializer = AccountSerializer(user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    @swagger_auto_schema(
-        operation_summary="Login with username and password",
-        tags=[ACCOUNT_TAG_IDENTIFIER],
-        request_body=TokenObtainPairSerializer,
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
-class CustomTokenRefreshView(TokenRefreshView):
-    @swagger_auto_schema(
-        operation_summary="Refresh JWT token",
-        tags=[ACCOUNT_TAG_IDENTIFIER],
-        request_body=TokenRefreshSerializer,
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        operation_summary="Logout and blacklist refresh token",
-        tags=[ACCOUNT_TAG_IDENTIFIER],
-        request_body=LogoutSerializer,
-        responses={205: "Token blacklisted"},
-    )
-    def post(self, request):
-        serializer = LogoutSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        refresh_token = serializer.validated_data["refresh"]
-
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_view(request):
+    serializer = LoginSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.validated_data['user']
+        
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+        
+        refresh_token_expires_at = datetime.now() + timedelta(days=2)
+        
         try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response(
-                {"detail": "Token blacklisted"}, status=status.HTTP_205_RESET_CONTENT
+            RefreshTokenModel.objects.create(
+                user=user,
+                token=refresh_token,
+                expires_at=refresh_token_expires_at
             )
-        except TokenError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response({
+                'access': access_token,
+                'refresh': refresh_token,
+                'refresh_token': refresh_token,
+                'refresh_token_expires_at': refresh_token_expires_at.isoformat()
+            })
         except Exception as e:
-            return Response(
-                {"detail": f"Unhandled error: {str(e)}"},
-                status=status.HTTP_400_BAD_REQUEST,
+            return Response({
+                'access': access_token,
+                'refresh': refresh_token
+            })
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def profile_view(request):
+    user = request.user
+    return Response({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'is_active': user.is_active,
+        'date_joined': user.date_joined.isoformat() if user.date_joined else None,
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_view(request):
+    try:
+        refresh_token = request.data.get('refresh')
+        if refresh_token:
+            RefreshTokenModel.objects.filter(token=refresh_token).update(is_active=False)
+        return Response({'message': 'Successfully logged out'})
+    except Exception as e:
+        return Response({'message': 'Logout successful'})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def refresh_token_view(request):
+    serializer = RefreshTokenSerializer(data=request.data)
+    if serializer.is_valid():
+        refresh_token = serializer.validated_data['refresh_token']
+        
+        try:
+            payload = jwt.decode(refresh_token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            
+            if not user_id:
+                return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            try:
+                refresh_token_obj = RefreshTokenModel.objects.get(
+                    token=refresh_token,
+                    is_active=True,
+                    expires_at__gt=datetime.now()
+                )
+            except RefreshTokenModel.DoesNotExist:
+                return Response({'error': 'Token expired or invalid'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user = CustomUser.objects.get(id=user_id)
+            
+            new_refresh = RefreshToken.for_user(user)
+            new_access_token = str(new_refresh.access_token)
+            new_refresh_token = str(new_refresh)
+            
+            new_refresh_token_expires_at = datetime.now() + timedelta(days=2)
+            
+            refresh_token_obj.is_active = False
+            refresh_token_obj.save()
+            
+            RefreshTokenModel.objects.create(
+                user=user,
+                token=new_refresh_token,
+                expires_at=new_refresh_token_expires_at
             )
-
-
-class ProfileView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        operation_summary="Get authenticated user profile",
-        tags=[ACCOUNT_TAG_IDENTIFIER],
-        responses={200: AccountSerializer()},
-    )
-    def get(self, request):
-        serializer = AccountSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            return Response({
+                'access': new_access_token,
+                'refresh_token': new_refresh_token,
+                'refresh_token_expires_at': new_refresh_token_expires_at.isoformat()
+            })
+            
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.InvalidTokenError:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

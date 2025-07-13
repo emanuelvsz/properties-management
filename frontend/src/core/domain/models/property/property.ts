@@ -11,7 +11,7 @@ class Property extends Model {
 	#description?: string;
 	#status: string;
 	#location: string;
-	#code: string
+	#code: string;
 
 	constructor(
 		id: string,
@@ -24,7 +24,7 @@ class Property extends Model {
 		status: string,
 		location: string,
 		code: string,
-		description?: string,
+		description?: string
 	) {
 		super();
 		this.#id = id;
@@ -37,7 +37,7 @@ class Property extends Model {
 		this.#status = status;
 		this.#location = location;
 		this.#description = description;
-		this.#code = code
+		this.#code = code;
 	}
 
 	static fromForm(formData: any): Property {
@@ -52,7 +52,7 @@ class Property extends Model {
 			formData.status,
 			formData.location,
 			formData.code,
-			formData.description,
+			formData.description
 		);
 	}
 
@@ -111,20 +111,20 @@ class Property extends Model {
 		return `${this.bedrooms} BR • ${this.bathrooms} BA • ${this.surface} m² • ${this.furnished ? "Furnished" : "Unfurnished"}`;
 	}
 
-	get status(){
-		return this.#status
+	get status() {
+		return this.#status;
 	}
 
-	get location () {
-		return this.#location
+	get location() {
+		return this.#location;
 	}
 
-	get code () {
-		return this.#code
+	get code() {
+		return this.#code;
 	}
 
-	get formattedCode () {
-		return "#" + this.#code
+	get formattedCode() {
+		return "#" + this.#code;
 	}
 }
 

@@ -1,5 +1,5 @@
 import { ThemeConfig } from "antd";
-import "@fontsource/karla"; 
+import "@fontsource/karla";
 
 export const THEME_COLORS = {
 	PRIMARY_COLOR: "#5d776e",
@@ -51,14 +51,12 @@ export const theme = {
 			borderRadius: 6
 		},
 		Table: {
-			borderRadius: 6,
+			borderRadius: 6
 		},
 		Dropdown: {
 			algorithm: true,
 			borderRadius: 6,
-			colorText: THEME_COLORS.PRIMARY_COLOR,
-		},
-
+			colorText: THEME_COLORS.PRIMARY_COLOR
+		}
 	}
 } as ThemeConfig;
-
