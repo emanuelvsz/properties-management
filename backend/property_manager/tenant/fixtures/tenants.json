@@ -1,0 +1,67 @@
+[
+  {
+    "model": "tenant.tenant",
+    "pk": "550e8400-e29b-41d4-a716-446655440001",
+    "fields": {
+      "name": "Carlos Eduardo Oliveira",
+      "birth_date": "1992-03-15",
+      "email": "carlos.oliveira@email.com",
+      "phone": "+55 11 99999-1111",
+      "user": 2,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tenant.tenant",
+    "pk": "550e8400-e29b-41d4-a716-446655440002",
+    "fields": {
+      "name": "Ana Paula Costa",
+      "birth_date": "1989-07-22",
+      "email": "ana.costa@email.com",
+      "phone": "+55 11 88888-2222",
+      "user": 2,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tenant.tenant",
+    "pk": "550e8400-e29b-41d4-a716-446655440003",
+    "fields": {
+      "name": "Roberto Mendes",
+      "birth_date": "1995-11-08",
+      "email": "roberto.mendes@email.com",
+      "phone": "+55 11 77777-3333",
+      "user": 3,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tenant.tenant",
+    "pk": "550e8400-e29b-41d4-a716-446655440004",
+    "fields": {
+      "name": "Fernanda Lima",
+      "birth_date": "1991-04-30",
+      "email": "fernanda.lima@email.com",
+      "phone": "+55 11 66666-4444",
+      "user": 3,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tenant.tenant",
+    "pk": "550e8400-e29b-41d4-a716-446655440005",
+    "fields": {
+      "name": "Lucas Ferreira",
+      "birth_date": "1987-09-12",
+      "email": "lucas.ferreira@email.com",
+      "phone": "+55 11 55555-5555",
+      "user": 2,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+] 

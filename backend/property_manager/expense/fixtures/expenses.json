@@ -1,0 +1,107 @@
+[
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440201",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440101",
+      "name": "Condominium",
+      "expense_value": 450.00,
+      "description": "Monthly condominium fee",
+      "due_date": "2024-01-10T00:00:00Z",
+      "payed_at": "2024-01-08T00:00:00Z",
+      "expense_type": "fixed",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440202",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440101",
+      "name": "Property Tax",
+      "expense_value": 1200.00,
+      "description": "Urban Property and Territorial Tax",
+      "due_date": "2024-01-31T00:00:00Z",
+      "payed_at": "2024-01-25T00:00:00Z",
+      "expense_type": "fixed",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440203",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440102",
+      "name": "Plumbing Maintenance",
+      "expense_value": 350.00,
+      "description": "Kitchen plumbing repair",
+      "due_date": "2024-01-15T00:00:00Z",
+      "payed_at": "2024-01-15T00:00:00Z",
+      "expense_type": "unexpected",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440204",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440103",
+      "name": "Cleaning",
+      "expense_value": 200.00,
+      "description": "Monthly cleaning service",
+      "due_date": "2024-02-01T00:00:00Z",
+      "payed_at": null,
+      "expense_type": "variable",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440205",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440104",
+      "name": "Insurance",
+      "expense_value": 800.00,
+      "description": "Annual residential insurance",
+      "due_date": "2024-01-20T00:00:00Z",
+      "payed_at": "2024-01-18T00:00:00Z",
+      "expense_type": "fixed",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440206",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440105",
+      "name": "Painting",
+      "expense_value": 1500.00,
+      "description": "Internal apartment painting",
+      "due_date": "2024-02-15T00:00:00Z",
+      "payed_at": null,
+      "expense_type": "variable",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": "550e8400-e29b-41d4-a716-446655440207",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440106",
+      "name": "Gardener",
+      "expense_value": 300.00,
+      "description": "Monthly garden maintenance",
+      "due_date": "2024-01-25T00:00:00Z",
+      "payed_at": "2024-01-23T00:00:00Z",
+      "expense_type": "variable",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+] 

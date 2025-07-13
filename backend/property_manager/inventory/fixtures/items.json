@@ -1,0 +1,242 @@
+[
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440301",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440101",
+      "category": "550e8400-e29b-41d4-a716-446655440401",
+      "name": "Refrigerator",
+      "description": "Large refrigerator with freezer compartment",
+      "quantity": 1,
+      "condition": "excellent",
+      "brand": "Samsung",
+      "model": "RT38K501J8A",
+      "serial_number": "SN123456789",
+      "purchase_date": "2023-01-15",
+      "purchase_price": "2500.00",
+      "notes": "Energy efficient model",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440302",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440101",
+      "category": "550e8400-e29b-41d4-a716-446655440401",
+      "name": "Washing Machine",
+      "description": "Front-loading washing machine",
+      "quantity": 1,
+      "condition": "good",
+      "brand": "LG",
+      "model": "WM4000HWA",
+      "serial_number": "SN987654321",
+      "purchase_date": "2023-02-20",
+      "purchase_price": "1800.00",
+      "notes": "10kg capacity",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440303",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440102",
+      "category": "550e8400-e29b-41d4-a716-446655440402",
+      "name": "Sofa Set",
+      "description": "3-seater leather sofa with matching armchairs",
+      "quantity": 1,
+      "condition": "excellent",
+      "brand": "Ikea",
+      "model": "KIVIK",
+      "serial_number": "",
+      "purchase_date": "2023-03-10",
+      "purchase_price": "3200.00",
+      "notes": "Dark brown leather",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440304",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440102",
+      "category": "550e8400-e29b-41d4-a716-446655440402",
+      "name": "Dining Table",
+      "description": "Wooden dining table with 6 chairs",
+      "quantity": 1,
+      "condition": "good",
+      "brand": "Madeira Madeira",
+      "model": "",
+      "serial_number": "",
+      "purchase_date": "2023-04-05",
+      "purchase_price": "1500.00",
+      "notes": "Solid wood construction",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440305",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440103",
+      "category": "550e8400-e29b-41d4-a716-446655440403",
+      "name": "Smart TV",
+      "description": "55-inch 4K Smart TV",
+      "quantity": 1,
+      "condition": "excellent",
+      "brand": "Sony",
+      "model": "XBR-55X900F",
+      "serial_number": "SN456789123",
+      "purchase_date": "2023-05-12",
+      "purchase_price": "2800.00",
+      "notes": "Android TV with Netflix",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440306",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440103",
+      "category": "550e8400-e29b-41d4-a716-446655440403",
+      "name": "Air Conditioner",
+      "description": "Split air conditioner 12,000 BTUs",
+      "quantity": 1,
+      "condition": "good",
+      "brand": "Daikin",
+      "model": "FTXM35R",
+      "serial_number": "SN789123456",
+      "purchase_date": "2023-06-18",
+      "purchase_price": "2200.00",
+      "notes": "Inverter technology",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440307",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440104",
+      "category": "550e8400-e29b-41d4-a716-446655440404",
+      "name": "Wall Art",
+      "description": "Abstract painting 80x120cm",
+      "quantity": 2,
+      "condition": "excellent",
+      "brand": "Local Artist",
+      "model": "",
+      "serial_number": "",
+      "purchase_date": "2023-07-22",
+      "purchase_price": "800.00",
+      "notes": "Modern abstract style",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440308",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440104",
+      "category": "550e8400-e29b-41d4-a716-446655440404",
+      "name": "Floor Lamp",
+      "description": "Modern floor lamp with LED",
+      "quantity": 3,
+      "condition": "excellent",
+      "brand": "Tok&Stok",
+      "model": "LUMI",
+      "serial_number": "",
+      "purchase_date": "2023-08-15",
+      "purchase_price": "450.00",
+      "notes": "Adjustable brightness",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440309",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440105",
+      "category": "550e8400-e29b-41d4-a716-446655440405",
+      "name": "Kitchen Set",
+      "description": "Complete kitchen utensils set",
+      "quantity": 1,
+      "condition": "good",
+      "brand": "Tramontina",
+      "model": "PRO",
+      "serial_number": "",
+      "purchase_date": "2023-09-08",
+      "purchase_price": "350.00",
+      "notes": "Includes pots, pans, and utensils",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440310",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440105",
+      "category": "550e8400-e29b-41d4-a716-446655440401",
+      "name": "Microwave",
+      "description": "Built-in microwave oven",
+      "quantity": 1,
+      "condition": "fair",
+      "brand": "Electrolux",
+      "model": "ME28M706",
+      "serial_number": "SN321654987",
+      "purchase_date": "2022-11-30",
+      "purchase_price": "600.00",
+      "notes": "Needs maintenance",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440311",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440106",
+      "category": "550e8400-e29b-41d4-a716-446655440402",
+      "name": "Bed Frame",
+      "description": "Queen size bed frame with headboard",
+      "quantity": 2,
+      "condition": "excellent",
+      "brand": "Móveis Cimo",
+      "model": "",
+      "serial_number": "",
+      "purchase_date": "2023-10-12",
+      "purchase_price": "1200.00",
+      "notes": "Includes mattresses",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventoryitem",
+    "pk": "550e8400-e29b-41d4-a716-446655440312",
+    "fields": {
+      "property": "550e8400-e29b-41d4-a716-446655440106",
+      "category": "550e8400-e29b-41d4-a716-446655440403",
+      "name": "Security Camera",
+      "description": "Outdoor security camera system",
+      "quantity": 4,
+      "condition": "excellent",
+      "brand": "Hikvision",
+      "model": "DS-2CD2142FWD-I",
+      "serial_number": "SN147258369",
+      "purchase_date": "2023-12-01",
+      "purchase_price": "800.00",
+      "notes": "4K resolution with night vision",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+] 

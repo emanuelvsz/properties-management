@@ -1,0 +1,52 @@
+[
+  {
+    "model": "inventory.inventorycategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440401",
+    "fields": {
+      "name": "Appliances",
+      "description": "Household appliances",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventorycategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440402",
+    "fields": {
+      "name": "Furniture",
+      "description": "Home and office furniture",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventorycategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440403",
+    "fields": {
+      "name": "Electronics",
+      "description": "Electronic devices and gadgets",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventorycategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440404",
+    "fields": {
+      "name": "Decoration",
+      "description": "Decorative items",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "inventory.inventorycategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440405",
+    "fields": {
+      "name": "Utensils",
+      "description": "Kitchen and household utensils",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+] 
