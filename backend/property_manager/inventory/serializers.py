@@ -41,7 +41,7 @@ class CreateInventoryItemSerializer(serializers.Serializer):
     property = serializers.UUIDField()
     category = serializers.UUIDField()
     name = serializers.CharField()
-    description = serializers.CharField(required=False, allow_blank=True)
+    description = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     quantity = serializers.IntegerField(default=1)
     condition = serializers.ChoiceField(
         choices=[
@@ -53,12 +53,12 @@ class CreateInventoryItemSerializer(serializers.Serializer):
         ],
         default="good",
     )
-    brand = serializers.CharField(required=False, allow_blank=True)
-    model = serializers.CharField(required=False, allow_blank=True)
-    serial_number = serializers.CharField(required=False, allow_blank=True)
-    purchase_date = serializers.DateField(required=False)
-    purchase_price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    notes = serializers.CharField(required=False, allow_blank=True)
+    brand = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    model = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    serial_number = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    purchase_date = serializers.DateField(required=False, allow_null=True)
+    purchase_price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
+    notes = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
 
 class PartialUpdateInventoryItemSerializer(serializers.Serializer):

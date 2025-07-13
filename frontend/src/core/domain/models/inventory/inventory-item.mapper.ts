@@ -8,8 +8,8 @@ export class InventoryItemMapper implements Mapper<InventoryItem> {
 		return new InventoryItem(
 			data.id as string,
 			data.property as string,
-			data.property_title as string,
-			data.property_code as string,
+			data.propertyTitle as string,
+			data.propertyCode as string,
 			InventoryCategoryMapper.toDomain(data.category),
 			data.name as string,
 			data.quantity as number,
@@ -17,9 +17,9 @@ export class InventoryItemMapper implements Mapper<InventoryItem> {
 			data.description as string,
 			data.brand as string,
 			data.model as string,
-			data.serial_number as string,
-			data.purchase_date as string,
-			data.purchase_price ? Number(data.purchase_price) : undefined,
+			data.serialNumber as string,
+			data.purchaseDate as string,
+			data.purchasePrice !== null && data.purchasePrice !== undefined ? Number(data.purchasePrice) : undefined,
 			data.notes as string
 		);
 	}
@@ -57,7 +57,7 @@ export class InventoryItemMapper implements Mapper<InventoryItem> {
 			raw.model,
 			raw.serial_number,
 			raw.purchase_date,
-			raw.purchase_price ? Number(raw.purchase_price) : undefined,
+			raw.purchase_price !== null && raw.purchase_price !== undefined ? Number(raw.purchase_price) : undefined,
 			raw.notes
 		);
 	}

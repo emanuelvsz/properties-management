@@ -8,7 +8,7 @@ import {
 	Row,
 	Select,
 	Space,
-	Table,
+	Table as TableAntd,
 	Tag,
 	Typography,
 	message,
@@ -189,7 +189,6 @@ const InventoryPage = () => {
 		setSelectedCategory(undefined);
 		setSelectedCondition(undefined);
 		setSearchParams({ page: "1" });
-		loadData();
 	};
 
 	const handleAdd = () => {
@@ -283,47 +282,63 @@ const InventoryPage = () => {
 		setEditingItem(null);
 	};
 
+	useEffect(() => {
+		console.log("Property: ", inventoryItems)
+	}, [inventoryItems])
+
 	const columns = [
 		{
 			title: intl.formatMessage({ id: "page.inventory.table.name" }),
 			dataIndex: "name",
 			key: "name",
-			render: (text: string, record: InventoryItem) => (
-				<div>
-					<Text strong>{record.name || text}</Text>
-					<br />
-					<Text type="secondary" style={{ fontSize: "12px" }}>
-						{record.category?.name ||
-							intl.formatMessage({ id: "general.not.informed" })}
-					</Text>
-				</div>
-			)
+			render: (text: string, record: InventoryItem) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
+				return (
+					<div>
+						<Text strong>{record.name || text}</Text>
+						<br />
+						<Text type="secondary" style={{ fontSize: "12px" }}>
+							{record.category?.name ||
+								intl.formatMessage({ id: "general.not.informed" })}
+						</Text>
+					</div>
+				);
+			}
 		},
 		{
 			title: intl.formatMessage({ id: "page.inventory.table.property" }),
-			dataIndex: "propertyTitle",
 			key: "propertyTitle",
-			render: (text: string, record: InventoryItem) => (
-				<div>
-					<Text strong>
-						{record.propertyTitle ||
-							text ||
-							intl.formatMessage({ id: "general.not.informed" })}
-					</Text>
-					<br />
-					<Text type="secondary" style={{ fontSize: "12px" }}>
-						{intl.formatMessage({ id: "page.inventory.table.property.code" })}:{" "}
-						{record.propertyCode ||
-							intl.formatMessage({ id: "general.not.informed" })}
-					</Text>
-				</div>
-			)
+			render: (_: any, record: any) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
+				const propertyTitle = record.propertyTitle;
+				const propertyCode = record.propertyCode;
+				return (
+					<div>
+						<Text strong>
+							{propertyTitle && propertyTitle.trim() !== ""
+								? propertyTitle
+								: intl.formatMessage({ id: "general.not.informed" })}
+						</Text>
+						<br />
+						<Text type="secondary" style={{ fontSize: "12px" }}>
+							{intl.formatMessage({ id: "page.inventory.table.property.code" })}: {propertyCode && propertyCode.trim() !== "" ? propertyCode : intl.formatMessage({ id: "general.not.informed" })}
+						</Text>
+					</div>
+				);
+			}
 		},
 		{
 			title: intl.formatMessage({ id: "page.inventory.table.quantity" }),
 			dataIndex: "quantity",
 			key: "quantity",
 			render: (quantity: number, record: InventoryItem) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
 				const quantityValue = record.quantity || quantity;
 				return <Tag color="blue">{quantityValue}x</Tag>;
 			}
@@ -333,6 +348,9 @@ const InventoryPage = () => {
 			dataIndex: "condition",
 			key: "condition",
 			render: (condition: string, record: InventoryItem) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
 				const conditionValue = record.condition || condition;
 				const conditionConfig =
 					styles.conditionTag[
@@ -349,13 +367,15 @@ const InventoryPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: "page.inventory.table.value" }),
-			dataIndex: "purchasePrice",
 			key: "purchasePrice",
-			render: (record: InventoryItem) => {
+			render: (_: any, record: any) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
 				const priceValue = record.purchasePrice;
 				return (
 					<Text>
-						{priceValue && priceValue > 0
+						{typeof priceValue === "number" && !isNaN(priceValue)
 							? `${intl.formatMessage({ id: "general.currency.symbol" })} ${priceValue.toFixed(2)}`
 							: intl.formatMessage({ id: "general.not.informed" })}
 					</Text>
@@ -365,27 +385,38 @@ const InventoryPage = () => {
 		{
 			title: intl.formatMessage({ id: "page.inventory.table.actions" }),
 			key: "actions",
-			render: (_: any, record: InventoryItem) => (
-				<Space>
-					<Button
-						type="link"
-						size="small"
-						onClick={() => handleEdit(record)}
-						icon={<EditOutlined />}
-					/>
-					<Popconfirm
-						title={intl.formatMessage({
-							id: "page.inventory.table.delete.confirm"
-						})}
-						onConfirm={() => handleDelete(record.id)}
-						okText={intl.formatMessage({ id: "general.yes" })}
-						cancelText={intl.formatMessage({ id: "general.no" })}
-						placement="left"
-					>
-						<Button type="text" danger icon={<DeleteOutlined />} />
-					</Popconfirm>
-				</Space>
-			)
+			render: (_: any, record: InventoryItem) => {
+				if (!record) {
+					return <Text>-</Text>;
+				}
+								return (
+					<Space size={5}>
+						<Button
+							type="text"
+							size="small"
+							onClick={() => handleEdit(record)}
+							icon={<EditOutlined style={{ color: '#000000' }} />}
+							style={{ width: '35px', height: '35px', padding: 0 }}
+						/>
+						<Popconfirm
+							title={intl.formatMessage({
+								id: "page.inventory.table.delete.confirm"
+							})}
+							onConfirm={() => handleDelete(record.id)}
+							okText={intl.formatMessage({ id: "general.yes" })}
+							cancelText={intl.formatMessage({ id: "general.no" })}
+							placement="left"
+						>
+							<Button 
+								type="text" 
+								danger 
+								icon={<DeleteOutlined />} 
+								style={{ width: '35px', height: '35px', padding: 0 }}
+							/>
+						</Popconfirm>
+					</Space>
+				);
+			}
 		}
 	];
 
@@ -430,6 +461,7 @@ const InventoryPage = () => {
 									onChange={(e) => setSearchText(e.target.value)}
 									prefix={<SearchOutlined />}
 									css={styles.searchInput}
+									style={{ height: '35px' }}
 								/>
 							</Col>
 							<Col>
@@ -439,7 +471,7 @@ const InventoryPage = () => {
 									})}
 									value={selectedCategory}
 									onChange={setSelectedCategory}
-									style={{ width: 200 }}
+									style={{ width: 200, height: '35px' }}
 									allowClear
 								>
 									{categories.items.map((category: InventoryCategory) => (
@@ -456,7 +488,7 @@ const InventoryPage = () => {
 									})}
 									value={selectedCondition}
 									onChange={setSelectedCondition}
-									style={{ width: 150 }}
+									style={{ width: 150, height: '35px' }}
 									allowClear
 								>
 									<Option value="excellent">
@@ -487,7 +519,7 @@ const InventoryPage = () => {
 								</Select>
 							</Col>
 							<Col>
-								<Button onClick={handleReset}>
+								<Button onClick={handleReset} style={{ height: '35px' }}>
 									{intl.formatMessage({ id: "page.inventory.clear" })}
 								</Button>
 							</Col>
@@ -505,9 +537,9 @@ const InventoryPage = () => {
 						</div>
 					)}
 
-					<Table
+					<TableAntd<any>
 						columns={columns}
-						dataSource={inventoryItems.items}
+						dataSource={inventoryItems.items.map(item => item.toJSON())}
 						rowKey="id"
 						loading={loading}
 						rowSelection={rowSelection}

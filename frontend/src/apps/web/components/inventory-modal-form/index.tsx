@@ -161,10 +161,10 @@ const InventoryModalForm = ({
 				serialNumber: values.serialNumber || "",
 				purchaseDate: values.purchaseDate
 					? values.purchaseDate.format("YYYY-MM-DD")
-					: "",
+					: null,
 				purchasePrice: values.purchasePrice
 					? Number(values.purchasePrice)
-					: undefined,
+					: null,
 				notes: values.notes || ""
 			};
 
@@ -456,6 +456,7 @@ const InventoryModalForm = ({
 									placeholder={intl.formatMessage({
 										id: "page.inventory.form.purchaseDate.placeholder"
 									})}
+									format="YYYY-MM-DD"
 								/>
 							</Form.Item>
 						</Col>
