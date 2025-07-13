@@ -9,8 +9,8 @@ class TenantMapper extends Mapper<Tenant> {
 		const birthDate = String(data.birthDate);
 		const email = String(data.email);
 		const phone = String(data.phone);
-
-		return new Tenant(id, name, birthDate, email, phone);
+		const status = String(data.status || "inactive");
+		return new Tenant(id, name, birthDate, email, phone, status);
 	}
 
 	serialize(data: Tenant): DTO {
@@ -19,7 +19,8 @@ class TenantMapper extends Mapper<Tenant> {
 			name: data.name,
 			birthDate: data.birthDate,
 			email: data.email,
-			phone: data.phone
+			phone: data.phone,
+			status: data.status
 		};
 	}
 }

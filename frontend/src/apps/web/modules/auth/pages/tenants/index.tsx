@@ -163,8 +163,9 @@ const TenantsPage = () => {
 			title: intl.formatMessage({ id: "page.tenants.table.status" }),
 			dataIndex: "status",
 			key: "status",
-			render: (status: string) =>
-				status === "active" ? (
+			render: (_, tenant) => {
+				const status = tenant.status;
+				return status === "active" ? (
 					<Tag color="green">
 						{intl.formatMessage({ id: "page.tenants.status.active" })}
 					</Tag>
@@ -172,7 +173,8 @@ const TenantsPage = () => {
 					<Tag color="red">
 						{intl.formatMessage({ id: "page.tenants.status.inactive" })}
 					</Tag>
-				)
+				);
+			}
 		},
 		{
 			dataIndex: "actions",

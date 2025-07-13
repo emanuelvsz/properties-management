@@ -6,13 +6,15 @@ class Tenant extends Model {
 	#birthDate: string;
 	#email: string;
 	#phone: string;
+	#status: string;
 
 	constructor(
 		id: string,
 		name: string,
 		birthDate: string,
 		email: string,
-		phone: string
+		phone: string,
+		status: string = "inactive"
 	) {
 		super();
 		this.#id = id;
@@ -20,6 +22,7 @@ class Tenant extends Model {
 		this.#birthDate = birthDate;
 		this.#email = email;
 		this.#phone = phone;
+		this.#status = status;
 	}
 
 	static fromForm(formData: any): Tenant {
@@ -28,7 +31,8 @@ class Tenant extends Model {
 			formData.name,
 			formData.birthDate,
 			formData.email,
-			formData.phone
+			formData.phone,
+			formData.status
 		);
 	}
 
@@ -38,7 +42,8 @@ class Tenant extends Model {
 			name: this.#name,
 			birthDate: this.#birthDate,
 			email: this.#email,
-			phone: this.#phone
+			phone: this.#phone,
+			status: this.#status
 		};
 	}
 
@@ -60,6 +65,10 @@ class Tenant extends Model {
 
 	get phone() {
 		return this.#phone;
+	}
+
+	get status() {
+		return this.#status;
 	}
 }
 
