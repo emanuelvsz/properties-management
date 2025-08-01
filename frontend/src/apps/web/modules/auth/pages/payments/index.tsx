@@ -46,13 +46,18 @@ const PaymentsPage = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 	const [payments, setPayments] = useState<RentPayment[]>([]);
 	const [loadingPayments, setLoadingPayments] = useState(false);
-	const [creatingPayment, setCreatingPayment] = useState(false);
-	const [updatingPayment, setUpdatingPayment] = useState(false);
-	const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-	const [editingPayment, setEditingPayment] = useState<RentPayment | undefined>(
-		undefined
-	);
+	/*
+	
+		const [creatingPayment, setCreatingPayment] = useState(false);
+		const [updatingPayment, setUpdatingPayment] = useState(false);
+		const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+		const [editingPayment, setEditingPayment] = useState<RentPayment | undefined>(
+				undefined
+		);
+		const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+	*/
+
+
 
 	const intl = useIntl();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -132,6 +137,8 @@ const PaymentsPage = () => {
 		setSearchParams(newParams);
 	};
 
+    /* 
+
 	const handleAddPayment = async (values: any) => {
 		setCreatingPayment(true);
 		setTimeout(() => {
@@ -174,6 +181,9 @@ const PaymentsPage = () => {
 		setEditingPayment(payment);
 		setIsEditModalVisible(true);
 	};
+
+	*/
+
 
 	const rowSelection = {
 		selectedRowKeys,
@@ -252,7 +262,6 @@ const PaymentsPage = () => {
 					<Button
 						type="text"
 						icon={<EditOutlined />}
-						onClick={() => openEditModal(payment)}
 					/>
 				</Flex>
 			)
@@ -332,7 +341,6 @@ const PaymentsPage = () => {
 					}
 					extra={
 						<PageHeaderActions
-							onAddClick={() => setIsAddModalVisible(true)}
 							onOrderByChange={handleOrderByChange}
 							orderByOptions={orderByOptions}
 						/>

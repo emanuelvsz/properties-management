@@ -75,6 +75,7 @@ const SelectLanguageDropdown = () => {
 				onClick: handleMenuClick
 			}}
 			placement="bottomRight"
+			arrow
 		>
 			<Button size="large" css={styles.button} ghost>
 				<GlobalOutlined size={14} css={styles.iconAndPlaceholder} />

@@ -46,11 +46,6 @@ const styles = {
 		gap: 15px;
 		padding: 8px 12px;
 		border-radius: 8px;
-		transition: background-color 0.3s ease;
-
-		&:hover {
-			background-color: #f5f5f5;
-		}
 	`,
 	divider: css`
 		height: ${HEADER_HEIGHT / 3}px;
@@ -112,8 +107,7 @@ const Header = ({ account }: Props) => {
 		}
 	};
 
-	const handleConfigClick = () => {
-	};
+	const handleConfigClick = () => {};
 
 	const handleProfileClick = () => {
 		navigate("/profile");
@@ -224,6 +218,7 @@ const Header = ({ account }: Props) => {
 				menu={{ items: menuItems, onClick: handleMenuClick }}
 				placement="bottomRight"
 				trigger={["click"]}
+				arrow
 			>
 				<Flex css={styles.profileContainer}>
 					<img src={userPrimaryIcon} css={styles.headerIcon} />
