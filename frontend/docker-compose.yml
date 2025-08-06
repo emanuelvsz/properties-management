@@ -3,7 +3,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./.docker/development/Dockerfile.web
+      dockerfile: ./.docker/prod/Dockerfile.web
     ports:
       - "3000:3000"
     env_file:
