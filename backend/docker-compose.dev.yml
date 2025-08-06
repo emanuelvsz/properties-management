@@ -9,14 +9,22 @@ services:
       - DEBUG=true
     volumes:
       - ./property_manager:/app
+    depends_on:
+      database:
+        condition: service_healthy
     ports:
       - 8000:8000
   database:
-    build:
-      context: .
-      dockerfile: .docker/dev/database/Dockerfile
+    image: postgres:14-alpine
     environment:
-      POSTGRES_USER: property_manager
+      POSTGRES_USER: propman
       POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: tcg-challengers
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U propman -d propman"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     ports:
-      - 5432:5432
+      - "5432:5432"
