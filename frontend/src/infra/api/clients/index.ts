@@ -11,7 +11,7 @@ let isRedirecting = false;
 
 export const BackendClient = applyCaseMiddleware(
 	axios.create({
-		baseURL: "/api/",
+		baseURL: `${process.env.WEB_API_URL}`,
 		headers: {
 			"Content-Type": "application/json"
 		},

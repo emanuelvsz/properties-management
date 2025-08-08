@@ -2,13 +2,13 @@ FROM node:24-alpine
 
 WORKDIR /code
 
-COPY package.json tsconfig.json /code/
-COPY src /code/src
+COPY package.json tsconfig.json yarn.lock ./
+COPY src ./src
 
-RUN yarn
-RUN yarn build:prod -- /code/
+RUN yarn install
+RUN yarn build:prod
 RUN yarn global add serve
 
-RUN rm -r package.json tsconfig.json src
+RUN rm -rf src package.json tsconfig.json yarn.lock
 
 CMD ["serve", "-s", "/code/build"]

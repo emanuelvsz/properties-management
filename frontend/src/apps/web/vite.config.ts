@@ -44,7 +44,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 			open: ROOT_HTML_FILE,
 			port: DEFAULT_WEB_PORT,
 			proxy: {
-				"/api": {
+				"": {
 					target: "http://localhost:8000",
 					changeOrigin: true,
 					rewrite: (path: string) => path.replace(/^\/api/, "")
