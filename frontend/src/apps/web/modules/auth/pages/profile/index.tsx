@@ -31,13 +31,12 @@ const { Title, Text } = Typography;
 
 const styles = {
 	container: css`
-		padding: 2rem;
 		background-color: ${THEME_COLORS.GRAY_COLOR};
 		min-height: calc(100vh - 4rem - 36px);
 	`,
 	content: css`
-		max-width: 1200px;
-		margin: 0 auto;
+		padding-inline: 2rem;
+		padding-block: 1rem;
 	`,
 	headerCard: css`
 		border-radius: 16px;
@@ -47,7 +46,6 @@ const styles = {
 		overflow: hidden;
 		position: relative;
 		margin-bottom: 2rem;
-		padding: 2rem 30px;
 		
 		&::before {
 			content: '';

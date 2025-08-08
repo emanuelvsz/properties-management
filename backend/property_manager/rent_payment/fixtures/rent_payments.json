@@ -4,12 +4,12 @@
     "pk": 1,
     "fields": {
       "rent_contract": 1,
-      "amount_paid": 2500.00,
-      "payed_at": "2024-01-05T00:00:00Z",
-      "due_date": "2024-01-05T00:00:00Z",
-      "payment_method": "debit",
-      "created_at": "2024-01-05T00:00:00Z",
-      "updated_at": "2024-01-05T00:00:00Z"
+      "amount_paid": 1200.0,
+      "payed_at": "2025-01-05T10:00:00Z",
+      "due_date": "2025-01-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
@@ -17,12 +17,12 @@
     "pk": 2,
     "fields": {
       "rent_contract": 1,
-      "amount_paid": 2500.00,
-      "payed_at": "2024-02-05T00:00:00Z",
-      "due_date": "2024-02-05T00:00:00Z",
-      "payment_method": "debit",
-      "created_at": "2024-02-05T00:00:00Z",
-      "updated_at": "2024-02-05T00:00:00Z"
+      "amount_paid": 1200.0,
+      "payed_at": "2025-02-05T10:30:00Z",
+      "due_date": "2025-02-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
@@ -30,64 +30,233 @@
     "pk": 3,
     "fields": {
       "rent_contract": 1,
-      "amount_paid": 2500.00,
-      "payed_at": "2024-03-05T00:00:00Z",
-      "due_date": "2024-03-05T00:00:00Z",
-      "payment_method": "credit",
-      "created_at": "2024-03-05T00:00:00Z",
-      "updated_at": "2024-03-05T00:00:00Z"
+      "amount_paid": 1200.0,
+      "payed_at": "2025-03-06T11:00:00Z",
+      "due_date": "2025-03-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_payment.rentpayment",
     "pk": 4,
     "fields": {
-      "rent_contract": 2,
-      "amount_paid": 1800.00,
-      "payed_at": "2024-02-05T00:00:00Z",
-      "due_date": "2024-02-05T00:00:00Z",
-      "payment_method": "money",
-      "created_at": "2024-02-05T00:00:00Z",
-      "updated_at": "2024-02-05T00:00:00Z"
+      "rent_contract": 1,
+      "amount_paid": 1200.0,
+      "payed_at": "2025-04-05T09:50:00Z",
+      "due_date": "2025-04-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_payment.rentpayment",
     "pk": 5,
     "fields": {
-      "rent_contract": 2,
-      "amount_paid": 1800.00,
-      "payed_at": "2024-03-05T00:00:00Z",
-      "due_date": "2024-03-05T00:00:00Z",
-      "payment_method": "debit",
-      "created_at": "2024-03-05T00:00:00Z",
-      "updated_at": "2024-03-05T00:00:00Z"
+      "rent_contract": 1,
+      "amount_paid": 1200.0,
+      "payed_at": "2025-05-04T15:20:00Z",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_payment.rentpayment",
     "pk": 6,
     "fields": {
-      "rent_contract": 3,
-      "amount_paid": 4500.00,
-      "payed_at": "2023-06-05T00:00:00Z",
-      "due_date": "2023-06-05T00:00:00Z",
-      "payment_method": "debit",
-      "created_at": "2023-06-05T00:00:00Z",
-      "updated_at": "2023-06-05T00:00:00Z"
+      "rent_contract": 2,
+      "amount_paid": 850.0,
+      "payed_at": "2025-02-05T09:00:00Z",
+      "due_date": "2025-02-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_payment.rentpayment",
     "pk": 7,
     "fields": {
+      "rent_contract": 2,
+      "amount_paid": 850.0,
+      "payed_at": "2025-03-05T09:10:00Z",
+      "due_date": "2025-03-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 8,
+    "fields": {
+      "rent_contract": 2,
+      "amount_paid": 850.0,
+      "payed_at": "2025-04-06T09:15:00Z",
+      "due_date": "2025-04-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 9,
+    "fields": {
+      "rent_contract": 2,
+      "amount_paid": 850.0,
+      "payed_at": "2025-05-05T09:30:00Z",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 10,
+    "fields": {
+      "rent_contract": 2,
+      "amount_paid": 850.0,
+      "payed_at": "2025-06-05T09:50:00Z",
+      "due_date": "2025-06-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 11,
+    "fields": {
+      "rent_contract": 3,
+      "amount_paid": 2500.0,
+      "payed_at": "2025-03-05T12:00:00Z",
+      "due_date": "2025-03-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 12,
+    "fields": {
+      "rent_contract": 3,
+      "amount_paid": 2500.0,
+      "payed_at": "2025-04-05T12:00:00Z",
+      "due_date": "2025-04-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 13,
+    "fields": {
+      "rent_contract": 3,
+      "amount_paid": 2500.0,
+      "payed_at": "2025-05-05T12:00:00Z",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 14,
+    "fields": {
+      "rent_contract": 3,
+      "amount_paid": 2500.0,
+      "payed_at": "2025-06-05T12:00:00Z",
+      "due_date": "2025-06-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 15,
+    "fields": {
+      "rent_contract": 3,
+      "amount_paid": 2500.0,
+      "payed_at": "2025-07-05T12:00:00Z",
+      "due_date": "2025-07-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 16,
+    "fields": {
       "rent_contract": 4,
-      "amount_paid": 8000.00,
-      "payed_at": "2023-12-05T00:00:00Z",
-      "due_date": "2023-12-05T00:00:00Z",
-      "payment_method": "credit",
-      "created_at": "2023-12-05T00:00:00Z",
-      "updated_at": "2023-12-05T00:00:00Z"
+      "amount_paid": 2100.0,
+      "payed_at": "2025-04-05T10:00:00Z",
+      "due_date": "2025-04-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 17,
+    "fields": {
+      "rent_contract": 4,
+      "amount_paid": 2100.0,
+      "payed_at": "2025-05-05T10:00:00Z",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 18,
+    "fields": {
+      "rent_contract": 4,
+      "amount_paid": 2100.0,
+      "payed_at": "2025-06-05T10:00:00Z",
+      "due_date": "2025-06-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 19,
+    "fields": {
+      "rent_contract": 4,
+      "amount_paid": 2100.0,
+      "payed_at": "2025-07-05T10:00:00Z",
+      "due_date": "2025-07-05T00:00:00Z",
+      "payment_method": "credit_card",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "rent_payment.rentpayment",
+    "pk": 20,
+    "fields": {
+      "rent_contract": 4,
+      "amount_paid": 2100.0,
+      "payed_at": "2025-08-05T10:00:00Z",
+      "due_date": "2025-08-05T00:00:00Z",
+      "payment_method": "bank_transfer",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   }
-] 
+]

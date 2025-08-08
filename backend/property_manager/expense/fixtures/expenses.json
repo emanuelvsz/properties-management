@@ -1,107 +1,182 @@
 [
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440201",
+    "pk": 1,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440101",
-      "name": "Condominium",
-      "expense_value": 450.00,
-      "description": "Monthly condominium fee",
-      "due_date": "2024-01-10T00:00:00Z",
-      "payed_at": "2024-01-08T00:00:00Z",
+      "property": "d18b1c28-9c47-4c9e-94b0-d0c442ec8a01",
+      "name": "Condominium Fee",
+      "expense_value": 150.0,
+      "description": "Monthly condo maintenance fee",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payed_at": "2025-05-03T14:00:00Z",
       "expense_type": "fixed",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440202",
+    "pk": 2,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440101",
-      "name": "Property Tax",
-      "expense_value": 1200.00,
-      "description": "Urban Property and Territorial Tax",
-      "due_date": "2024-01-31T00:00:00Z",
-      "payed_at": "2024-01-25T00:00:00Z",
-      "expense_type": "fixed",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "property": "d18b1c28-9c47-4c9e-94b0-d0c442ec8a01",
+      "name": "Cleaning Service",
+      "expense_value": 80.0,
+      "description": "Post-rental cleaning",
+      "due_date": "2025-06-01T00:00:00Z",
+      "payed_at": "2025-05-31T09:30:00Z",
+      "expense_type": "variable",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440203",
+    "pk": 3,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440102",
-      "name": "Plumbing Maintenance",
-      "expense_value": 350.00,
-      "description": "Kitchen plumbing repair",
-      "due_date": "2024-01-15T00:00:00Z",
-      "payed_at": "2024-01-15T00:00:00Z",
+      "property": "d18b1c28-9c47-4c9e-94b0-d0c442ec8a01",
+      "name": "Water Leak Repair",
+      "expense_value": 250.0,
+      "description": "Fixing leak in bathroom",
+      "due_date": "2025-06-10T00:00:00Z",
+      "payed_at": "2025-06-09T11:00:00Z",
       "expense_type": "unexpected",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440204",
+    "pk": 4,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440103",
-      "name": "Cleaning",
-      "expense_value": 200.00,
-      "description": "Monthly cleaning service",
-      "due_date": "2024-02-01T00:00:00Z",
-      "payed_at": null,
-      "expense_type": "variable",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  },
-  {
-    "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440205",
-    "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440104",
-      "name": "Insurance",
-      "expense_value": 800.00,
-      "description": "Annual residential insurance",
-      "due_date": "2024-01-20T00:00:00Z",
-      "payed_at": "2024-01-18T00:00:00Z",
+      "property": "c3d08ee2-ea61-4413-a10b-79f1271d652b",
+      "name": "Building Maintenance",
+      "expense_value": 100.0,
+      "description": "Shared building costs",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payed_at": "2025-05-04T10:00:00Z",
       "expense_type": "fixed",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440206",
+    "pk": 5,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440105",
-      "name": "Painting",
-      "expense_value": 1500.00,
-      "description": "Internal apartment painting",
-      "due_date": "2024-02-15T00:00:00Z",
-      "payed_at": null,
+      "property": "c3d08ee2-ea61-4413-a10b-79f1271d652b",
+      "name": "Electric Bill",
+      "expense_value": 60.0,
+      "description": "Electricity for May",
+      "due_date": "2025-06-01T00:00:00Z",
+      "payed_at": "2025-05-30T15:00:00Z",
       "expense_type": "variable",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "expense.expense",
-    "pk": "550e8400-e29b-41d4-a716-446655440207",
+    "pk": 6,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440106",
-      "name": "Gardener",
-      "expense_value": 300.00,
-      "description": "Monthly garden maintenance",
-      "due_date": "2024-01-25T00:00:00Z",
-      "payed_at": "2024-01-23T00:00:00Z",
+      "property": "c3d08ee2-ea61-4413-a10b-79f1271d652b",
+      "name": "Broken Window Fix",
+      "expense_value": 180.0,
+      "description": "Window replacement",
+      "due_date": "2025-06-15T00:00:00Z",
+      "payed_at": "2025-06-14T17:00:00Z",
+      "expense_type": "unexpected",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 7,
+    "fields": {
+      "property": "6ec5ce95-7938-4b07-a5bb-5e3f63f2d845",
+      "name": "Security Fee",
+      "expense_value": 120.0,
+      "description": "Condo security monthly",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payed_at": "2025-05-04T08:00:00Z",
+      "expense_type": "fixed",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 8,
+    "fields": {
+      "property": "6ec5ce95-7938-4b07-a5bb-5e3f63f2d845",
+      "name": "Garden Maintenance",
+      "expense_value": 90.0,
+      "description": "Pruning and cleaning",
+      "due_date": "2025-06-01T00:00:00Z",
+      "payed_at": "2025-05-30T13:00:00Z",
       "expense_type": "variable",
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 9,
+    "fields": {
+      "property": "6ec5ce95-7938-4b07-a5bb-5e3f63f2d845",
+      "name": "Air Conditioner Repair",
+      "expense_value": 300.0,
+      "description": "Summer AC repair",
+      "due_date": "2025-06-20T00:00:00Z",
+      "payed_at": "2025-06-19T12:00:00Z",
+      "expense_type": "unexpected",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 10,
+    "fields": {
+      "property": "327c6f79-9b6a-4b1a-b2ff-3897a015e522",
+      "name": "Condo Fee",
+      "expense_value": 170.0,
+      "description": "Regular fee",
+      "due_date": "2025-05-05T00:00:00Z",
+      "payed_at": "2025-05-03T16:00:00Z",
+      "expense_type": "fixed",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 11,
+    "fields": {
+      "property": "327c6f79-9b6a-4b1a-b2ff-3897a015e522",
+      "name": "Trash Collection",
+      "expense_value": 50.0,
+      "description": "May waste disposal",
+      "due_date": "2025-06-01T00:00:00Z",
+      "payed_at": "2025-05-31T10:00:00Z",
+      "expense_type": "variable",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "expense.expense",
+    "pk": 12,
+    "fields": {
+      "property": "327c6f79-9b6a-4b1a-b2ff-3897a015e522",
+      "name": "Locksmith",
+      "expense_value": 110.0,
+      "description": "Tenant locked out",
+      "due_date": "2025-06-12T00:00:00Z",
+      "payed_at": "2025-06-12T13:00:00Z",
+      "expense_type": "unexpected",
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   }
-] 
+]

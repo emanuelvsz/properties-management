@@ -1,4 +1,4 @@
-import { Divider, Flex, Dropdown, MenuProps } from "antd";
+import { Flex, Dropdown, MenuProps } from "antd";
 import { css } from "@emotion/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
@@ -213,7 +213,6 @@ const Header = ({ account }: Props) => {
 	return (
 		<Flex css={styles.header} align="center" justify="right" gap={15}>
 			<SelectLanguageDropdown />
-			<Divider css={styles.divider} type="vertical" />
 			<Dropdown
 				menu={{ items: menuItems, onClick: handleMenuClick }}
 				placement="bottomRight"

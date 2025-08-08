@@ -1,67 +1,54 @@
 [
   {
     "model": "tenant.tenant",
-    "pk": "550e8400-e29b-41d4-a716-446655440001",
+    "pk": "8f4d2a13-dfd7-4c0c-9a33-6a6a2e273a90",
     "fields": {
-      "name": "Carlos Eduardo Oliveira",
-      "birth_date": "1992-03-15",
-      "email": "carlos.oliveira@email.com",
-      "phone": "+55 11 99999-1111",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "name": "Lucía Martínez",
+      "birth_date": "1990-04-12",
+      "email": "lucia.martinez@example.com",
+      "phone": "+34 600 123 456",
+      "user": 5,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "tenant.tenant",
-    "pk": "550e8400-e29b-41d4-a716-446655440002",
+    "pk": "c7efc514-4a62-4a44-9642-dc20adf4ab14",
     "fields": {
-      "name": "Ana Paula Costa",
-      "birth_date": "1989-07-22",
-      "email": "ana.costa@email.com",
-      "phone": "+55 11 88888-2222",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "name": "Carlos García",
+      "birth_date": "1985-11-30",
+      "email": "carlos.garcia@example.com",
+      "phone": "+34 611 987 654",
+      "user": 5,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "tenant.tenant",
-    "pk": "550e8400-e29b-41d4-a716-446655440003",
+    "pk": "57f4eadd-53bc-4e11-8f6b-69f2c68b6f33",
     "fields": {
-      "name": "Roberto Mendes",
-      "birth_date": "1995-11-08",
-      "email": "roberto.mendes@email.com",
-      "phone": "+55 11 77777-3333",
-      "user": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "name": "Ana Torres",
+      "birth_date": "1993-06-08",
+      "email": "ana.torres@example.com",
+      "phone": "+34 622 456 789",
+      "user": 5,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "tenant.tenant",
-    "pk": "550e8400-e29b-41d4-a716-446655440004",
+    "pk": "9a02eb9e-f0a5-4d4b-8cfa-095d88cfc45e",
     "fields": {
-      "name": "Fernanda Lima",
-      "birth_date": "1991-04-30",
-      "email": "fernanda.lima@email.com",
-      "phone": "+55 11 66666-4444",
-      "user": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  },
-  {
-    "model": "tenant.tenant",
-    "pk": "550e8400-e29b-41d4-a716-446655440005",
-    "fields": {
-      "name": "Lucas Ferreira",
-      "birth_date": "1987-09-12",
-      "email": "lucas.ferreira@email.com",
-      "phone": "+55 11 55555-5555",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "name": "Miguel López",
+      "birth_date": "1988-02-25",
+      "email": "miguel.lopez@example.com",
+      "phone": "+34 633 789 123",
+      "user": 5,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   }
-] 
+]

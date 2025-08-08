@@ -31,6 +31,7 @@ interface NavigationItem {
 	icon: string;
 	activeIcon: string;
 	url: string;
+	isDemo?: boolean;
 }
 
 const styles = {
@@ -171,7 +172,8 @@ const SideMenu = ({ account }: Props) => {
 			}),
 			icon: moneyIconWhite,
 			activeIcon: moneyIcon,
-			url: "/payments"
+			url: "/payments",
+			isDemo: true
 		},
 		{
 			text: intl.formatMessage({
@@ -179,7 +181,8 @@ const SideMenu = ({ account }: Props) => {
 			}),
 			icon: backpackIconWhite,
 			activeIcon: backpackIcon,
-			url: "/inventory"
+			url: "/inventory",
+			isDemo: true
 		},
 		{
 			text: intl.formatMessage({
@@ -187,7 +190,8 @@ const SideMenu = ({ account }: Props) => {
 			}),
 			icon: userIconWhite,
 			activeIcon: userIcon,
-			url: "/profile"
+			url: "/profile",
+			isDemo: true
 		}
 	];
 

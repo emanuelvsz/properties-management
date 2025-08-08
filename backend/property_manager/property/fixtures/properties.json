@@ -1,116 +1,78 @@
 [
   {
     "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440101",
+    "pk": "d18b1c28-9c47-4c9e-94b0-d0c442ec8a01",
     "fields": {
-      "title": "Downtown Apartment - 2 Bedrooms",
+      "user": 5,
+      "title": "Modern Apartment in Malasaña",
       "bedrooms": 2,
       "bathrooms": 1,
-      "surface": 65.5,
-      "rent": 2500.00,
+      "surface": 68.5,
+      "rent": 1200.0,
       "furnished": true,
-      "description": "Well-located apartment in the city center, close to metro and commerce. Furnished and ready to live.",
-      "status": "rented",
-      "location": "Rua das Flores, 123 - Centro, São Paulo - SP",
-      "code": "123456",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  },
-  {
-    "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440102",
-    "fields": {
-      "title": "Vila Madalena House - 3 Bedrooms",
-      "bedrooms": 3,
-      "bathrooms": 2,
-      "surface": 120.0,
-      "rent": 4500.00,
-      "furnished": false,
-      "description": "Charming house in Vila Madalena, with backyard and garage for 2 cars. Perfect for families.",
+      "description": "Charming apartment in a bohemian area with easy access to the subway.",
       "status": "free",
-      "location": "Rua Harmonia, 456 - Vila Madalena, São Paulo - SP",
-      "code": "234567",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "location": "Calle del Espíritu Santo, 28004 Madrid, Spain",
+      "code": "100001",
+      "created_at": "2025-08-01T12:00:00Z",
+      "updated_at": "2025-08-01T12:00:00Z"
     }
   },
   {
     "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440103",
+    "pk": "c3d08ee2-ea61-4413-a10b-79f1271d652b",
     "fields": {
-      "title": "Pinheiros Studio - 1 Bedroom",
+      "user": 5,
+      "title": "Compact Studio in Lavapiés",
       "bedrooms": 1,
       "bathrooms": 1,
       "surface": 35.0,
-      "rent": 1800.00,
+      "rent": 850.0,
       "furnished": true,
-      "description": "Compact and functional studio in Pinheiros, close to metro station. Perfect for singles or couples.",
-      "status": "rented",
-      "location": "Rua Teodoro Sampaio, 789 - Pinheiros, São Paulo - SP",
-      "code": "345678",
-      "user": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  },
-  {
-    "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440104",
-    "fields": {
-      "title": "Itaim Bibi Penthouse - 4 Bedrooms",
-      "bedrooms": 4,
-      "bathrooms": 3,
-      "surface": 200.0,
-      "rent": 8000.00,
-      "furnished": true,
-      "description": "Luxurious penthouse in Itaim Bibi with panoramic view, pool and gym in the building.",
+      "description": "Cozy studio ideal for students or professionals.",
       "status": "free",
-      "location": "Rua João Cachoeira, 321 - Itaim Bibi, São Paulo - SP",
-      "code": "456789",
-      "user": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "location": "Calle de Lavapiés, 28012 Madrid, Spain",
+      "code": "100002",
+      "created_at": "2025-08-01T12:00:00Z",
+      "updated_at": "2025-08-01T12:00:00Z"
     }
   },
   {
     "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440105",
+    "pk": "6ec5ce95-7938-4b07-a5bb-5e3f63f2d845",
     "fields": {
-      "title": "Mooca Apartment - 2 Bedrooms",
-      "bedrooms": 2,
-      "bathrooms": 1,
-      "surface": 70.0,
-      "rent": 2200.00,
-      "furnished": false,
-      "description": "Apartment in gated community in Mooca, with playground and party room.",
-      "status": "maintance",
-      "location": "Rua da Mooca, 654 - Mooca, São Paulo - SP",
-      "code": "567890",
-      "user": 2,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  },
-  {
-    "model": "property.property",
-    "pk": "550e8400-e29b-41d4-a716-446655440106",
-    "fields": {
-      "title": "Campo Belo House - 3 Bedrooms",
+      "user": 5,
+      "title": "Penthouse with View in Salamanca Neighborhood",
       "bedrooms": 3,
       "bathrooms": 2,
-      "surface": 150.0,
-      "rent": 5500.00,
+      "surface": 110.0,
+      "rent": 2500.0,
       "furnished": false,
-      "description": "Spacious house in Campo Belo with garden and barbecue area. Perfect for large families.",
+      "description": "Spacious apartment with balcony and city view.",
       "status": "free",
-      "location": "Rua Campo Belo, 987 - Campo Belo, São Paulo - SP",
-      "code": "678901",
-      "user": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "location": "Calle de Serrano, 28001 Madrid, Spain",
+      "code": "100003",
+      "created_at": "2025-08-01T12:00:00Z",
+      "updated_at": "2025-08-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "property.property",
+    "pk": "327c6f79-9b6a-4b1a-b2ff-3897a015e522",
+    "fields": {
+      "user": 5,
+      "title": "Family Apartment in Chamberí",
+      "bedrooms": 4,
+      "bathrooms": 2,
+      "surface": 135.0,
+      "rent": 2100.0,
+      "furnished": true,
+      "description": "Ideal for families, close to schools and parks.",
+      "status": "free",
+      "location": "Calle de Fuencarral, 28010 Madrid, Spain",
+      "code": "100004",
+      "created_at": "2025-08-01T12:00:00Z",
+      "updated_at": "2025-08-01T12:00:00Z"
     }
   }
-] 
+]

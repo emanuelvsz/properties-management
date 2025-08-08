@@ -3,64 +3,64 @@
     "model": "rent_contract.rentcontract",
     "pk": 1,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440101",
-      "user": 2,
-      "tenant": "550e8400-e29b-41d4-a716-446655440001",
-      "started_at": "2024-01-01T00:00:00Z",
-      "finish_at": "2025-12-31T23:59:59Z",
-      "deposit": 2500.00,
-      "payments_date": "2024-01-05",
+      "property": "d18b1c28-9c47-4c9e-94b0-d0c442ec8a01",
+      "user": 5,
+      "tenant": "8f4d2a13-dfd7-4c0c-9a33-6a6a2e273a90",
+      "started_at": "2025-01-01T12:00:00Z",
+      "finish_at": "2025-12-31T12:00:00Z",
+      "deposit": 1200.0,
+      "payments_date": "2025-01-05",
       "archived": false,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_contract.rentcontract",
     "pk": 2,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440103",
-      "user": 3,
-      "tenant": "550e8400-e29b-41d4-a716-446655440003",
-      "started_at": "2024-02-01T00:00:00Z",
-      "finish_at": "2025-12-31T23:59:59Z",
-      "deposit": 1800.00,
-      "payments_date": "2024-02-05",
+      "property": "c3d08ee2-ea61-4413-a10b-79f1271d652b",
+      "user": 5,
+      "tenant": "c7efc514-4a62-4a44-9642-dc20adf4ab14",
+      "started_at": "2025-02-01T12:00:00Z",
+      "finish_at": "2026-01-31T12:00:00Z",
+      "deposit": 850.0,
+      "payments_date": "2025-02-05",
       "archived": false,
-      "created_at": "2024-02-01T00:00:00Z",
-      "updated_at": "2024-02-01T00:00:00Z"
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_contract.rentcontract",
     "pk": 3,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440102",
-      "user": 2,
-      "tenant": "550e8400-e29b-41d4-a716-446655440002",
-      "started_at": "2023-06-01T00:00:00Z",
-      "finish_at": "2024-05-31T23:59:59Z",
-      "deposit": 4500.00,
-      "payments_date": "2023-06-05",
-      "archived": true,
-      "created_at": "2023-06-01T00:00:00Z",
-      "updated_at": "2023-06-01T00:00:00Z"
+      "property": "6ec5ce95-7938-4b07-a5bb-5e3f63f2d845",
+      "user": 5,
+      "tenant": "57f4eadd-53bc-4e11-8f6b-69f2c68b6f33",
+      "started_at": "2025-03-01T12:00:00Z",
+      "finish_at": "2026-02-28T12:00:00Z",
+      "deposit": 2500.0,
+      "payments_date": "2025-03-05",
+      "archived": false,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   },
   {
     "model": "rent_contract.rentcontract",
     "pk": 4,
     "fields": {
-      "property": "550e8400-e29b-41d4-a716-446655440104",
-      "user": 3,
-      "tenant": "550e8400-e29b-41d4-a716-446655440004",
-      "started_at": "2023-12-01T00:00:00Z",
-      "finish_at": "2024-11-30T23:59:59Z",
-      "deposit": 8000.00,
-      "payments_date": "2023-12-05",
-      "archived": true,
-      "created_at": "2023-12-01T00:00:00Z",
-      "updated_at": "2023-12-01T00:00:00Z"
+      "property": "327c6f79-9b6a-4b1a-b2ff-3897a015e522",
+      "user": 5,
+      "tenant": "9a02eb9e-f0a5-4d4b-8cfa-095d88cfc45e",
+      "started_at": "2025-04-01T12:00:00Z",
+      "finish_at": "2026-03-31T12:00:00Z",
+      "deposit": 2100.0,
+      "payments_date": "2025-04-05",
+      "archived": false,
+      "created_at": "2025-04-01T10:00:00Z",
+      "updated_at": "2025-04-01T10:00:00Z"
     }
   }
-] 
+]
