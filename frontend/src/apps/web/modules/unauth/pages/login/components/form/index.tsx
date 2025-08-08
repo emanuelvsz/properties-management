@@ -1,10 +1,9 @@
 import { css } from "@emotion/react";
 
-import { Button, Card, Divider, Form, Input, Typography } from "antd";
+import { Button, Card, Form, Input, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 import { useLogin } from "apps/web/lib/contexts/auth/hooks";
 import { requiredRule } from "apps/web/lib/utils/validator-rules";
@@ -28,9 +27,6 @@ const styles = {
 		margin-top: 8px;
 		border-radius: 4px;
 		box-shadow: none;
-	`,
-	forgotPasswordText: css`
-		text-align: right;
 	`
 };
 
@@ -78,11 +74,6 @@ const LoginForm = () => {
 					Submit
 				</Button>
 			</Form>
-			<Divider />
-			<Typography.Text css={styles.forgotPasswordText}>
-				Forgot your password?&nbsp;
-				<Link to="/recovery-password">Click here</Link>
-			</Typography.Text>
 		</Card>
 	);
 };

@@ -186,13 +186,13 @@ const HomePage = () => {
 					/>
 				))}
 			</Flex>
-			<ExpenseListRow
+			{expensePagination.total >= 1 && <ExpenseListRow
 				pagination={expensePagination}
 				loading={loadingPage}
 				hideActions={true}
 				title={intl.formatMessage({ id: "dashboard.pending-expenses" })}
 				onReload={fetchAllData}
-			/>
+			/>}
 			{/* <Flex gap={10} css={styles.cardList}>
 				<FinanceBarChartCard />
 				<FinancePieChartCard />
