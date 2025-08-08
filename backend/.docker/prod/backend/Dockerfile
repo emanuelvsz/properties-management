@@ -12,12 +12,12 @@ RUN pip install -U pip
 RUN pip install poetry
 
 COPY property_manager /app
-COPY pyproject.toml /app/
+COPY requirements.txt /requirements.txt
 COPY .docker/prod/backend/start.sh /app/
 
 # Install python dependencies
-RUN poetry install
-RUN poetry add gunicorn
+RUN pip install -r /requirements.txt
+RUN python -m pip install gunicorn
 
 # Set up NGINX
 COPY .docker/prod/backend/nginx.conf /etc/nginx/sites-available/propman.conf
@@ -31,4 +31,4 @@ RUN chmod +x /app/start.sh
 EXPOSE 8000
 
 # Run server
-CMD ["/start-api.sh"]
+CMD ["start.sh"]
