@@ -4,12 +4,10 @@ services:
   api:
     build:
       context: ./backend
-      dockerfile: .docker/prod/backend/Dockerfile 
+      dockerfile: .docker/prod/backend/Dockerfile
     env_file: backend/.env.docker
     environment:
       - DEBUG=false
-    volumes:
-      - ./backend/property_manager:/app
     depends_on:
       database:
         condition: service_healthy
@@ -31,7 +29,7 @@ services:
     build:
       context: ./frontend
       dockerfile: .docker/prod/Dockerfile.web
-    env_file: frontend/.env.dev
+    env_file: frontend/.env.prod
     ports:
       - "3000:3000"
     depends_on:

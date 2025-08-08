@@ -9,10 +9,10 @@ ENV PYTHONUNBUFFERED=1
 RUN apt update
 RUN apt install -y dos2unix nginx
 RUN pip install -U pip
+RUN pip install --upgrade setuptools
 
 COPY property_manager /app
 COPY requirements.txt /requirements.txt
-COPY .docker/prod/backend/start.sh /app/
 
 # Install python dependencies
 RUN pip install -r /requirements.txt
@@ -23,8 +23,9 @@ COPY .docker/prod/backend/nginx.conf /etc/nginx/sites-available/propman.conf
 RUN ln -s /etc/nginx/sites-available/propman.conf /etc/nginx/sites-enabled/propman.conf
 RUN nginx -t
 
+COPY .docker/prod/backend/start.sh /app/start.sh
+
 # Move base project files
-RUN dos2unix /app/start.sh
 RUN chmod +x /app/start.sh
 
 EXPOSE 8000
