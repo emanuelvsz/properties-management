@@ -9,7 +9,6 @@ ENV PYTHONUNBUFFERED=1
 RUN apt update
 RUN apt install -y dos2unix nginx
 RUN pip install -U pip
-RUN pip install poetry
 
 COPY property_manager /app
 COPY requirements.txt /requirements.txt
