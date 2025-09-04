@@ -31,11 +31,11 @@
 	"component.footer.text.rights": "2025 - Todos direitos reservados",
 	"component.footer.creator": "Criado por Emanuel Vilela",
 
-	"component.side-menu.section.pages.title": "PÁGINAS",
+	"component.side-menu.section.pages.title": "GESTÃO",
+	"component.side-menu.section.subpages.title": "CONTA",
 	"component.side-menu.section.pages.item.dashboard": "Painel",
 	"component.side-menu.section.pages.item.properties": "Propriedades",
 	"component.side-menu.section.pages.item.tenants": "Inquilinos",
-	"component.side-menu.section.pages.item.payments": "Pagamentos",
 	"component.side-menu.section.close.button.title": "Fechar Menu",
 
 	"component.page-header-actions.sort.newest": "Mais recentes primeiro",

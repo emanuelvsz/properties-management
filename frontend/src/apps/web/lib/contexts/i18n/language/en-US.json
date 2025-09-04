@@ -31,7 +31,8 @@
 	"component.footer.text.rights": "2025 - All rights reserved",
 	"component.footer.creator": "Created by Emanuel Vilela",
 
-	"component.side-menu.section.pages.title": "PAGES",
+	"component.side-menu.section.pages.title": "MANAGEMENT",
+	"component.side-menu.section.subpages.title": "ACCOUNT",
 	"component.side-menu.section.pages.item.dashboard": "Dashboard",
 	"component.side-menu.section.pages.item.properties": "Properties",
 	"component.side-menu.section.pages.item.tenants": "Tenants",
@@ -252,7 +253,6 @@
 	"page.profile.update.success": "Profile updated successfully!",
 	"page.profile.update.error": "Error updating profile",
 	"page.profile.info.description": "Manage your personal information and account preferences",
-	"component.header.dropdown.profile": "Profile",
 	"page.tenants.modal.add.title": "Add Tenant Form",
 	"page.tenants.modal.edit.title": "Edit Tenant Form",
 	"page.tenants.form.name.label": "Name",
@@ -267,7 +267,6 @@
 	"page.tenants.form.birth-date.label": "Birth Date",
 	"page.tenants.form.birth-date.required": "Please select a birth date",
 
-	"component.side-menu.section.pages.item.payments": "Payments",
 	"component.header.dropdown.payments": "Payments",
 
 	"page.payments.title": "Payments",

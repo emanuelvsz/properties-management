@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Flex, Layout } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 
@@ -13,6 +13,8 @@ import userIconWhite from "@web/assets/icons/user-white.svg";
 import userIcon from "@web/assets/icons/user.svg";
 import moneyIcon from "@web/assets/icons/fi-rs-money.svg";
 import moneyIconWhite from "@web/assets/icons/fi-rs-money-white.svg";
+import settingsIcon from "@web/assets/icons/fi-rs-settings.svg";
+import settingsIconWhite from "@web/assets/icons/fi-rs-settings-white.svg";
 
 import backpackIcon from "@web/assets/icons/fi-rs-backpack.svg";
 import backpackIconWhite from "@web/assets/icons/fi-rs-backpack-white.svg";
@@ -21,12 +23,13 @@ import { THEME_COLORS } from "@web/config/theme";
 import { useSideMenu } from "@web/lib/hooks/side-menu";
 import { Account } from "@core/domain/models/account";
 import { FormattedMessage, useIntl } from "react-intl";
+import MenuItemsSection from "./menu-items-section";
 
 interface Props {
 	account?: Account;
 }
 
-interface NavigationItem {
+export interface MenuNavigationItem {
 	text: string;
 	icon: string;
 	activeIcon: string;
@@ -41,27 +44,23 @@ const styles = {
 		flex-direction: column;
 		height: 100vh;
 	`,
-
 	siderHeader: css`
 		height: 100px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
+		border-bottom: 1px solid ${THEME_COLORS.PRIMARY_LIGHT_COLOR};
 	`,
-
 	logo: css`
 		height: 55px;
 	`,
-
 	logoCollapsed: css`
 		height: 40px;
 	`,
-
 	body: (collapsed: boolean) => css`
 		padding: ${collapsed ? "0.3rem 1rem 0 1rem" : "0.3rem 1.8rem"};
 	`,
-
 	sectionTitle: (collapsed: boolean) => css`
 		color: ${THEME_COLORS.WHITE_COLOR};
 		font-weight: 600;
@@ -70,7 +69,6 @@ const styles = {
 		visibility: ${collapsed ? "hidden" : "visible"};
 		transition: opacity 0.3s ease;
 	`,
-
 	navigationItem: (active: boolean, collapsed: boolean) => css`
 		display: flex;
 		align-items: center;
@@ -87,27 +85,23 @@ const styles = {
 			background-color: ${active ? "#fff" : "#ffffff33"};
 		}
 	`,
-
 	icon: (active: boolean) => css`
 		height: 20px;
 		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 	`,
-
 	text: (active: boolean) => css`
 		font-weight: 500;
 		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 		white-space: nowrap;
 	`,
-
 	toggleButton: (collapsed: boolean) => css`
 		position: absolute;
 		bottom: 16px;
 		width: 100%;
 		padding: ${collapsed ? "0 1rem" : "0 1.8rem"};
 	`,
-
 	toggleContent: (collapsed: boolean) => css`
 		display: flex;
 		align-items: center;
@@ -125,7 +119,6 @@ const styles = {
 			background-color: #f0f0f0;
 		}
 	`,
-
 	toggleText: css`
 		font-weight: 500;
 		color: ${THEME_COLORS.PRIMARY_COLOR};
@@ -136,12 +129,11 @@ const styles = {
 const SideMenu = ({ account }: Props) => {
 	const { collapsed, toggleCollapsed } = useSideMenu();
 	const navigate = useNavigate();
-	const location = useLocation();
 	const intl = useIntl();
 
 	if (!account) return null;
 
-	const data: NavigationItem[] = [
+	const managementData: MenuNavigationItem[] = [
 		{
 			text: intl.formatMessage({
 				id: "component.side-menu.section.pages.item.dashboard"
@@ -183,6 +175,17 @@ const SideMenu = ({ account }: Props) => {
 			activeIcon: backpackIcon,
 			url: "/inventory",
 			isDemo: true
+		}
+	];
+
+	const accountData: MenuNavigationItem[] = [
+		{
+			text: intl.formatMessage({
+				id: "component.header.dropdown.configurations"
+			}),
+			icon: settingsIconWhite,
+			activeIcon: settingsIcon,
+			url: "/settings"
 		},
 		{
 			text: intl.formatMessage({
@@ -213,29 +216,17 @@ const SideMenu = ({ account }: Props) => {
 						css={[styles.logo, collapsed && styles.logoCollapsed]}
 					/>
 				</Flex>
-				<Flex css={styles.body(collapsed)} vertical gap={10}>
-					<p css={styles.sectionTitle(collapsed)}>
-						<FormattedMessage id="component.side-menu.section.pages.title" />
-					</p>
-					{data.map((item, idx) => {
-						const isActive =
-							location.pathname === item.url ||
-							location.pathname.startsWith(`${item.url}/`);
-
-						return (
-							<Flex
-								key={idx}
-								css={styles.navigationItem(isActive, collapsed)}
-								onClick={() => navigate(item.url)}
-							>
-								<img
-									src={isActive ? item.activeIcon : item.icon}
-									css={styles.icon(isActive)}
-								/>
-								{!collapsed && <p css={styles.text(isActive)}>{item.text}</p>}
-							</Flex>
-						);
-					})}
+				<Flex vertical>
+					<MenuItemsSection
+						data={managementData}
+						collapsed={collapsed}
+						titleId="component.side-menu.section.pages.title"
+					/>
+					<MenuItemsSection
+						data={accountData}
+						collapsed={collapsed}
+						titleId="component.side-menu.section.subpages.title"
+					/>
 				</Flex>
 			</Flex>
 			<Flex css={styles.toggleButton(collapsed)}>

@@ -10,6 +10,7 @@ import homeIcon from "@web/assets/icons/fi-rs-home.svg";
 import chartHistogramIcon from "@web/assets/icons/fi-rs-chart-histogram.svg";
 import userIcon from "@web/assets/icons/user.svg";
 import moneyIcon from "@web/assets/icons/fi-rs-money.svg";
+import settingsIcon from "@web/assets/icons/fi-rs-settings.svg";
 import { useLogout } from "@web/lib/contexts/auth/hooks";
 import { Account } from "@core/domain/models/account";
 import SelectLanguageDropdown from "../select-language-dropdown";
@@ -41,9 +42,6 @@ const styles = {
 	`,
 	profileContainer: css`
 		cursor: pointer;
-		display: flex;
-		align-items: center;
-		gap: 15px;
 		padding: 8px 12px;
 		border-radius: 8px;
 	`,
@@ -52,7 +50,6 @@ const styles = {
 		background-color: #acacac;
 	`,
 	dropdownItem: css`
-		display: flex;
 		align-items: center;
 		gap: 12px;
 		padding: 4px 16px;
@@ -123,50 +120,50 @@ const Header = ({ account }: Props) => {
 		{
 			key: "dashboard",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={chartHistogramIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.dashboard" })}
-				</div>
+				</Flex>
 			),
 			style: isActive("/") ? { backgroundColor: "#f0f0f0" } : {}
 		},
 		{
 			key: "properties",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={homeIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.properties" })}
-				</div>
+				</Flex>
 			),
 			style: isActive("/properties") ? { backgroundColor: "#f0f0f0" } : {}
 		},
 		{
 			key: "tenants",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={userIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.tenants" })}
-				</div>
+				</Flex>
 			),
 			style: isActive("/tenants") ? { backgroundColor: "#f0f0f0" } : {}
 		},
 		{
 			key: "payments",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={moneyIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.payments" })}
-				</div>
+				</Flex>
 			),
 			style: isActive("/payments") ? { backgroundColor: "#f0f0f0" } : {}
 		},
 		{
 			key: "inventory",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={homeIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.inventory" })}
-				</div>
+				</Flex>
 			),
 			style: isActive("/inventory") ? { backgroundColor: "#f0f0f0" } : {}
 		},
@@ -177,21 +174,21 @@ const Header = ({ account }: Props) => {
 		{
 			key: "configurations",
 			label: (
-				<div css={styles.dropdownItem}>
-					<img src={chartHistogramIcon} css={styles.dropdownIcon} />
+				<Flex css={styles.dropdownItem}>
+					<img src={settingsIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({
 						id: "component.header.dropdown.configurations"
 					})}
-				</div>
+				</Flex>
 			)
 		},
 		{
 			key: "profile",
 			label: (
-				<div css={styles.dropdownItem}>
+				<Flex css={styles.dropdownItem}>
 					<img src={userIcon} css={styles.dropdownIcon} />
 					{intl.formatMessage({ id: "component.header.dropdown.profile" })}
-				</div>
+				</Flex>
 			)
 		},
 		{
@@ -201,10 +198,10 @@ const Header = ({ account }: Props) => {
 		{
 			key: "logout",
 			label: (
-				<div css={styles.dropdownItem} style={{ color: "#ff4d4f" }}>
+				<Flex css={styles.dropdownItem} style={{ color: "#ff4d4f" }}>
 					<LogoutOutlined style={{ color: "#ff4d4f", fontSize: 18 }} />
 					{intl.formatMessage({ id: "component.header.dropdown.logout" })}
-				</div>
+				</Flex>
 			),
 			style: { color: "#ff4d4f" }
 		}
@@ -219,7 +216,7 @@ const Header = ({ account }: Props) => {
 				trigger={["click"]}
 				arrow
 			>
-				<Flex css={styles.profileContainer}>
+				<Flex css={styles.profileContainer} gap={15} align="center">
 					<img src={userPrimaryIcon} css={styles.headerIcon} />
 					<p css={styles.headerUsername}>{account?.email}</p>
 				</Flex>
