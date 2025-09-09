@@ -197,6 +197,7 @@ const InventoryModalForm = ({
 				width={800}
 				css={styles.modal}
 				destroyOnClose
+				centered
 			>
 				<Form
 					form={form}

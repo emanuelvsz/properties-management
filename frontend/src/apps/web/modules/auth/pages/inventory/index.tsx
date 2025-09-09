@@ -283,8 +283,8 @@ const InventoryPage = () => {
 	};
 
 	useEffect(() => {
-		console.log("Property: ", inventoryItems)
-	}, [inventoryItems])
+		console.log("Property: ", inventoryItems);
+	}, [inventoryItems]);
 
 	const columns = [
 		{
@@ -325,7 +325,11 @@ const InventoryPage = () => {
 						</Text>
 						<br />
 						<Text type="secondary" style={{ fontSize: "12px" }}>
-							{intl.formatMessage({ id: "page.inventory.table.property.code" })}: {propertyCode && propertyCode.trim() !== "" ? propertyCode : intl.formatMessage({ id: "general.not.informed" })}
+							{intl.formatMessage({ id: "page.inventory.table.property.code" })}
+							:{" "}
+							{propertyCode && propertyCode.trim() !== ""
+								? propertyCode
+								: intl.formatMessage({ id: "general.not.informed" })}
 						</Text>
 					</div>
 				);
@@ -389,14 +393,14 @@ const InventoryPage = () => {
 				if (!record) {
 					return <Text>-</Text>;
 				}
-								return (
+				return (
 					<Space size={5}>
 						<Button
 							type="text"
 							size="small"
 							onClick={() => handleEdit(record)}
-							icon={<EditOutlined style={{ color: '#000000' }} />}
-							style={{ width: '35px', height: '35px', padding: 0 }}
+							icon={<EditOutlined style={{ color: "#000000" }} />}
+							style={{ width: "35px", height: "35px", padding: 0 }}
 						/>
 						<Popconfirm
 							title={intl.formatMessage({
@@ -407,11 +411,11 @@ const InventoryPage = () => {
 							cancelText={intl.formatMessage({ id: "general.no" })}
 							placement="left"
 						>
-							<Button 
-								type="text" 
-								danger 
-								icon={<DeleteOutlined />} 
-								style={{ width: '35px', height: '35px', padding: 0 }}
+							<Button
+								type="text"
+								danger
+								icon={<DeleteOutlined />}
+								style={{ width: "35px", height: "35px", padding: 0 }}
 							/>
 						</Popconfirm>
 					</Space>
@@ -434,138 +438,138 @@ const InventoryPage = () => {
 				<BoardPageHeader
 					title={intl.formatMessage({ id: "page.inventory.title" })}
 					prefix={intl.formatMessage({ id: "page.inventory.subtitle" })}
-					extra={
-						<Tooltip
-							title={intl.formatMessage({
-								id: "component.page-header-actions.tooltip.add"
-							})}
-						>
-							<Button
-								type="primary"
-								icon={<PlusOutlined />}
-								onClick={handleAdd}
-								css={styles.button}
-							/>
-						</Tooltip>
-					}
 				/>
-				<Card css={styles.card}>
-					<div css={styles.filterContainer}>
-						<Row gutter={16} align="middle">
-							<Col>
-								<Input
-									placeholder={intl.formatMessage({
-										id: "page.inventory.search.placeholder"
-									})}
-									value={searchText}
-									onChange={(e) => setSearchText(e.target.value)}
-									prefix={<SearchOutlined />}
-									css={styles.searchInput}
-									style={{ height: '35px' }}
-								/>
-							</Col>
-							<Col>
-								<Select
-									placeholder={intl.formatMessage({
-										id: "page.inventory.category.placeholder"
-									})}
-									value={selectedCategory}
-									onChange={setSelectedCategory}
-									style={{ width: 200, height: '35px' }}
-									allowClear
-								>
-									{categories.items.map((category: InventoryCategory) => (
-										<Option key={category.id} value={category.id}>
-											{category.name}
+				<div css={styles.filterContainer}>
+					<Row gutter={10} align="middle">
+						<Flex justify="space-between" flex={1}>
+							<Flex>
+								<Col>
+									<Input
+										placeholder={intl.formatMessage({
+											id: "page.inventory.search.placeholder"
+										})}
+										value={searchText}
+										onChange={(e) => setSearchText(e.target.value)}
+										prefix={<SearchOutlined />}
+										css={styles.searchInput}
+										style={{ height: "35px" }}
+									/>
+								</Col>
+								<Col>
+									<Select
+										placeholder={intl.formatMessage({
+											id: "page.inventory.category.placeholder"
+										})}
+										value={selectedCategory}
+										onChange={setSelectedCategory}
+										style={{ width: 200, height: "35px" }}
+										allowClear
+									>
+										{categories.items.map((category: InventoryCategory) => (
+											<Option key={category.id} value={category.id}>
+												{category.name}
+											</Option>
+										))}
+									</Select>
+								</Col>
+								<Col>
+									<Select
+										placeholder={intl.formatMessage({
+											id: "page.inventory.condition.placeholder"
+										})}
+										value={selectedCondition}
+										onChange={setSelectedCondition}
+										style={{ width: 150, height: "35px" }}
+										allowClear
+									>
+										<Option value="excellent">
+											{intl.formatMessage({
+												id: "page.inventory.condition.excellent"
+											})}
 										</Option>
-									))}
-								</Select>
-							</Col>
-							<Col>
-								<Select
-									placeholder={intl.formatMessage({
-										id: "page.inventory.condition.placeholder"
-									})}
-									value={selectedCondition}
-									onChange={setSelectedCondition}
-									style={{ width: 150, height: '35px' }}
-									allowClear
-								>
-									<Option value="excellent">
-										{intl.formatMessage({
-											id: "page.inventory.condition.excellent"
-										})}
-									</Option>
-									<Option value="good">
-										{intl.formatMessage({
-											id: "page.inventory.condition.good"
-										})}
-									</Option>
-									<Option value="fair">
-										{intl.formatMessage({
-											id: "page.inventory.condition.fair"
-										})}
-									</Option>
-									<Option value="poor">
-										{intl.formatMessage({
-											id: "page.inventory.condition.poor"
-										})}
-									</Option>
-									<Option value="damaged">
-										{intl.formatMessage({
-											id: "page.inventory.condition.damaged"
-										})}
-									</Option>
-								</Select>
-							</Col>
-							<Col>
-								<Button onClick={handleReset} style={{ height: '35px' }}>
-									{intl.formatMessage({ id: "page.inventory.clear" })}
-								</Button>
-							</Col>
-						</Row>
+										<Option value="good">
+											{intl.formatMessage({
+												id: "page.inventory.condition.good"
+											})}
+										</Option>
+										<Option value="fair">
+											{intl.formatMessage({
+												id: "page.inventory.condition.fair"
+											})}
+										</Option>
+										<Option value="poor">
+											{intl.formatMessage({
+												id: "page.inventory.condition.poor"
+											})}
+										</Option>
+										<Option value="damaged">
+											{intl.formatMessage({
+												id: "page.inventory.condition.damaged"
+											})}
+										</Option>
+									</Select>
+								</Col>
+								<Col>
+									<Button onClick={handleReset} style={{ height: "35px" }}>
+										{intl.formatMessage({ id: "page.inventory.clear" })}
+									</Button>
+								</Col>
+							</Flex>
+							<Tooltip
+								title={intl.formatMessage({
+									id: "component.page-header-actions.tooltip.add"
+								})}
+							>
+								<Button
+									type="primary"
+									icon={<PlusOutlined />}
+									onClick={handleAdd}
+									css={styles.button}
+								/>
+							</Tooltip>
+						</Flex>
+					</Row>
+				</div>
+
+				{selectedRowKeys.length > 0 && (
+					<div style={{ marginBottom: 16 }}>
+						<Button danger onClick={handleBulkDelete}>
+							{intl.formatMessage(
+								{ id: "page.inventory.delete.selected" },
+								{ count: selectedRowKeys.length }
+							)}
+						</Button>
 					</div>
+				)}
 
-					{selectedRowKeys.length > 0 && (
-						<div style={{ marginBottom: 16 }}>
-							<Button danger onClick={handleBulkDelete}>
-								{intl.formatMessage(
-									{ id: "page.inventory.delete.selected" },
-									{ count: selectedRowKeys.length }
-								)}
-							</Button>
-						</div>
-					)}
-
-					<TableAntd<any>
-						columns={columns}
-						dataSource={inventoryItems.items.map(item => item.toJSON())}
-						rowKey="id"
-						loading={loading}
-						rowSelection={rowSelection}
-						pagination={{
-							current: inventoryItems.page,
-							pageSize: inventoryItems.pageSize,
-							total: inventoryItems.total,
-							showSizeChanger: true,
-							showQuickJumper: true,
-							showTotal: (total, range) =>
-								intl.formatMessage(
-									{ id: "page.inventory.table.pagination.total" },
-									{
-										start: range[0],
-										end: range[1],
-										total: total
-									}
-								)
-						}}
-						onChange={(pagination) => {
-							const newParams = new URLSearchParams(searchParams);
-							newParams.set("page", pagination.current?.toString() || "1");
-							setSearchParams(newParams);
-						}}
-					/>
-				</Card>
+				<TableAntd<any>
+					columns={columns}
+					dataSource={inventoryItems.items.map((item) => item.toJSON())}
+					rowKey="id"
+					loading={loading}
+					rowSelection={rowSelection}
+					pagination={{
+						current: inventoryItems.page,
+						pageSize: inventoryItems.pageSize,
+						total: inventoryItems.total,
+						showSizeChanger: true,
+						showQuickJumper: true,
+						showTotal: (total, range) =>
+							intl.formatMessage(
+								{ id: "page.inventory.table.pagination.total" },
+								{
+									start: range[0],
+									end: range[1],
+									total: total
+								}
+							)
+					}}
+					onChange={(pagination) => {
+						const newParams = new URLSearchParams(searchParams);
+						newParams.set("page", pagination.current?.toString() || "1");
+						setSearchParams(newParams);
+					}}
+				/>
 			</Flex>
 			<InventoryModalForm
 				visible={modalVisible}

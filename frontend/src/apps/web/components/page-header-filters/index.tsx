@@ -19,6 +19,7 @@ interface Props {
 	hideActions?: boolean;
 	hideSelect?: boolean;
 	hideSearch?: boolean;
+	valueLabel?: string;
 }
 
 const inputHeight = 35;
@@ -60,7 +61,8 @@ const PageHeaderFilters = ({
 	selectOptions,
 	disabled = false,
 	hideActions = false,
-	hideSelect = false
+	hideSelect = false,
+	valueLabel = ""
 }: Props) => {
 	const intl = useIntl();
 	const [localSearchValue, setLocalSearchValue] = useState(searchValue ?? "");
@@ -103,11 +105,11 @@ const PageHeaderFilters = ({
 					options={
 						selectOptions || [
 							{
-								label: intl.formatMessage({ id: "general.yes" }),
+								label: `${valueLabel}: ${intl.formatMessage({ id: "general.yes" })}`,
 								value: "true"
 							},
 							{
-								label: intl.formatMessage({ id: "general.no" }),
+								label: `${valueLabel}: ${intl.formatMessage({ id: "general.no" })}`,
 								value: "false"
 							}
 						]

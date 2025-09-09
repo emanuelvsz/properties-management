@@ -202,9 +202,7 @@ const PropertiesPage = () => {
 		onChange: (newSelectedRowKeys: React.Key[]) => {
 			setSelectedRowKeys(newSelectedRowKeys);
 		},
-		renderCell: (
-			originNode: React.ReactNode
-		) => (
+		renderCell: (originNode: React.ReactNode) => (
 			<Flex
 				style={{ marginLeft: 15 }}
 				vertical
@@ -265,16 +263,23 @@ const PropertiesPage = () => {
 				const statusConfig = {
 					free: { color: "green", text: "page.properties.status.free" },
 					rented: { color: "blue", text: "page.properties.status.rented" },
-					maintance: { color: "orange", text: "page.properties.status.maintance" },
-					reforbish: { color: "purple", text: "page.properties.status.reforbish" },
+					maintance: {
+						color: "orange",
+						text: "page.properties.status.maintance"
+					},
+					reforbish: {
+						color: "purple",
+						text: "page.properties.status.reforbish"
+					}
 				};
-				
+
 				const config = statusConfig[value as keyof typeof statusConfig];
-				
+
 				return (
 					<Tag color={config?.color || "default"}>
-						{intl.formatMessage({ 
-							id: config?.text || `page.properties.status.${value.toLowerCase()}` 
+						{intl.formatMessage({
+							id:
+								config?.text || `page.properties.status.${value.toLowerCase()}`
 						})}
 					</Tag>
 				);
@@ -407,6 +412,9 @@ const PropertiesPage = () => {
 							})}
 							searchPlaceholder={intl.formatMessage({
 								id: "page.properties.page-header-filters.search.placeholder"
+							})}
+							valueLabel={intl.formatMessage({
+								id: "component.add-property-modal-form.form.item.furnished.label"
 							})}
 						/>
 					}

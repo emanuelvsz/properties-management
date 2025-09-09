@@ -25,6 +25,10 @@
 	"component.add-property-modal-form.form.item.rent-price.label": "Rent Value",
 	"component.add-property-modal-form.form.item.furnished.label": "Furnished",
 
+	"component.empty-section.title": "No {value} have been registered yet.",
+	"component.empty-section.description": "You haven’t added any {value} yet. Select a property and add your first {value} on its details page.",
+	"component.empty-section.button-text": "Add your first {value}.",
+
 	"component.empty.description": "No data found",
 	"component.text.empty": "Not Informed",
 

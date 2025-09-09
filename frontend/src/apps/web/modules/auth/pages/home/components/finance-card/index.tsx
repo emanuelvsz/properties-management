@@ -116,18 +116,20 @@ const FinanceCard = ({
 							}).format(value)}
 							<span css={styles.currency}>USD</span>
 						</p>
-						<p
-							css={styles.percentageChange}
-							style={{
-								color:
-									extraColor === "green"
-										? THEME_COLORS.LIGHT_GREEN_COLOR
-										: THEME_COLORS.LIGHT_RED_COLOR
-							}}
-						>
-							{extraValue > 0 ? "↑" : extraValue === 0 ? "-" : "↓"}{" "}
-							{Math.abs(extraValue)}%
-						</p>
+						{extraValue !== 0 && (
+							<p
+								css={styles.percentageChange}
+								style={{
+									color:
+										extraColor === "green"
+											? THEME_COLORS.LIGHT_GREEN_COLOR
+											: THEME_COLORS.LIGHT_RED_COLOR
+								}}
+							>
+								{extraValue > 0 ? "↑" : extraValue === 0 ? "-" : "↓"}{" "}
+								{Math.abs(extraValue)}%
+							</p>
+						)}
 					</Flex>
 				</>
 			)}

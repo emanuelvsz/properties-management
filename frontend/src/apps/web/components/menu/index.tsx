@@ -35,6 +35,7 @@ export interface MenuNavigationItem {
 	activeIcon: string;
 	url: string;
 	isDemo?: boolean;
+	disabled?: boolean;
 }
 
 const styles = {
@@ -185,7 +186,8 @@ const SideMenu = ({ account }: Props) => {
 			}),
 			icon: settingsIconWhite,
 			activeIcon: settingsIcon,
-			url: "/settings"
+			url: "/settings",
+			disabled: true
 		},
 		{
 			text: intl.formatMessage({

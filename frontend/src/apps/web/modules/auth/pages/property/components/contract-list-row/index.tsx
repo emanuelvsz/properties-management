@@ -2,16 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { css } from "@emotion/react";
-import {
-	Button,
-	Card,
-	Col,
-	Flex,
-	Popconfirm,
-	Row,
-	Tag,
-	Tooltip
-} from "antd";
+import { Button, Card, Col, Flex, Popconfirm, Row, Tag, Tooltip } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { ColumnsType } from "antd/es/table";
@@ -274,22 +265,27 @@ const ContractListRow = () => {
 
 	return (
 		<Card loading={loading.list}>
-			<Row gutter={24}>
-				<Col span={24}>
-					<Flex css={styles.container} vertical gap={10}>
-						<BoardPageHeader
-							title={intl.formatMessage({
-								id: "page.property.contracts.title"
-							})}
-							prefix={
-								<TableHeader
-									onSelectCheckboxOption={handleList}
-									initialValue={archivedSwitchValue}
-									hideActions={paginationContract.total < 1}
-								/>
-							}
-							extra={
-								paginationContract.total >= 1 ? (
+			{paginationContract.total === 0 ? (
+				<EmptySection
+					entity={intl.formatMessage({ id: "page.payments.table.contract" })}
+					onSubmit={() => setCreateModalVisible(true)}
+				/>
+			) : (
+				<Row gutter={24}>
+					<Col span={24}>
+						<Flex css={styles.container} vertical gap={10}>
+							<BoardPageHeader
+								title={intl.formatMessage({
+									id: "page.property.contracts.title"
+								})}
+								prefix={
+									<TableHeader
+										onSelectCheckboxOption={handleList}
+										initialValue={archivedSwitchValue}
+										hideActions={paginationContract.total < 1}
+									/>
+								}
+								extra={
 									<Tooltip
 										title={intl.formatMessage({
 											id: "component.page-header-actions.tooltip.add"
@@ -302,47 +298,37 @@ const ContractListRow = () => {
 											css={styles.addButton}
 										/>
 									</Tooltip>
-								) : (
-									<EmptySection
-										onSubmit={() => setCreateModalVisible(true)}
-										okText={intl.formatMessage({
-											id: "page.property.contracts.empty.register"
-										})}
-										descriptionText={intl.formatMessage({
-											id: "page.property.contracts.empty.description"
-										})}
-									/>
-								)
-							}
-						/>
-						{paginationContract?.total >= 1 ? (
-							<Table
-								columns={contractColumns}
-								dataSource={paginationContract.items}
-								rowKey="id"
-								pagination={{
-									current: currentPage,
-									pageSize: paginationContract.pageSize,
-									total: paginationContract.count,
-									onChange: (page) => {
-										setCurrentPage(page);
-										handleList(archivedSwitchValue, page);
-									}
-								}}
-								scroll={{ x: "max-content" }}
-								loading={
-									loading.create ||
-									loading.update ||
-									loading.delete ||
-									loading.list
 								}
-								size="small"
-								bordered
 							/>
-						) : null}
-					</Flex>
-				</Col>
-			</Row>
+							{paginationContract?.total >= 1 ? (
+								<Table
+									columns={contractColumns}
+									dataSource={paginationContract.items}
+									rowKey="id"
+									pagination={{
+										current: currentPage,
+										pageSize: paginationContract.pageSize,
+										total: paginationContract.count,
+										onChange: (page) => {
+											setCurrentPage(page);
+											handleList(archivedSwitchValue, page);
+										}
+									}}
+									scroll={{ x: "max-content" }}
+									loading={
+										loading.create ||
+										loading.update ||
+										loading.delete ||
+										loading.list
+									}
+									size="small"
+									bordered
+								/>
+							) : null}
+						</Flex>
+					</Col>
+				</Row>
+			)}
 
 			<RentContractModalForm
 				visible={createModalVisible}

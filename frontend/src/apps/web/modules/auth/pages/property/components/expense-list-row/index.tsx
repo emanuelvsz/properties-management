@@ -61,7 +61,6 @@ const ExpenseListRow = ({
 	const intl = useIntl();
 	const { id: propertyId } = useParams<{ id: string }>();
 	const checkOrderByParam = useCheckOrderByParam();
-
 	const deleteExpense = useDeleteExpense();
 	const createExpense = useCreateExpense();
 	const updateExpense = useUpdateExpense();
@@ -217,34 +216,42 @@ const ExpenseListRow = ({
 
 	return (
 		<Card loading={loadingExpenses}>
-			<Row gutter={24}>
-				<Col span={24}>
-					<Flex css={styles.container} vertical gap={10}>
-						<BoardPageHeader
-							title={title}
-							prefix={
-								<PageHeaderFilters
-									onReloadClick={() => onReload && onReload(1)}
-									onSearchChange={onSearchChange}
-									onSelectChange={onSelectChange}
-									searchValue={searchValue}
-									selectValue={selectValue}
-									searchPlaceholder={intl.formatMessage({
-										id: "page.property.component.expense-list-row.board-page-header.filters.search-placeholder"
-									})}
-									selectPlaceholder={intl.formatMessage({
-										id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
-									})}
-									disabled={
-										pagination.total === 0 &&
-										!loadingExpenses &&
-										checkOrderByParam
-									}
-									hideActions={hideActions || pagination.total === 0}
-								/>
-							}
-							extra={
-								pagination.total >= 1 ? (
+			{pagination.total === 0 ? (
+				<EmptySection
+					entity={intl.formatMessage({ id: "page.property.expenses.title" })}
+					onSubmit={() => setIsAddModalVisible(true)}
+				/>
+			) : (
+				<Row gutter={24}>
+					<Col span={24}>
+						<Flex css={styles.container} vertical gap={10}>
+							<BoardPageHeader
+								title={title}
+								prefix={
+									<PageHeaderFilters
+										onReloadClick={() => onReload && onReload(1)}
+										onSearchChange={onSearchChange}
+										onSelectChange={onSelectChange}
+										searchValue={searchValue}
+										selectValue={selectValue}
+										searchPlaceholder={intl.formatMessage({
+											id: "page.property.component.expense-list-row.board-page-header.filters.search-placeholder"
+										})}
+										selectPlaceholder={intl.formatMessage({
+											id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
+										})}
+										disabled={
+											pagination.total === 0 &&
+											!loadingExpenses &&
+											checkOrderByParam
+										}
+										hideActions={hideActions || pagination.total === 0}
+										valueLabel={intl.formatMessage({
+											id: "page.property.component.expense-list-row.board-page-header.filters.select-placeholder"
+										})}
+									/>
+								}
+								extra={
 									<PageHeaderActions
 										onAddClick={() => setIsAddModalVisible(true)}
 										onOrderByChange={onOrderByChange}
@@ -252,57 +259,47 @@ const ExpenseListRow = ({
 										disableActions={hideActions}
 										orderByOptions={orderByOptions}
 									/>
-								) : (
-									<EmptySection
-										onSubmit={() => setIsAddModalVisible(true)}
-										okText={intl.formatMessage({
-											id: "page.property.expenses.empty.register"
-										})}
-										descriptionText={intl.formatMessage({
-											id: "page.property.expenses.empty.description"
-										})}
-									/>
-								)
-							}
-						/>
-						{pagination.total >= 1 ? (
-							<Table
-								columns={expenseColumns}
-								dataSource={pagination.items}
-								rowKey="id"
-								pagination={{
-									current: pagination.page,
-									pageSize: pagination.pageSize,
-									total: pagination.count,
-									onChange: (page) => {
-										onReload && onReload(page);
-									}
-								}}
-								scroll={{ x: "max-content" }}
-								loading={
-									loading.create ||
-									loading.update ||
-									loading.delete ||
-									loadingExpenses
 								}
-								size="small"
-								expandable={{
-									expandedRowRender: (record) => (
-										<p css={styles.tableItemExpanded}>
-											{record.description && record.description !== "null"
-												? record.description
-												: "—"}
-										</p>
-									),
-									rowExpandable: (record) =>
-										!!record.description && record.description !== "null"
-								}}
-								bordered
 							/>
-						) : null}
-					</Flex>
-				</Col>
-			</Row>
+							{pagination.total >= 1 ? (
+								<Table
+									columns={expenseColumns}
+									dataSource={pagination.items}
+									rowKey="id"
+									pagination={{
+										current: pagination.page,
+										pageSize: pagination.pageSize,
+										total: pagination.count,
+										onChange: (page) => {
+											onReload && onReload(page);
+										}
+									}}
+									scroll={{ x: "max-content" }}
+									loading={
+										loading.create ||
+										loading.update ||
+										loading.delete ||
+										loadingExpenses
+									}
+									size="small"
+									expandable={{
+										expandedRowRender: (record) => (
+											<p css={styles.tableItemExpanded}>
+												{record.description && record.description !== "null"
+													? record.description
+													: "—"}
+											</p>
+										),
+										rowExpandable: (record) =>
+											!!record.description && record.description !== "null"
+									}}
+									bordered
+								/>
+							) : null}
+						</Flex>
+					</Col>
+				</Row>
+			)}
 
 			<ExpenseModalForm
 				visible={isAddModalVisible}

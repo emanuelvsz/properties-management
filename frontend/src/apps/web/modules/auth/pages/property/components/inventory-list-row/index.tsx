@@ -23,6 +23,7 @@ import BoardPageHeader from "../../../home/components/finance-bar-panel";
 import { useInventoryContext } from "@web/lib/contexts/inventory/hooks";
 import { THEME_COLORS } from "@web/config/theme";
 import InventoryModalForm from "@web/components/inventory-modal-form";
+import EmptySection from "@web/components/empty-section";
 
 const { Text } = Typography;
 
@@ -239,128 +240,126 @@ const InventoryListRow = ({
 
 	return (
 		<>
-			<Row>
-				<Col span={24}>
-					<Card css={styles.container}>
-						<Flex vertical gap={16}>
-							<BoardPageHeader
-								title={intl.formatMessage({ id: "page.inventory.tab.title" })}
-								// subtitle={intl.formatMessage({ id: "page.inventory.tab.subtitle" })}
-								extra={
-									!hideActions && (
-										<Button
-											type="primary"
-											icon={<PlusOutlined />}
-											onClick={handleAdd}
-										>
-											{intl.formatMessage({ id: "page.inventory.add-item" })}
-										</Button>
-									)
-								}
+			<Card css={styles.container}>
+				{pagination.total === 0 ? (
+					<EmptySection
+						entity={intl.formatMessage({ id: "component.side-menu.section.pages.item.inventory" })}
+						onSubmit={() => setModalVisible(true)}
+					/>
+				) : (
+					<Flex vertical gap={16}>
+						<BoardPageHeader
+							title={intl.formatMessage({ id: "page.inventory.tab.title" })}
+							// subtitle={intl.formatMessage({ id: "page.inventory.tab.subtitle" })}
+							extra={
+								!hideActions && (
+									<Button
+										type="primary"
+										icon={<PlusOutlined />}
+										onClick={handleAdd}
+									>
+										{intl.formatMessage({ id: "page.inventory.add-item" })}
+									</Button>
+								)
+							}
+						/>
+						{pagination.total >= 1 ? (
+							<Table
+								columns={inventoryColumns}
+								dataSource={pagination.items}
+								rowKey="id"
+								pagination={{
+									current: pagination.page,
+									pageSize: pagination.pageSize,
+									total: pagination.count,
+									onChange: (page) => {
+										onReload && onReload(page);
+									}
+								}}
+								scroll={{ x: "max-content" }}
+								loading={loading || inventoryLoading || loadingState.list}
+								size="small"
+								expandable={{
+									expandedRowRender: (record) => (
+										<div css={styles.tableItemExpanded}>
+											{record.description && (
+												<p>
+													<strong>
+														{intl.formatMessage({
+															id: "page.inventory.form.description.label"
+														})}
+														:
+													</strong>{" "}
+													{record.description}
+												</p>
+											)}
+											{record.brand && (
+												<p>
+													<strong>
+														{intl.formatMessage({
+															id: "page.inventory.form.brand.label"
+														})}
+														:
+													</strong>{" "}
+													{record.brand}
+												</p>
+											)}
+											{record.model && (
+												<p>
+													<strong>
+														{intl.formatMessage({
+															id: "page.inventory.form.model.label"
+														})}
+														:
+													</strong>{" "}
+													{record.model}
+												</p>
+											)}
+											{record.serialNumber && (
+												<p>
+													<strong>
+														{intl.formatMessage({
+															id: "page.inventory.form.serialNumber.label"
+														})}
+														:
+													</strong>{" "}
+													{record.serialNumber}
+												</p>
+											)}
+											{record.notes && (
+												<p>
+													<strong>
+														{intl.formatMessage({
+															id: "page.inventory.form.notes.label"
+														})}
+														:
+													</strong>{" "}
+													{record.notes}
+												</p>
+											)}
+										</div>
+									),
+									rowExpandable: (record) =>
+										!!(
+											record.description ||
+											record.brand ||
+											record.model ||
+											record.serialNumber ||
+											record.notes
+										)
+								}}
+								bordered
 							/>
-							{pagination.total >= 1 ? (
-								<Table
-									columns={inventoryColumns}
-									dataSource={pagination.items}
-									rowKey="id"
-									pagination={{
-										current: pagination.page,
-										pageSize: pagination.pageSize,
-										total: pagination.count,
-										onChange: (page) => {
-											onReload && onReload(page);
-										}
-									}}
-									scroll={{ x: "max-content" }}
-									loading={loading || inventoryLoading || loadingState.list}
-									size="small"
-									expandable={{
-										expandedRowRender: (record) => (
-											<div css={styles.tableItemExpanded}>
-												{record.description && (
-													<p>
-														<strong>
-															{intl.formatMessage({
-																id: "page.inventory.form.description.label"
-															})}
-															:
-														</strong>{" "}
-														{record.description}
-													</p>
-												)}
-												{record.brand && (
-													<p>
-														<strong>
-															{intl.formatMessage({
-																id: "page.inventory.form.brand.label"
-															})}
-															:
-														</strong>{" "}
-														{record.brand}
-													</p>
-												)}
-												{record.model && (
-													<p>
-														<strong>
-															{intl.formatMessage({
-																id: "page.inventory.form.model.label"
-															})}
-															:
-														</strong>{" "}
-														{record.model}
-													</p>
-												)}
-												{record.serialNumber && (
-													<p>
-														<strong>
-															{intl.formatMessage({
-																id: "page.inventory.form.serialNumber.label"
-															})}
-															:
-														</strong>{" "}
-														{record.serialNumber}
-													</p>
-												)}
-												{record.notes && (
-													<p>
-														<strong>
-															{intl.formatMessage({
-																id: "page.inventory.form.notes.label"
-															})}
-															:
-														</strong>{" "}
-														{record.notes}
-													</p>
-												)}
-											</div>
-										),
-										rowExpandable: (record) =>
-											!!(
-												record.description ||
-												record.brand ||
-												record.model ||
-												record.serialNumber ||
-												record.notes
-											)
-									}}
-									bordered
-								/>
-							) : (
-								<Flex
-									justify="center"
-									align="center"
-									style={{ padding: "2rem" }}
-								>
-									<Text type="secondary">
-										{intl.formatMessage({ id: "component.empty.description" })}
-									</Text>
-								</Flex>
-							)}
-						</Flex>
-					</Card>
-				</Col>
-			</Row>
-
+						) : (
+							<Flex justify="center" align="center" style={{ padding: "2rem" }}>
+								<Text type="secondary">
+									{intl.formatMessage({ id: "component.empty.description" })}
+								</Text>
+							</Flex>
+						)}
+					</Flex>
+				)}
+			</Card>
 			<InventoryModalForm
 				visible={modalVisible}
 				onCancel={handleModalCancel}

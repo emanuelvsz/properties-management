@@ -15,12 +15,14 @@ import { useIntl } from "react-intl";
 import { useListDashboardReturnSummary } from "@web/lib/contexts/dashboard/hooks";
 import { useEffect, useState, useCallback } from "react";
 import { ReturnsSummary } from "@core/domain/models/returns-summary";
-import ExpenseListRow from "../property/components/expense-list-row";
 import { Expense } from "@core/domain/models/expense";
 import { ExpenseFilters } from "@core/domain/types/filters/expense-filters";
 import { useSearchParams } from "react-router-dom";
 import { Pagination } from "@core/domain/models/pagination";
 import { useListExpenses } from "@web/lib/contexts/expense/hooks";
+import FinanceBarChartCard from "./components/finance-bar-chart-card";
+import FinancePieChartCard from "./components/finance-pie-chart-card";
+import ExpenseListRow from "../property/components/expense-list-row";
 
 const styles = {
 	container: css`
@@ -186,17 +188,19 @@ const HomePage = () => {
 					/>
 				))}
 			</Flex>
-			{expensePagination.total >= 1 && <ExpenseListRow
-				pagination={expensePagination}
-				loading={loadingPage}
-				hideActions={true}
-				title={intl.formatMessage({ id: "dashboard.pending-expenses" })}
-				onReload={fetchAllData}
-			/>}
-			{/* <Flex gap={10} css={styles.cardList}>
+			{expensePagination.total >= 1 && (
+				<ExpenseListRow
+					pagination={expensePagination}
+					loading={loadingPage}
+					hideActions
+					title={intl.formatMessage({ id: "dashboard.pending-expenses" })}
+					onReload={fetchAllData}
+				/>
+			)}
+			<Flex gap={10} css={styles.cardList}>
 				<FinanceBarChartCard />
 				<FinancePieChartCard />
-			</Flex> */}
+			</Flex>
 		</Flex>
 	);
 };

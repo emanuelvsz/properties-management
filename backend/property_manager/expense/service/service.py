@@ -11,17 +11,6 @@ from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 class ExpenseService:
     @staticmethod
     def get_expenses(user, date_by, payed=None):
-        """
-        Get property expenses and classify them by type, summing expense values.
-
-        :param user: The authenticated user.
-        :param property_id: The unique identifier of the property.
-        :param date_by: The date interval for grouping ('week', 'month', 'year').
-        :param q: Optional search query for filtering expenses by name or description.
-        :param payed: Optional boolean to filter by payment status.
-        :param order_by: Optional ordering ('newest', 'oldest', 'highest_value', 'lowest_value', 'due_soon', 'due_late').
-        :return: A paginated, filtered and ordered queryset of expenses.
-        """
         queryset = Expense.objects.filter(property__user=user)
         total = queryset.count()
         if payed is not None:
@@ -37,11 +26,12 @@ class ExpenseService:
         elif date_by == "year":
             queryset = queryset.annotate(period=TruncYear("created_at"))
         else:
-            raise ValueError(
-                "Invalid date_by parameter. Use 'week', 'month', or 'year'."
-            )
+            raise ValueError("Invalid date_by parameter. Use 'week', 'month', or 'year'.")
+
         count = queryset.count()
+
         return queryset, count, total
+
 
     @staticmethod
     def get_expense_by_id(expense_id):

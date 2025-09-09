@@ -25,6 +25,10 @@
 	"component.add-property-modal-form.form.item.rent-price.label": "Precio de Alquiler",
 	"component.add-property-modal-form.form.item.furnished.label": "Amueblado",
 
+	"component.empty-section.title": "No se ha registrado ningún {value} todavía.",
+	"component.empty-section.description": "Aún no has agregado ningún {value}. Selecciona una propiedad y añade tu primer {value} en su página de detalles.",
+	"component.empty-section.button-text": "Agregar tu primer {value}.",
+
 	"component.empty.description": "No se encontraron datos",
 	"component.text.empty": "Not Informed",
 
