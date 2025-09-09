@@ -335,5 +335,7 @@
 	"component.rent-contract-modal-form.form.deposit.required": "Por favor, ingresa el valor del depósito",
 	"component.rent-contract-modal-form.form.payment-due-day.label": "Día de Vencimiento del Pago",
 	"component.rent-contract-modal-form.form.payment-due-day.tooltip": "Opcional: El día del mes cuando se esperan los pagos",
-	"component.rent-contract-modal-form.form.archived.label": "Archivado"
+	"component.rent-contract-modal-form.form.archived.label": "Archivado",
+
+	"component.menu-items-section.demo.tooltip.title": "Es posible que algunas cosas no funcionen correctamente"
 }

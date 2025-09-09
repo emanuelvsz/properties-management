@@ -1,5 +1,5 @@
 import { Badge, Flex, Tag, Tooltip } from "antd";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { MenuNavigationItem } from "..";
 import { THEME_COLORS } from "@web/config/theme";
@@ -36,24 +36,26 @@ const styles = {
 		cursor: ${isDisabled ? "not-allowed" : "pointer"};
 		border-radius: 8px;
 		background-color: ${active ? "#fff" : "transparent"};
-		transition: background-color 0.3s ease;
+		transition:
+			background-color 0.3s ease,
+			opacity 0.3s ease;
+		opacity: ${isDisabled ? 0.5 : 1};
 
 		&:hover {
-			background-color: ${active || isDisabled ? "#fff" : "#ffffff33"};
+			background-color: ${active
+				? "#fff"
+				: isDisabled
+					? "transparent"
+					: "#ffffff33"};
 		}
 	`,
-	icon: (active: boolean) => css`
+	icon: css`
 		height: 20px;
-		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 	`,
-	text: (active: boolean, isDisabled?: boolean) => css`
+	text: (active: boolean) => css`
 		font-weight: 500;
-		color: ${isDisabled
-			? "#bfbfbf"
-			: active
-				? THEME_COLORS.PRIMARY_COLOR
-				: THEME_COLORS.WHITE_COLOR};
+		color: ${active ? THEME_COLORS.PRIMARY_COLOR : THEME_COLORS.WHITE_COLOR};
 		transition: color 0.3s ease;
 		white-space: nowrap;
 	`,
@@ -70,6 +72,7 @@ const styles = {
 };
 
 const MenuItemsSection = ({ data, titleId, collapsed = false }: Props) => {
+	const intl = useIntl();
 	const navigate = useNavigate();
 
 	return (
@@ -97,14 +100,14 @@ const MenuItemsSection = ({ data, titleId, collapsed = false }: Props) => {
 						>
 							<img
 								src={isActive ? item.activeIcon : item.icon}
-								css={styles.icon(isActive)}
+								css={styles.icon}
 							/>
-							{!collapsed && (
-								<p css={styles.text(isActive, isDisabled)}>{item.text}</p>
-							)}
+							{!collapsed && <p css={styles.text(isActive)}>{item.text}</p>}
 							{!collapsed && isDemo && (
 								<Tooltip
-									title="Some things might not work as well"
+									title={intl.formatMessage({
+										id: "component.menu-items-section.demo.tooltip.title"
+									})}
 									placement="right"
 								>
 									<Tag color="success" css={styles.tag}>
